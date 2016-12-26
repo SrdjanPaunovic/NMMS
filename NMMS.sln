@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{E330FFD1-F001-4D0D-8B8A-182CAF5BDDDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Hiring Company\Client\Client.csproj", "{3E84E861-6CA7-4DA8-AD27-6BAC51782FBD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hiring Company", "Hiring Company", "{7D3087D1-9726-490C-AEFE-52150AB66402}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Outsourcing Company", "Outsourcing Company", "{4CA21008-99C1-4BEF-A238-5D8B4BF4BD79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +21,15 @@ Global
 		{E330FFD1-F001-4D0D-8B8A-182CAF5BDDDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E330FFD1-F001-4D0D-8B8A-182CAF5BDDDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E330FFD1-F001-4D0D-8B8A-182CAF5BDDDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E84E861-6CA7-4DA8-AD27-6BAC51782FBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E84E861-6CA7-4DA8-AD27-6BAC51782FBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E84E861-6CA7-4DA8-AD27-6BAC51782FBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E84E861-6CA7-4DA8-AD27-6BAC51782FBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3E84E861-6CA7-4DA8-AD27-6BAC51782FBD} = {7D3087D1-9726-490C-AEFE-52150AB66402}
 	EndGlobalSection
 EndGlobal
