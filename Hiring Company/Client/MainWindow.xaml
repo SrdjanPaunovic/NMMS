@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
-        xmlns:view="clr-namespace:Client.View"
+        xmlns:userControls="clr-namespace:Common.UserControls;assembly=Common"
         xmlns:viewModel ="clr-namespace:Client.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
@@ -16,6 +16,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <view:LoginView Width="200" Height="200" Grid.Column="0" LoginCommand="{Binding ElementName=viewModel,Path=LoginCommand}"></view:LoginView>
+        
+        <userControls:LoginView Width="200" Height="200" Grid.Column="0" LoginCommand="{Binding ElementName=viewModel,Path=LoginCommand}"></userControls:LoginView>
     </Grid>
 </Window>
