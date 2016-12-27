@@ -7,16 +7,17 @@
         xmlns:userControls="clr-namespace:Common.UserControls;assembly=Common"
         xmlns:viewModel ="clr-namespace:Client.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="600">
     <Window.DataContext>
         <viewModel:MainWindowViewModel x:Name="viewModel" />
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        <userControls:LoginView Width="200" Height="200" Grid.Column="0" LoginCommand="{Binding ElementName=viewModel,Path=LoginCommand}"></userControls:LoginView>
+
+        <userControls:LoginView Width="200" Height="200" Grid.Column="0" LoginCommand="{Binding ElementName=viewModel,Path=LoginCommand}"/>
+        <userControls:CreateProjectView Grid.Column="1"/>
     </Grid>
 </Window>
