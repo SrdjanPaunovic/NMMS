@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ServiceModel;
 
 namespace Client
 {
@@ -23,6 +24,19 @@ namespace Client
 		public MainWindow()
 		{
 			InitializeComponent();
+			NetTcpBinding binding = new NetTcpBinding();
+			binding.Security.Mode = SecurityMode.Transport;
+			binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
+			
+			string address = "net.tcp://localhost:9999/WCFService";
+			EndpointAddress endpointAddress = new EndpointAddress(new Uri(address));
+
+			using (OutSClientProxy proxy = new OutSClientProxy(binding, endpointAddress))
+			{
+				proxy.Read();
+			}
+
+			Console.ReadLine();
 		}
 	}
 }
