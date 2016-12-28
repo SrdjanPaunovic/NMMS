@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
 using ServiceContract;
+using System.Data.Entity;
+using Service.Access;
+using Service.Data;
 
 namespace HiringCompanyService
 {
@@ -23,6 +26,26 @@ namespace HiringCompanyService
 
 		private static void Start()
 		{
+			// set |DataDirectory| in App.config
+			string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+			string path = System.IO.Path.GetDirectoryName(executable);
+			path = path.Substring(0, path.LastIndexOf("bin")) + "DB";
+			AppDomain.CurrentDomain.SetData("DataDirectory", path);
+
+			// update database
+			Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
+
+			User user = new User();
+			user.Name = "savo";
+			user.Surname = "oroz";
+
+			HirinigCompanyDB.Instance.AddUser(user);
+
+			User user1 = new User();
+			user1.Name = "savo1";
+			user1.Surname = "oroz1";
+			HirinigCompanyDB.Instance.AddUser(user1);
+
 			host = new ServiceHost(typeof(HiringCompanyService));
 			host.AddServiceEndpoint(typeof(IHiringContract),
 				new NetTcpBinding(),
