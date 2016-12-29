@@ -11,18 +11,34 @@
     <Window.DataContext>
         <viewModel:MainWindowViewModel x:Name="viewModel" />
     </Window.DataContext>
-    <DockPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
         <!-- Toolbar -->
-        <DockPanel DockPanel.Dock="Top">
-            <TextBlock Margin="10" HorizontalAlignment="Right">
-                <Hyperlink> Ime Imenic </Hyperlink>
+        <Grid Grid.Row="0">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentState}" Value="LOGIN">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <TextBlock Margin="10,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Hyperlink > 
+                    <TextBlock Text="{Binding LoggedUsername}"></TextBlock>
+                </Hyperlink>
             </TextBlock>
-            <Button Margin="10"  HorizontalAlignment="Right">Log out</Button>
-        </DockPanel>
-
+            <Button Margin="10,2"  HorizontalAlignment="Right" Command="{Binding LogOutCommand}">Log out</Button>
+        </Grid>
+        
         <!-- Login -->
-        <Grid>
+        <Grid Grid.Row="1">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"></Setter>
@@ -33,18 +49,16 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <userControls:LoginView Width="200" Height="200" 
+                                    Username="{Binding ElementName=viewModel,Path=LoggedUsername,Mode=TwoWay}"
+                                    LoginCommand="{Binding ElementName=viewModel,Path=LoginCommand}"/>
 
-            <userControls:LoginView Width="200" Height="200" Grid.Column="0" LoginCommand="{Binding ElementName=viewModel,Path=LoginCommand}"/>
         </Grid>
 
         <!-- Companies list -->
-        <DockPanel>
-            <DockPanel.Style>
-                <Style TargetType="DockPanel">
+        <Grid Grid.Row="1">
+            <Grid.Style>
+                <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"></Setter>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding CurrentState}" Value="COMPANIES">
@@ -52,10 +66,14 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </DockPanel.Style>
+            </Grid.Style>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <!-- call fetchCompanies -->
-            <Button DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="5">Display companies</Button>
-            <ListView Name="companies" ItemsSource="{Binding Companies}">
+            <Button Grid.Row="0" HorizontalAlignment="Right" Margin="5">Display companies</Button>
+            <ListView Name="companies" Grid.Row="1" ItemsSource="{Binding Companies}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
@@ -79,12 +97,12 @@
                     </GroupStyle>
                 </ListView.GroupStyle>
             </ListView>
-        </DockPanel>
+        </Grid>
 
         <!-- Projects list -->
-        <DockPanel>
-            <DockPanel.Style>
-                <Style TargetType="DockPanel">
+        <Grid Grid.Row="1">
+            <Grid.Style>
+                <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"></Setter>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding CurrentState}" Value="PROJECTS">
@@ -92,14 +110,17 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </DockPanel.Style>
-            <DockPanel DockPanel.Dock="Top" Margin="5">
-                <Button DockPanel.Dock="Left" HorizontalAlignment="Left" Command="{Binding ElementName=viewModel, Path=NewProjectCommand}">New project</Button>
-                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Command="{Binding ElementName=viewModel, Path=DisplayProjectsCommand}">Display projects</Button>
-            </DockPanel>
+            </Grid.Style>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="5">
+                <Button HorizontalAlignment="Left" Command="{Binding ElementName=viewModel, Path=NewProjectCommand}">New project</Button>
+                <Button HorizontalAlignment="Right" Command="{Binding ElementName=viewModel, Path=DisplayProjectsCommand}">Display projects</Button>
+            </Grid>
 
-            <ListView Name="projects" ItemsSource="{Binding Projects}">
-
+            <ListView Name="projects" Grid.Row="1" ItemsSource="{Binding Projects}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
@@ -114,7 +135,6 @@
                         <GridViewColumn Header="End time" Width="120" DisplayMemberBinding="{Binding Deadline}"/>
                     </GridView>
                 </ListView.View>
-
                 <ListView.GroupStyle>
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>
@@ -125,10 +145,10 @@
                     </GroupStyle>
                 </ListView.GroupStyle>
             </ListView>
-        </DockPanel>
+        </Grid>
 
         <!-- New project -->
-        <Grid>
+        <Grid Grid.Row="1">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"></Setter>
@@ -141,6 +161,7 @@
             </Grid.Style>
             <userControls:CreateProjectView></userControls:CreateProjectView>
         </Grid>
-    </DockPanel>
+        
+    </Grid>
 
 </Window>
