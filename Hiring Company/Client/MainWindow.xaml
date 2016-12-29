@@ -12,7 +12,7 @@
         <viewModel:MainWindowViewModel x:Name="viewModel" />
     </Window.DataContext>
     <DockPanel>
-        
+
         <!-- Toolbar -->
         <DockPanel DockPanel.Dock="Top">
             <TextBlock Margin="10" HorizontalAlignment="Right">
@@ -20,17 +20,127 @@
             </TextBlock>
             <Button Margin="10"  HorizontalAlignment="Right">Log out</Button>
         </DockPanel>
-        
+
         <!-- Login -->
-        <Grid Visibility="Collapsed">
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentState}" Value="LOGIN">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <userControls:LoginView Width="200" Height="200" Grid.Column="0" LoginCommand="{Binding ElementName=viewModel,Path=LoginCommand}"/>
-            <userControls:CreateProjectView Grid.Column="1"/>
         </Grid>
-        
+
+        <!-- Companies list -->
+        <DockPanel>
+            <DockPanel.Style>
+                <Style TargetType="DockPanel">
+                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentState}" Value="COMPANIES">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Style>
+            <!-- call fetchCompanies -->
+            <Button DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="5">Display companies</Button>
+            <ListView Name="companies" ItemsSource="{Binding Companies}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Partnership" Width="120">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button>Send request</Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
+        </DockPanel>
+
+        <!-- Projects list -->
+        <DockPanel>
+            <DockPanel.Style>
+                <Style TargetType="DockPanel">
+                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentState}" Value="PROJECTS">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Style>
+            <DockPanel DockPanel.Dock="Top" Margin="5">
+                <Button DockPanel.Dock="Left" HorizontalAlignment="Left" Command="{Binding ElementName=viewModel, Path=NewProjectCommand}">New project</Button>
+                <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Command="{Binding ElementName=viewModel, Path=DisplayProjectsCommand}">Display projects</Button>
+            </DockPanel>
+
+            <ListView Name="projects" ItemsSource="{Binding Projects}">
+
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Description" Width="120">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Description}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Start time" Width="120" DisplayMemberBinding="{Binding StartTime}"/>
+                        <GridViewColumn Header="End time" Width="120" DisplayMemberBinding="{Binding Deadline}"/>
+                    </GridView>
+                </ListView.View>
+
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
+        </DockPanel>
+
+        <!-- New project -->
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentState}" Value="NEW_PROJECT">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <userControls:CreateProjectView></userControls:CreateProjectView>
+        </Grid>
     </DockPanel>
+
 </Window>
