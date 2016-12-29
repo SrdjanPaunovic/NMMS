@@ -37,7 +37,17 @@ namespace Client
 
 		public bool LogOut(string username)
 		{
-			throw new NotImplementedException();
+			bool result = false;
+
+			try
+			{
+				result = factory.LogOut(username);
+			}
+			catch (Exception e)
+			{
+				//TODO log
+			}
+			return result;
 		}
 
 		public bool UserRegister(Common.Entities.User user)

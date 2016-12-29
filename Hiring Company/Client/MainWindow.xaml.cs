@@ -1,4 +1,5 @@
 ﻿using Client.ViewModel;
+using Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+[assembly: log4net.Config.XmlConfigurator(Watch =true)]
+
 namespace Client
 {
 	/// <summary>
@@ -22,6 +25,7 @@ namespace Client
 	public partial class MainWindow : Window
 	{
 
+		//private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -35,6 +39,7 @@ namespace Client
             CollectionView projectsView = (CollectionView)CollectionViewSource.GetDefaultView(projects.ItemsSource);
             PropertyGroupDescription projectGroupDescription = new PropertyGroupDescription("Status");
             projectsView.GroupDescriptions.Add(projectGroupDescription);
+			LogHelper.GetLogger().Debug("asdsadasd");
 		}
 
 	}

@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Client.ViewModel
@@ -18,35 +20,28 @@ namespace Client.ViewModel
             COMPANIES,
             PROJECTS,
             NEW_PROJECT
-
         }
 
-        #region PropertyChangedNotifier
-        protected virtual void OnPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
-        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        #endregion
 
-        #region Fields
-        //TODO: INTGR change classes
+		#region Fields
+		//TODO: INTGR change classes
+		private string loggedUsername = "";
         private ObservableCollection<Object> companies = new ObservableCollection<Object>();
         private ObservableCollection<Object> projects = new ObservableCollection<Object>();
-        private ICommand loginCommand;
-        private ICommand displayProjectsCommand;
-        private ICommand newProjectCommand;
-        private WindowState currentState = WindowState.PROJECTS;
+        
+        private WindowState currentState = WindowState.LOGIN;
+		private NetTcpBinding netTcpBinding = new NetTcpBinding();
+		private string hostAddress = "net.tcp://localhost:4000/IHiringContract";
+		//commands
+		private ICommand loginCommand;
+		private ICommand logOutCommand;
+		private ICommand displayProjectsCommand;
+		private ICommand newProjectCommand;
+		#endregion Fields
 
-
-        #endregion Fields
-
-        #region Properties
-        public WindowState CurrentState
+		#region Properties
+		public WindowState CurrentState
         {
             get { return currentState; }
             set
@@ -90,10 +85,35 @@ namespace Client.ViewModel
                 return newProjectCommand ?? (newProjectCommand = new RelayCommand((param) => this.NewProject()));
             }
         }
-        #endregion Properties
 
-        #region Methods
-        private void LoginClick(object param)
+		public string LoggedUsername
+		{
+			get
+			{
+				return loggedUsername;
+			}
+
+			set
+			{
+				loggedUsername = value;
+				OnPropertyChanged("LoggedUsername");
+			}
+		}
+
+		public ICommand LogOutCommand
+		{
+			get
+			{
+				return logOutCommand ?? (logOutCommand = new RelayCommand((param) => this.LogOut(param)));
+			}
+
+		}
+
+		
+		#endregion Properties
+
+		#region Methods
+		private void LoginClick(object param)
         {
             object[] parameters = param as object[];
 
@@ -101,10 +121,40 @@ namespace Client.ViewModel
             {
                 throw new Exception("[LoginCommnad] Command parameters has NULL value");
             }
-            //TODO
+
+			string username = parameters[0].ToString();
+			string pass = parameters[0].ToString();
+
+			using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, hostAddress))
+			{
+				bool success = proxy.LogIn(username, pass);
+
+				if (success)
+				{
+					LoggedUsername = username;
+					CurrentState = WindowState.COMPANIES;
+				}
+			}
         }
 
-        void NewProject()
+		private void LogOut(object param)
+		{
+			using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, hostAddress))
+			{
+				bool success = proxy.LogOut(LoggedUsername);
+
+				if (success)
+				{
+					LoggedUsername = "";
+					CurrentState = WindowState.LOGIN;
+				}else
+				{
+					MessageBox.Show("Error while loggout");
+				}
+			}
+		}
+
+		void NewProject()
         {
             CurrentState = WindowState.NEW_PROJECT;
         }
@@ -123,6 +173,19 @@ namespace Client.ViewModel
             Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Disapproved" });
 
         }
-        #endregion Methods
-    }
+		#endregion Methods
+
+		#region PropertyChangedNotifier
+		protected virtual void OnPropertyChanged(string name)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this, new PropertyChangedEventArgs(name));
+			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+		#endregion
+
+	}
 }
