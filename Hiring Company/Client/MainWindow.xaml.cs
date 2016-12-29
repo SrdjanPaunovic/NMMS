@@ -21,9 +21,21 @@ namespace Client
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+
 		public MainWindow()
 		{
 			InitializeComponent();
+
+            // Grouping companies
+            CollectionView companiesView = (CollectionView)CollectionViewSource.GetDefaultView(companies.ItemsSource);
+            PropertyGroupDescription companyGroupDescription = new PropertyGroupDescription("Partnership");
+            companiesView.GroupDescriptions.Add(companyGroupDescription);
+
+            // Grouping projects
+            CollectionView projectsView = (CollectionView)CollectionViewSource.GetDefaultView(projects.ItemsSource);
+            PropertyGroupDescription projectGroupDescription = new PropertyGroupDescription("Status");
+            projectsView.GroupDescriptions.Add(projectGroupDescription);
 		}
+
 	}
 }
