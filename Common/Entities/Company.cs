@@ -14,27 +14,24 @@ namespace Common.Entities
         private string name;
         private User ceo;
 
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int Id
+		{
+			get { return id; }
+			set { id = value; }
+		}
         public User Ceo
         {
             get { return ceo; }
             set { ceo = value; }
         }
-
-        
-
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
+ 
         public string Name
         {
             get { return name; }
             set { name = value; }
         }
-
-
+		
     }
 }

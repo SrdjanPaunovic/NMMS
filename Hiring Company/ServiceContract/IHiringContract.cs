@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
+using Common.Entities;
 
 namespace ServiceContract
 {
@@ -14,7 +15,11 @@ namespace ServiceContract
 		bool LogIn(string username, string password);
 
 		[OperationContract]
-		bool LogOut(string username, string password);
+		bool LogOut(string username);
 
+		[OperationContract]
+		bool UserRegister(User user);
+
+		List<User> LoginUsersOverview();
 	}
 }

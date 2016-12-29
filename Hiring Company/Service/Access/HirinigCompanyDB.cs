@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 using Common.Entities;
 namespace Service.Access
 {
-	public class HirinigCompanyDB
+	public class HiringCompanyDB
 	{
-		public static HirinigCompanyDB hirinigCompanyDB;
+		public static HiringCompanyDB hirinigCompanyDB;
 
-		public static HirinigCompanyDB Instance
+		public static HiringCompanyDB Instance
 		{
 			get
 			{
 				if (hirinigCompanyDB == null)
 				{
-					hirinigCompanyDB = new HirinigCompanyDB();
+					hirinigCompanyDB = new HiringCompanyDB();
 				}
 				return hirinigCompanyDB;
 			}

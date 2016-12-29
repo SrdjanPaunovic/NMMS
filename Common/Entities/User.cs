@@ -16,10 +16,7 @@ namespace Common.Entities
         private string surname;
         private bool isAuthenticated;
         private DateTime password_changed;
-        private Roles.Role role;
-        public int ProjectRefId { get; set; }
-
-        [ForeignKey("ProjectRefId")]
+        private Roles.Role role;    
         public Project Project { get; set; }
 
         public Roles.Role Role

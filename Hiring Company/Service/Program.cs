@@ -26,39 +26,38 @@ namespace HiringCompanyService
 
 		private static void Start()
 		{
-			// set |DataDirectory| in App.config
 			string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
 			string path = System.IO.Path.GetDirectoryName(executable);
 			path = path.Substring(0, path.LastIndexOf("bin")) + "DB";
 			AppDomain.CurrentDomain.SetData("DataDirectory", path);
-
-			// update database
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
 
+			#region Test
+			/*
 			User user = new User("admin","admin",Roles.Role.CEO);
 			user.Name = "savo";
 			user.Surname = "oroz";
-            
-			HirinigCompanyDB.Instance.AddUser(user);
 
-            User user1 = new User("admin1", "admin1", Roles.Role.developer);
+			User user1 = new User("admin1", "admin1", Roles.Role.developer);
 			user1.Name = "savo1";
 			user1.Surname = "oroz1";
-
-            Company company = new Company();
-            company.Name = "ExportInport";
-            company.Ceo = user;
-
+            
             Project project = new Project();
-            List<User> developers = new List<User>();
-            developers.Add(user);
-            developers.Add(user1);
-            project.Develpers=developers;
+
+
+			user.Project = project;
+			user1.Project = project;
+			List<User> developers = new List<User>();
+			developers.Add(user);
+			developers.Add(user1);
+			project.Develpers = developers;
+
 
             HirinigCompanyDB.Instance.AddProject(project);
+			HirinigCompanyDB.Instance.AddUser(user);
 			HirinigCompanyDB.Instance.AddUser(user1);
-            HirinigCompanyDB.Instance.AddCompany(company);
-          
+			//  HirinigCompanyDB.Instance.AddCompany(company);*/
+			#endregion
 			host = new ServiceHost(typeof(HiringCompanyService));
 			host.AddServiceEndpoint(typeof(IHiringContract),
 				new NetTcpBinding(),
