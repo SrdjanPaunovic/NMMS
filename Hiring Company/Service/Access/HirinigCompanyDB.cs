@@ -1,10 +1,10 @@
-﻿using Service.Data;
+﻿using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Common.Entities;
 namespace Service.Access
 {
 	public class HirinigCompanyDB
@@ -43,6 +43,35 @@ namespace Service.Access
 				return false;
 			}
 		}
+
+        public bool AddCompany(Company company)
+        {
+            using (var db = new AccessDB())
+            {
+                db.Companies.Add(company);
+                int i = db.SaveChanges();
+                if (i > 0)
+                {
+                    return true;
+                }
+                return  false;
+
+            }
+        }
+        public bool AddProject(Project project)
+        {
+            using (var db = new AccessDB())
+            {
+                db.Projects.Add(project);
+                int i = db.SaveChanges();
+                if (i > 0)
+                {
+                    return true;
+                }
+                return false;
+
+            }
+        }
 		
 	}
 }

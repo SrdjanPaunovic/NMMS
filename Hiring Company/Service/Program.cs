@@ -7,7 +7,7 @@ using System.ServiceModel;
 using ServiceContract;
 using System.Data.Entity;
 using Service.Access;
-using Service.Data;
+using Common.Entities;
 
 namespace HiringCompanyService
 {
@@ -35,17 +35,30 @@ namespace HiringCompanyService
 			// update database
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
 
-			User user = new User();
+			User user = new User("admin","admin",Roles.Role.CEO);
 			user.Name = "savo";
 			user.Surname = "oroz";
-
+            
 			HirinigCompanyDB.Instance.AddUser(user);
 
-			User user1 = new User();
+            User user1 = new User("admin1", "admin1", Roles.Role.developer);
 			user1.Name = "savo1";
 			user1.Surname = "oroz1";
-			HirinigCompanyDB.Instance.AddUser(user1);
 
+            Company company = new Company();
+            company.Name = "ExportInport";
+            company.Ceo = user;
+
+            Project project = new Project();
+            List<User> developers = new List<User>();
+            developers.Add(user);
+            developers.Add(user1);
+            project.Develpers=developers;
+
+            HirinigCompanyDB.Instance.AddProject(project);
+			HirinigCompanyDB.Instance.AddUser(user1);
+            HirinigCompanyDB.Instance.AddCompany(company);
+          
 			host = new ServiceHost(typeof(HiringCompanyService));
 			host.AddServiceEndpoint(typeof(IHiringContract),
 				new NetTcpBinding(),

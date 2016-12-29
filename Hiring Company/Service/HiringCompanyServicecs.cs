@@ -16,10 +16,12 @@ namespace HiringCompanyService
 		{
 			throw new NotImplementedException();
 
+
 		}
 
 		public bool LogOut(string username, string password)
 		{
+
 			throw new NotImplementedException();
 
 		}
