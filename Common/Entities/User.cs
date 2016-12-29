@@ -25,6 +25,8 @@ namespace Common.Entities
 		[DataMember]  
         public Project Project { get; set; }
 
+		public User() { }
+
 		public User(string username, string password, Roles.Role role)
 		{
 			this.username = username;

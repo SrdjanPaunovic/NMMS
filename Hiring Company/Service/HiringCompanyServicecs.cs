@@ -18,10 +18,8 @@ namespace HiringCompanyService
 		{
 			using (AccessDB context = new AccessDB())
 			{
-				var result = from b in context.Users
-							 where b.Username.Equals(username)
-							 select b;
-				User user = result.ToList().FirstOrDefault();
+				
+				User user = context.Users.FirstOrDefault((x)=> x.Username == username );
 				if (user != null)
 				{
 					if (user.Password.Equals(password))
