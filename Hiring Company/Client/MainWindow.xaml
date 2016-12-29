@@ -11,13 +11,26 @@
     <Window.DataContext>
         <viewModel:MainWindowViewModel x:Name="viewModel" />
     </Window.DataContext>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <DockPanel>
+        
+        <!-- Toolbar -->
+        <DockPanel DockPanel.Dock="Top">
+            <TextBlock Margin="10" HorizontalAlignment="Right">
+                <Hyperlink> Ime Imenic </Hyperlink>
+            </TextBlock>
+            <Button Margin="10"  HorizontalAlignment="Right">Log out</Button>
+        </DockPanel>
+        
+        <!-- Login -->
+        <Grid Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <userControls:LoginView Width="200" Height="200" Grid.Column="0" LoginCommand="{Binding ElementName=viewModel,Path=LoginCommand}"/>
-        <userControls:CreateProjectView Grid.Column="1"/>
-    </Grid>
+            <userControls:LoginView Width="200" Height="200" Grid.Column="0" LoginCommand="{Binding ElementName=viewModel,Path=LoginCommand}"/>
+            <userControls:CreateProjectView Grid.Column="1"/>
+        </Grid>
+        
+    </DockPanel>
 </Window>
