@@ -12,7 +12,6 @@ namespace Common.Entities
     {
         private int id;
         private string name;
-        private User ceo;
 
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -21,11 +20,7 @@ namespace Common.Entities
 			get { return id; }
 			set { id = value; }
 		}
-        public User Ceo
-        {
-            get { return ceo; }
-            set { ceo = value; }
-        }
+        
  
         public string Name
         {
