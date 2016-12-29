@@ -33,7 +33,7 @@ namespace HiringCompanyService
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
 
 			#region Test
-			/*
+			
 			User user = new User("admin","admin",Roles.Role.CEO);
 			user.Name = "savo";
 			user.Surname = "oroz";
@@ -53,10 +53,10 @@ namespace HiringCompanyService
 			project.Develpers = developers;
 
 
-            HirinigCompanyDB.Instance.AddProject(project);
-			HirinigCompanyDB.Instance.AddUser(user);
-			HirinigCompanyDB.Instance.AddUser(user1);
-			//  HirinigCompanyDB.Instance.AddCompany(company);*/
+			HiringCompanyDB.Instance.AddProject(project);
+			HiringCompanyDB.Instance.AddUser(user);
+			HiringCompanyDB.Instance.AddUser(user1);
+			//  HirinigCompanyDB.Instance.AddCompany(company);
 			#endregion
 			host = new ServiceHost(typeof(HiringCompanyService));
 			host.AddServiceEndpoint(typeof(IHiringContract),
