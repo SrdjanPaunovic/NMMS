@@ -13,5 +13,7 @@ namespace Client
 	/// </summary>
 	public partial class App : Application
 	{
+        public readonly string HostAddress = "net.tcp://localhost:4000/IHiringContract";
+
 	}
 }

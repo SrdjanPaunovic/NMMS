@@ -30,7 +30,7 @@
                 </Style>
             </Grid.Style>
             <TextBlock Margin="10,2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Hyperlink > 
+                <Hyperlink Command="{Binding ShowProfileCommand}"> 
                     <TextBlock Text="{Binding LoggedUsername}"></TextBlock>
                 </Hyperlink>
             </TextBlock>

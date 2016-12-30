@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ServiceContract;
 using System.ServiceModel;
+using Common.Entities;
 
 
 namespace Client
@@ -59,5 +60,36 @@ namespace Client
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        public User GetUser(string username)
+        {
+            User result = null;
+
+            try
+            {
+                result = factory.GetUser(username);
+            }
+            catch (Exception e)
+            {
+                //TODO log
+            }
+            return result;
+        }
+
+
+        public bool UpdateUser(User user)
+        {
+            bool result = false;
+
+            try
+            {
+                result = factory.UpdateUser(user);
+            }
+            catch (Exception e)
+            {
+                //TODO log
+            }
+            return result;
+        }
+    }
 }

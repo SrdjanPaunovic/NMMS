@@ -1,0 +1,10 @@
+﻿<Window x:Class="Client.View.ProfileDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:userControls="clr-namespace:Common.UserControls;assembly=Common"
+        Title="ProfileDialog" Height="400" Width="400"
+        Name="root">
+    <Grid>
+        <userControls:UserInputView SaveClicked="UserInputView_SaveClicked" CancelClicked="UserInputView_CancelClicked" User="{Binding ElementName=root,Path=User}"></userControls:UserInputView>
+    </Grid>
+</Window>

@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Client.View;
+using Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -32,12 +33,14 @@ namespace Client.ViewModel
         
         private WindowState currentState = WindowState.LOGIN;
 		private NetTcpBinding netTcpBinding = new NetTcpBinding();
-		private string hostAddress = "net.tcp://localhost:4000/IHiringContract";
 		//commands
 		private ICommand loginCommand;
 		private ICommand logOutCommand;
 		private ICommand displayProjectsCommand;
-		private ICommand newProjectCommand;
+        private ICommand newProjectCommand;
+        private ICommand showProfileCommand;
+
+        
 		#endregion Fields
 
 		#region Properties
@@ -69,6 +72,16 @@ namespace Client.ViewModel
                 return loginCommand ?? (loginCommand = new RelayCommand(param => this.LoginClick(param)));
             }
         }
+
+        public ICommand ShowProfileCommand
+        {
+            get
+            {
+                return showProfileCommand ?? (showProfileCommand = new RelayCommand(param => this.ShowProfile()));
+            }
+        }
+
+        
 
         public ICommand DisplayProjectsCommand
         {
@@ -125,7 +138,7 @@ namespace Client.ViewModel
 			string username = parameters[0].ToString();
 			string pass = parameters[0].ToString();
 
-			using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, hostAddress))
+			using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, ((App)App.Current).HostAddress))
 			{
 				bool success = proxy.LogIn(username, pass);
 
@@ -137,9 +150,18 @@ namespace Client.ViewModel
 			}
         }
 
+        private void ShowProfile()
+        {
+            //TODO
+           
+            
+            ProfileDialog profileDialog = new ProfileDialog(LoggedUsername);
+            profileDialog.ShowDialog();
+        }
+
 		private void LogOut(object param)
 		{
-			using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, hostAddress))
+			using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, ((App)App.Current).HostAddress))
 			{
 				bool success = proxy.LogOut(LoggedUsername);
 

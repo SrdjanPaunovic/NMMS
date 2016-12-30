@@ -9,87 +9,60 @@ using System.Threading.Tasks;
 
 namespace Common.Entities
 {
-	[DataContract]
+    [DataContract]
     public class User
     {
-        private int id;
 
-        private string username;
+        public User() {
+            StartTime = DateTime.Now;
+            EndTime = DateTime.Now;
+            Password_changed = DateTime.Now;
 
-		private string password;		
-        private string name;
-        private string surname;
-        private bool isAuthenticated;
-		private DateTime password_changed;
-        private Roles.Role role;
-		[DataMember]  
-        public Project Project { get; set; }
-
-		public User() { }
-
-		public User(string username, string password, Roles.Role role)
-		{
-			this.username = username;
-			this.password = password;
-			password_changed = DateTime.Now;
-			this.role = role;
-		}
-
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id
-		{
-			get { return id; }
-			set { id = value; }
-		}
-
-		[DataMember]
-        public Roles.Role Role
-        {
-            get { return role; }
-            set { role = value; }
         }
 
-       
+        public User(string username, string password, Roles.Role role):this()
+        {
+            Username = username;
+            Password = password;
+            Role = role;
+        }
+
+        [DataMember]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [DataMember]
+        public Roles.Role Role { get; set; }
+
+        [DataMember]
+        public Project Project { get; set; }
+        
+        [DataMember]
+        public DateTime StartTime { get; set; }
 
         
-		[DataMember]
-		public DateTime Password_changed
-		{
-			get { return password_changed; }
-			set { password_changed = value; }
-		}
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+        [DataMember]
+        public DateTime EndTime { get; set; }
+        
 
-        public string Surname
-        {
-            get { return surname; }
-            set { surname = value; }
-        }
+        [DataMember]
+        public DateTime Password_changed { get; set; }
 
-        public bool IsAuthenticated
-        {
-            get { return isAuthenticated; }
-            set { isAuthenticated = value; }
-        }
-        public string Username
-        {
-            get { return username; }
-            set { username = value; }
-        }
+        [DataMember]
+        public string Name { get; set; }
 
-        public string Password
-        {
-            get { return password; }
-			set { password = value; }
-        }
-        public void PasswordChange(string newPassword){
-            this.password_changed = DateTime.Now;
-        }
+        [DataMember]
+        public string Surname { get; set; }
 
+        [DataMember]
+        public bool IsAuthenticated { get; set; }
+
+        [DataMember]
+        [Index(IsUnique=true)]
+        public string Username { get; set; }
+
+        [DataMember]
+        public string Password { get; set; }
     }
 }

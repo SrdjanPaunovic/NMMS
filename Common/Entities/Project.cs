@@ -10,24 +10,12 @@ namespace Common.Entities
 {
     public class Project
     {
-        private int id;
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
+        public int Id { get; set; }
 
-        private List<User> develpers;
-
-        public List<User> Develpers
-        {
-            get { return develpers; }
-            set { develpers = value; }
-        }
+        public List<User> Developers { get; set; }
 
 
     }

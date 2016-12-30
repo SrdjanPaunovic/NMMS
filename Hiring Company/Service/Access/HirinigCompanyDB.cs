@@ -33,7 +33,6 @@ namespace Service.Access
 		public bool AddUser(User user)
 		{
 			using(var db=new AccessDB()){
-
 				db.Users.Add(user);
 				int i = db.SaveChanges();
 				if (i > 0)

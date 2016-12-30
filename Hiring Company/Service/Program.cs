@@ -50,12 +50,12 @@ namespace HiringCompanyService
 			List<User> developers = new List<User>();
 			developers.Add(user);
 			developers.Add(user1);
-			project.Develpers = developers;
+			project.Developers = developers;
 
-
+            HiringCompanyDB.Instance.AddUser(user);
+            HiringCompanyDB.Instance.AddUser(user1);
 			HiringCompanyDB.Instance.AddProject(project);
-			HiringCompanyDB.Instance.AddUser(user);
-			HiringCompanyDB.Instance.AddUser(user1);
+			
 			//  HirinigCompanyDB.Instance.AddCompany(company);
 			#endregion
 			host = new ServiceHost(typeof(HiringCompanyService));
