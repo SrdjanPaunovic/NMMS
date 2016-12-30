@@ -49,6 +49,7 @@ namespace Common.Entities
         [DataMember]
         public DateTime Password_changed { get; set; }
 
+
         [DataMember]
         public string Name { get; set; }
 
