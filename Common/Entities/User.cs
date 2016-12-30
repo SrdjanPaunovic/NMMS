@@ -87,8 +87,9 @@ namespace Common.Entities
             get { return password; }
 			set { password = value; }
         }
+
         public void PasswordChange(string newPassword){
-            this.password_changed = DateTime.Now;
+            this.password =newPassword;
         }
 
     }
