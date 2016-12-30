@@ -81,7 +81,6 @@ namespace HiringCompanyService
 			return false;
 		}
 
-
 		public List<User> LoginUsersOverview()
 		{
 			using (AccessDB context = new AccessDB())
@@ -101,10 +100,6 @@ namespace HiringCompanyService
 				return loginUsers;
 			}
 		}
-
-
-
-
 
 		public List<Company> GetAllCompanies()
 		{
