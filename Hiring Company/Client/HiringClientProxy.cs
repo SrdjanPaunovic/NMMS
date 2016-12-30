@@ -59,5 +59,16 @@ namespace Client
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public List<Common.Entities.Company> GetAllCompanies()
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool RequestPartnership(int id)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

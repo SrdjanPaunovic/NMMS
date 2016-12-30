@@ -110,6 +110,7 @@
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\Project.cs" />
     <Compile Include="Entities\Roles.cs" />
+    <Compile Include="Entities\State.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

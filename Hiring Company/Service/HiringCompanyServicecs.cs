@@ -104,5 +104,16 @@ namespace HiringCompanyService
 
 
 
+
+
+		public List<Company> GetAllCompanies()
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool RequestPartnership(int id)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

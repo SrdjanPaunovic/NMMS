@@ -11,6 +11,7 @@ namespace Common.Entities
     public class Project
     {
         private int id;
+		private List<User> develpers;
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -21,7 +22,7 @@ namespace Common.Entities
             set { id = value; }
         }
 
-        private List<User> develpers;
+        
 
         public List<User> Develpers
         {

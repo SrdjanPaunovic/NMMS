@@ -20,6 +20,15 @@ namespace ServiceContract
 		[OperationContract]
 		bool UserRegister(User user);
 
+		[OperationContract]
 		List<User> LoginUsersOverview();
+
+		[OperationContract]
+		List<Company> GetAllCompanies();
+
+		[OperationContract]
+		bool RequestPartnership(int id);
+
+
 	}
 }

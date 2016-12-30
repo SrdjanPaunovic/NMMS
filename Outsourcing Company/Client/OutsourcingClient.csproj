@@ -95,9 +95,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServiceContract\ServiceContract.csproj">
+    <ProjectReference Include="..\ServiceContract\OutsourcingServiceContract.csproj">
       <Project>{9c248bf6-3e26-450c-84de-e46481bbd194}</Project>
-      <Name>ServiceContract</Name>
+      <Name>OutsourcingServiceContract</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
