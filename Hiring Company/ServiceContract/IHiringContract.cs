@@ -20,6 +20,12 @@ namespace ServiceContract
 		[OperationContract]
 		bool UserRegister(User user);
 
+        [OperationContract]
+        User GetUser(string username);
+
+        [OperationContract]
+        bool UpdateUser(User user);
+
 		List<User> LoginUsersOverview();
 	}
 }
