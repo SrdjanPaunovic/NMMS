@@ -29,6 +29,9 @@ namespace ServiceContract
 		[OperationContract]
 		bool RequestPartnership(int id);
 
+        [OperationContract]
+        bool UpdateUser(User user);
+
 
 	}
 }

@@ -7,16 +7,16 @@ using ServiceContract;
 
 namespace Service.Access
 {
-	public class UsersDB: IOutSorceDB
+	public class OutsourcingCompanyDB: IOutsourcingCompanyDB
 	{
-		private static IOutSorceDB myDB;
+		private static IOutsourcingCompanyDB myDB;
 
-		public static IOutSorceDB Instance
+		public static IOutsourcingCompanyDB Instance
 		{
 			get
 			{
 				if (myDB == null)
-					myDB = new UsersDB();
+					myDB = new OutsourcingCompanyDB();
 
 				return myDB;
 			}

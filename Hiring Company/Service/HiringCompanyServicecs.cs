@@ -14,101 +14,43 @@ namespace HiringCompanyService
 	{
 
 
-		public bool LogIn(string username, string password)
-		{
-			using (AccessDB context = new AccessDB())
-			{
-				
-				User user = context.Users.FirstOrDefault((x)=> x.Username == username );
-				if (user != null)
-				{
-					if (user.Password.Equals(password))
-						user.IsAuthenticated = true;
-					context.Entry(user).State = System.Data.Entity.EntityState.Modified;
-					context.SaveChanges();
-					return true;
-				}
-			}
-			return false;
-		}
+        public bool LogIn(string username, string password)
+        {
+            return HiringCompanyDB.Instance.LogIn(username, password);
+        }
 
-		public bool LogOut(string username)
-		{
-			{
-				using (AccessDB context = new AccessDB())
-				{
-					var result = from b in context.Users
-								 where b.Username.Equals(username)
-								 select b;
-					User user = result.ToList().FirstOrDefault();
-					if (user != null)
-					{
-						if (user.IsAuthenticated)
-						{
-							user.IsAuthenticated = false;
-							context.Entry(user).State = System.Data.Entity.EntityState.Modified;
-							context.SaveChanges();
-							return true;
-						}
-					}
-				}
-				return false;
-			}
-		}
+        public bool LogOut(string username)
+        {
+            return HiringCompanyDB.Instance.LogOut(username);
 
-		public bool UserRegister(User user)
-		{
+        }
 
-			using (AccessDB context = new AccessDB())
-			{
+        public bool UserRegister(User user)
+        {
+            return HiringCompanyDB.Instance.UserRegister(user);
 
-				var result = from users in context.Users select users;
-				List<User> userList = result.ToList();
-				foreach (var registeredUser in userList)
-				{
-					if (registeredUser.Username.Equals(user.Username))
-					{
-						return false;
-					}
-				}
-				if (HiringCompanyDB.Instance.AddUser(user))
-				{
-					return true;
-				}
+        }
 
-			}
+        public List<User> LoginUsersOverview()
+        {
+            return HiringCompanyDB.Instance.LoginUsersOverview();
+        }
 
-			return false;
-		}
+        public List<Company> GetAllCompanies()
+        {
+            return HiringCompanyDB.Instance.GetAllCompanies();
+            
+        }
 
-		public List<User> LoginUsersOverview()
-		{
-			using (AccessDB context = new AccessDB())
-			{
-				List<User> loginUsers = new List<User>();
-				var result = from users in context.Users select users;
-				List<User> userList = result.ToList();
+        public bool RequestPartnership(int id)
+        {
+            throw new NotImplementedException();
+        }
 
-				foreach (var user in userList)
-				{
-					if (user.IsAuthenticated)
-					{
-						loginUsers.Add(user);
-					}
 
-				}
-				return loginUsers;
-			}
-		}
-
-		public List<Company> GetAllCompanies()
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool RequestPartnership(int id)
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public bool UpdateUser(User user)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

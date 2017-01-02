@@ -5,30 +5,46 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
+
 
 namespace Common.Entities
 {
+    [DataContract]
     public class Project
     {
-        private int id;
-		private List<User> develpers;
 
+        public Project() {
+            UserStories = new List<UserStory>();
+        }
+
+
+        [DataMember]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
 
-        
+     
+        public int Id { get; set; }
 
-        public List<User> Develpers
-        {
-            get { return develpers; }
-            set { develpers = value; }
-        }
+        [DataMember]
+        public User ProductOwner { get; set; }
+
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public string Description { get; set; }
+
+        [DataMember]
+        public DateTime StartTime { get; set; }
+
+        [DataMember]
+        public DateTime EndTime { get; set; }
+
+        [DataMember]
+        public Company DevelopCompany { get; set; }
+
+        [DataMember]
+        public List<UserStory> UserStories{ get; set; }
 
 
     }

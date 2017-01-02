@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommonTest.EntitiesTest
+namespace Common.Entities
 {
-	class StateTest
-	{
-	}
+    public class OcUser:User
+    {
+        public Team Team { get; set; }
+
+    }
 }

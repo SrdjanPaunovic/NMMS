@@ -47,8 +47,7 @@
   <ItemGroup>
     <Compile Include="EntitiesTest\CompanyTest.cs" />
     <Compile Include="EntitiesTest\ProjectTest.cs" />
-    <Compile Include="EntitiesTest\RolesTest.cs" />
-    <Compile Include="EntitiesTest\StateTest.cs" />
+    <Compile Include="EntitiesTest\UserStoryTest.cs" />
     <Compile Include="EntitiesTest\UserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

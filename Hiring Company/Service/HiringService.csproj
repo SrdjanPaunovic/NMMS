@@ -68,6 +68,7 @@
     <Compile Include="Access\AccessDB.cs" />
     <Compile Include="Access\Configuration.cs" />
     <Compile Include="Access\HirinigCompanyDB.cs" />
+    <Compile Include="Access\IHiringCompanyDB.cs" />
     <Compile Include="HiringCompanyServicecs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

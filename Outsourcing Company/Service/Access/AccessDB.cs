@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ServiceContract;
+using Common.Entities;
 
 namespace Service.Access
 {
@@ -12,6 +13,10 @@ namespace Service.Access
 	{
 		public AccessDB() : base("OutSourceDB") { }
 
-		public DbSet<OSUserAction> Actions { get; set; }
+		public DbSet<OcUser> Users { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<Company> Comapanies { get; set; } // constract signed with
+
+        public DbSet<OcProject> Projects { get; set; }
 	}
 }

@@ -70,5 +70,11 @@ namespace Client
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+
+        public bool UpdateUser(Common.Entities.User user)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
