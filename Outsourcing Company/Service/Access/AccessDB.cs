@@ -5,13 +5,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ServiceContract;
+using Common.Entities;
 
-namespace Service.Access
+
+using Common.Entities;namespace Service.Access
 {
 	public class AccessDB : DbContext
 	{
 		public AccessDB() : base("OutSourceDB") { }
 
-		public DbSet<OSUserAction> Actions { get; set; }
+		public DbSet<OcUser> Users{get;set;}
+        public DbSet<Team> Teams{get;set;}
+
+        public DbSet<Company> Companies {get;set;}
+        public DbSet<OcProject> Projects {get;set;}
+
+        public DbSet<UserStory> UserStories {get;set;}
+
+        public DbSet<Common.Entities.Task> Tasks {get;set;}
 	}
 }

@@ -27,5 +27,6 @@ namespace ServiceContract
         bool UpdateUser(User user);
 
 		List<User> LoginUsersOverview();
+
 	}
 }

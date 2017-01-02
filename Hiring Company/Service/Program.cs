@@ -31,7 +31,7 @@ namespace HiringCompanyService
 			path = path.Substring(0, path.LastIndexOf("bin")) + "DB";
 			AppDomain.CurrentDomain.SetData("DataDirectory", path);
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
-
+            /*
 			#region Test
 			
 			User user = new User("admin","admin",Roles.Role.CEO);
@@ -54,7 +54,7 @@ namespace HiringCompanyService
 			HiringCompanyDB.Instance.AddProject(project);
 			
 			//  HirinigCompanyDB.Instance.AddCompany(company);
-			#endregion
+			#endregion*/
 			host = new ServiceHost(typeof(HiringCompanyService));
 			host.AddServiceEndpoint(typeof(IHiringContract),
 				new NetTcpBinding(),

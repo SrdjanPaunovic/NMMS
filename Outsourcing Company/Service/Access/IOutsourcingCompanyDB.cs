@@ -3,39 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ServiceModel;
+using ServiceContract;
+using Common;
 using Common.Entities;
 
-namespace ServiceContract
+namespace Service.Access
 {
-	[ServiceContract]
-	public interface IOutsourcingCompanyService
+	public interface IOutsourcingCompanyDB
 	{
-        [OperationContract ]
         bool AddUser(OcUser user);
-        [OperationContract]
         bool AddCompany(Company company);
-        [OperationContract]
         bool AddProject(OcProject project);
-        [OperationContract]
         bool AddUserStory(UserStory userStory);
-        [OperationContract]
         bool AddTask(Common.Entities.Task task);
 
-        [OperationContract]
         bool AddTeam(Team team);
-        [OperationContract]
         bool LogIn(string username, string password);
-        [OperationContract]
         bool LogOut(string username);
 
-        [OperationContract]
         bool UserRegister(OcUser user);
-        [OperationContract]
         List<OcUser> LoginUsersOverview();
-
-        [OperationContract]
         List<Company> GetAllCompanies();
-
 	}
 }
