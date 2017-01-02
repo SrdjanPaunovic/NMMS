@@ -1,25 +1,33 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{E330FFD1-F001-4D0D-8B8A-182CAF5BDDDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Hiring Company\Client\Client.csproj", "{3E84E861-6CA7-4DA8-AD27-6BAC51782FBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiringClient", "Hiring Company\Client\HiringClient.csproj", "{3E84E861-6CA7-4DA8-AD27-6BAC51782FBD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hiring Company", "Hiring Company", "{7D3087D1-9726-490C-AEFE-52150AB66402}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Outsourcing Company", "Outsourcing Company", "{4CA21008-99C1-4BEF-A238-5D8B4BF4BD79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Hiring Company\Service\Service.csproj", "{DE353FA5-6D5C-4482-B26A-35D6FC5E423B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiringService", "Hiring Company\Service\HiringService.csproj", "{DE353FA5-6D5C-4482-B26A-35D6FC5E423B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceContract", "Hiring Company\ServiceContract\ServiceContract.csproj", "{42ADAA43-A6CB-45D2-A5DD-6495B3A3CCAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiringServiceContract", "Hiring Company\ServiceContract\HiringServiceContract.csproj", "{42ADAA43-A6CB-45D2-A5DD-6495B3A3CCAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Outsourcing Company\Client\Client.csproj", "{755C438F-C288-4995-A3A9-1EF5377D89B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutsourcingClient", "Outsourcing Company\Client\OutsourcingClient.csproj", "{755C438F-C288-4995-A3A9-1EF5377D89B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Outsourcing Company\Service\Service.csproj", "{564B4E6C-951D-4692-98DD-A501A6C44716}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutsourcingService", "Outsourcing Company\Service\OutsourcingService.csproj", "{564B4E6C-951D-4692-98DD-A501A6C44716}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceContract", "Outsourcing Company\ServiceContract\ServiceContract.csproj", "{9C248BF6-3E26-450C-84DE-E46481BBD194}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutsourcingServiceContract", "Outsourcing Company\ServiceContract\OutsourcingServiceContract.csproj", "{9C248BF6-3E26-450C-84DE-E46481BBD194}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{535B7074-9202-40C4-8976-01A2A7EFE16A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hiring Company Test", "Hiring Company Test", "{7BCB911F-74A3-4B4C-BC66-3C6A4B160CCA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Outsourcing Company Test", "Outsourcing Company Test", "{21895CE6-4879-4180-A578-96311B28C5F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonTest", "CommonTest\CommonTest.csproj", "{455E42CB-A2B6-48B5-BF79-5D176F21C86F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,26 +43,30 @@ Global
 		{3E84E861-6CA7-4DA8-AD27-6BAC51782FBD}.Debug|Any CPU.Build.0 = Debug|x86
 		{3E84E861-6CA7-4DA8-AD27-6BAC51782FBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E84E861-6CA7-4DA8-AD27-6BAC51782FBD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE353FA5-6D5C-4482-B26A-35D6FC5E423B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE353FA5-6D5C-4482-B26A-35D6FC5E423B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE353FA5-6D5C-4482-B26A-35D6FC5E423B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{DE353FA5-6D5C-4482-B26A-35D6FC5E423B}.Debug|Any CPU.Build.0 = Debug|x86
 		{DE353FA5-6D5C-4482-B26A-35D6FC5E423B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE353FA5-6D5C-4482-B26A-35D6FC5E423B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42ADAA43-A6CB-45D2-A5DD-6495B3A3CCAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42ADAA43-A6CB-45D2-A5DD-6495B3A3CCAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42ADAA43-A6CB-45D2-A5DD-6495B3A3CCAC}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{42ADAA43-A6CB-45D2-A5DD-6495B3A3CCAC}.Debug|Any CPU.Build.0 = Debug|x64
 		{42ADAA43-A6CB-45D2-A5DD-6495B3A3CCAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42ADAA43-A6CB-45D2-A5DD-6495B3A3CCAC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{755C438F-C288-4995-A3A9-1EF5377D89B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{755C438F-C288-4995-A3A9-1EF5377D89B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{755C438F-C288-4995-A3A9-1EF5377D89B2}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{755C438F-C288-4995-A3A9-1EF5377D89B2}.Debug|Any CPU.Build.0 = Debug|x86
 		{755C438F-C288-4995-A3A9-1EF5377D89B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{755C438F-C288-4995-A3A9-1EF5377D89B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{564B4E6C-951D-4692-98DD-A501A6C44716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{564B4E6C-951D-4692-98DD-A501A6C44716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{564B4E6C-951D-4692-98DD-A501A6C44716}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{564B4E6C-951D-4692-98DD-A501A6C44716}.Debug|Any CPU.Build.0 = Debug|x86
 		{564B4E6C-951D-4692-98DD-A501A6C44716}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{564B4E6C-951D-4692-98DD-A501A6C44716}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C248BF6-3E26-450C-84DE-E46481BBD194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C248BF6-3E26-450C-84DE-E46481BBD194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C248BF6-3E26-450C-84DE-E46481BBD194}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9C248BF6-3E26-450C-84DE-E46481BBD194}.Debug|Any CPU.Build.0 = Debug|x86
 		{9C248BF6-3E26-450C-84DE-E46481BBD194}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C248BF6-3E26-450C-84DE-E46481BBD194}.Release|Any CPU.Build.0 = Release|Any CPU
+		{455E42CB-A2B6-48B5-BF79-5D176F21C86F}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{455E42CB-A2B6-48B5-BF79-5D176F21C86F}.Debug|Any CPU.Build.0 = Debug|x86
+		{455E42CB-A2B6-48B5-BF79-5D176F21C86F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{455E42CB-A2B6-48B5-BF79-5D176F21C86F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +78,8 @@ Global
 		{755C438F-C288-4995-A3A9-1EF5377D89B2} = {4CA21008-99C1-4BEF-A238-5D8B4BF4BD79}
 		{564B4E6C-951D-4692-98DD-A501A6C44716} = {4CA21008-99C1-4BEF-A238-5D8B4BF4BD79}
 		{9C248BF6-3E26-450C-84DE-E46481BBD194} = {4CA21008-99C1-4BEF-A238-5D8B4BF4BD79}
+		{7BCB911F-74A3-4B4C-BC66-3C6A4B160CCA} = {535B7074-9202-40C4-8976-01A2A7EFE16A}
+		{21895CE6-4879-4180-A578-96311B28C5F6} = {535B7074-9202-40C4-8976-01A2A7EFE16A}
+		{455E42CB-A2B6-48B5-BF79-5D176F21C86F} = {535B7074-9202-40C4-8976-01A2A7EFE16A}
 	EndGlobalSection
 EndGlobal

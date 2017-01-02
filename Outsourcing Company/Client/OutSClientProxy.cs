@@ -7,9 +7,9 @@ using System.ServiceModel;
 using ServiceContract;
 namespace Client
 {
-	public class OutSClientProxy : ChannelFactory<IOutSourceContract>, IOutSourceContract
+	public class OutSClientProxy : ChannelFactory<IOutsourcingCompanyService>, IOutsourcingCompanyService
 	{
-		IOutSourceContract factory;
+		IOutsourcingCompanyService factory;
 		public OutSClientProxy(NetTcpBinding binding, string address)
 			: base(binding, address)
 		{
@@ -22,29 +22,7 @@ namespace Client
 			factory = this.CreateChannel();
 		}
 
-		public void Write()
-		{
-			try
-			{
-				factory.Write();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine("Exception message: " + e.Message);
-			}
-		}
-
-		public void Read()
-		{
-			try
-			{
-				factory.Read();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine("Exception message: " + e.Message);
-			}
-		}
+		
 	}
 }
 

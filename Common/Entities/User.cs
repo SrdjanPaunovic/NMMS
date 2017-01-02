@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -65,5 +66,10 @@ namespace Common.Entities
 
         [DataMember]
         public string Password { get; set; }
+
+        public void PasswordChange(string new_password){
+            Password=new_password;
+            Password_changed =DateTime.Now;
+        }
     }
 }

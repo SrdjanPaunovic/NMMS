@@ -20,8 +20,8 @@ namespace Service
 			binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
 
 			string address = "net.tcp://localhost:9999/WCFService";
-			ServiceHost host = new ServiceHost(typeof(OutSourceService));
-			host.AddServiceEndpoint(typeof(IOutSourceContract), binding, address);
+			ServiceHost host = new ServiceHost(typeof(OutsourcingCompanyService));
+			host.AddServiceEndpoint(typeof(IOutsourcingCompanyService), binding, address);
 
 			host.Description.Behaviors.Remove(typeof(ServiceDebugBehavior));
 			host.Description.Behaviors.Add(new ServiceDebugBehavior() { IncludeExceptionDetailInFaults = true });

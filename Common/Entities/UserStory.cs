@@ -1,38 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
-
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Common.Entities
 {
     [DataContract]
-    public class Project
+    public class UserStory
     {
-
-        public Project() {
-            UserStories = new List<UserStory>();
-        }
-
+        public UserStory() { }
 
         [DataMember]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
-     
         public int Id { get; set; }
 
         [DataMember]
-        public User ProductOwner { get; set; }
+        public string Name { get; set; }
 
         [DataMember]
-        public string Name { get; set; }
-        [DataMember]
-        public string Description { get; set; }
+        public string AcceptanceCriteria { get; set; }
 
         [DataMember]
         public DateTime StartTime { get; set; }
@@ -41,11 +32,14 @@ namespace Common.Entities
         public DateTime EndTime { get; set; }
 
         [DataMember]
-        public Company DevelopCompany { get; set; }
+        public Project Project { get; set; }
+        [DataMember]
+        public UserStoryState.StoryState State { get; set; }
 
         [DataMember]
-        public List<UserStory> UserStories{ get; set; }
+        public int StoryPoints { get; set; }
 
-
+        [DataMember]
+        public List<Task> Tasks { get; set; }
     }
 }

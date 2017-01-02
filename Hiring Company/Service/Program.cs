@@ -47,10 +47,7 @@ namespace HiringCompanyService
 
 			user.Project = project;
 			user1.Project = project;
-			List<User> developers = new List<User>();
-			developers.Add(user);
-			developers.Add(user1);
-			project.Developers = developers;
+			
 
             HiringCompanyDB.Instance.AddUser(user);
             HiringCompanyDB.Instance.AddUser(user1);
