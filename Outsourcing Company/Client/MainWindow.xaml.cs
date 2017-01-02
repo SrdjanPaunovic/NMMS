@@ -33,7 +33,7 @@ namespace Client
 
 			using (OutSClientProxy proxy = new OutSClientProxy(binding, endpointAddress))
 			{
-				proxy.Read();
+				//proxy.Read();
 			}
 
 			Console.ReadLine();

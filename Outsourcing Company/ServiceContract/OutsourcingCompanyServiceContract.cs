@@ -8,11 +8,9 @@ using System.ServiceModel;
 namespace ServiceContract
 {
 	[ServiceContract]
-	public interface IOutSourceContract
+	public interface IOutsourcingCompanyService
 	{
-		[OperationContract]
-		void Write();
-		[OperationContract]
-		void Read();
+		
+
 	}
 }
