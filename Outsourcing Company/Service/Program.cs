@@ -40,17 +40,7 @@ namespace Service
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
 
 			// test database context
-			UsersDB.Instance.AddAction(new OSUserAction
-			{
-			  Username = "admin",
-			  Password = "admin123"
-			});
-
-			UsersDB.Instance.AddAction(new OSUserAction
-			{
-				Username = "user1",
-				Password = ""
-			});
+			
 
 			Console.ReadLine();
 			host.Close();
