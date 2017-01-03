@@ -7,30 +7,31 @@ using System.Threading.Tasks;
 
 namespace Service.Access
 {
-   public interface IHiringCompanyDB
+    public interface IHiringCompanyDB
     {
 
-       bool AddUser(User user);
-       bool AddCompany(Company company);
-       bool AddProject(Project project);
-       bool LogIn(string username, string password);
-       bool LogOut(string username);
+        bool AddUser(User user);
+        bool LogIn(string username, string password);
+        bool LogOut(string username);
+        bool UserRegister(User user);
+        bool UpdateUser(User user);
+        User GetUser(string username);
+        List<User> LoginUsersOverview();
 
-       bool UserRegister(User user);
-       List<User> LoginUsersOverview();
-       List<Company> GetAllCompanies();
+        bool AddCompany(Company company);
+        List<Company> GetAllCompanies();
 
-       bool RequestPartnership(int id);
+        bool AddProject(Project project);
+        List<Project> GetAllProjects();
 
-       
+        bool RequestPartnership(int id);
 
-       bool UpdateUser(User user);
 
-      // double PasswordAge();
+        // double PasswordAge();
 
         // jos treba funkcija za provjeru koliko je user storija zavrseno od nekog projekta.
-       
-      
+
+
 
     }
 }

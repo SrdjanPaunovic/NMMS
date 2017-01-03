@@ -25,7 +25,7 @@ namespace Client.View
         public ProfileDialog(string LoggedUsername)
         {
 
-            using (HiringClientProxy proxy = new HiringClientProxy(new NetTcpBinding(), ((App)App.Current).HostAddress))
+            using (HiringClientProxy proxy = ((App)App.Current).Proxy)
             {
                 User = proxy.GetUser(LoggedUsername);
 
@@ -43,7 +43,7 @@ namespace Client.View
 
         private void UserInputView_SaveClicked(object sender, EventArgs e)
         {
-            using (HiringClientProxy proxy = new HiringClientProxy(new NetTcpBinding(), ((App)App.Current).HostAddress))
+            using (HiringClientProxy proxy = ((App)App.Current).Proxy)
             {
                 bool success = proxy.UpdateUser(User);
 

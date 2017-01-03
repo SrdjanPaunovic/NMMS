@@ -16,14 +16,14 @@ namespace Common.Entities
 
         public Project() {
             UserStories = new List<UserStory>();
+            StartTime = DateTime.Now;
+            EndTime = DateTime.Now;
         }
 
 
         [DataMember]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
-     
         public int Id { get; set; }
 
         [DataMember]
@@ -31,6 +31,7 @@ namespace Common.Entities
 
         [DataMember]
         public string Name { get; set; }
+
         [DataMember]
         public string Description { get; set; }
 

@@ -94,13 +94,13 @@ namespace CommonTest.EntitiesTest
 			userUnderTest.Role = role;
 			Assert.AreEqual(role, userUnderTest.Role);
 		}
-		[Test]
-		public void ProjectPropertyTest()
-		{
-			Project project = new Project();
-			userUnderTest.Project = project;
-			Assert.AreEqual(project, userUnderTest.Project);
-		}
+		//[Test]
+		//public void ProjectPropertyTest()
+		//{
+		//	Project project = new Project();
+		//	userUnderTest.Project = project;
+		//	Assert.AreEqual(project, userUnderTest.Project);
+		//}
 		[Test]
 		public void PasswordChangedTest()
 		{
