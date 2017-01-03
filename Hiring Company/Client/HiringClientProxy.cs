@@ -20,7 +20,6 @@ namespace Client
 		}
 
 
-
 		public bool LogIn(string username, string password)
 		{
 			bool result = false;
@@ -76,7 +75,6 @@ namespace Client
             return result;
         }
 
-
         public bool UpdateUser(User user)
         {
             bool result = false;
@@ -84,6 +82,36 @@ namespace Client
             try
             {
                 result = factory.UpdateUser(user);
+            }
+            catch (Exception e)
+            {
+                //TODO log
+            }
+            return result;
+        }
+
+        public bool AddProject(Project project)
+        {
+            bool result = false;
+
+            try
+            {
+                result = factory.AddProject(project);
+            }
+            catch (Exception e)
+            {
+                //TODO log
+            }
+            return result;
+        }
+
+        public List<Project> GetAllProjects()
+        {
+            List<Project> result = null;
+
+            try
+            {
+                result = factory.GetAllProjects();
             }
             catch (Exception e)
             {

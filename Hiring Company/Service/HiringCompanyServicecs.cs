@@ -39,7 +39,6 @@ namespace HiringCompanyService
         public List<Company> GetAllCompanies()
         {
             return HiringCompanyDB.Instance.GetAllCompanies();
-
         }
 
         public bool RequestPartnership(int id)
@@ -50,15 +49,23 @@ namespace HiringCompanyService
 
         public bool UpdateUser(User user)
         {
-            throw new NotImplementedException();
-
+            return HiringCompanyDB.Instance.UpdateUser(user);
         }
         
 
-
         public User GetUser(string username)
         {
-            throw new NotImplementedException();
+            return HiringCompanyDB.Instance.GetUser(username);
+        }
+
+        public bool AddProject(Project project)
+        {
+            return HiringCompanyDB.Instance.AddProject(project);
+        }
+
+        public List<Project> GetAllProjects()
+        {
+            return HiringCompanyDB.Instance.GetAllProjects();
         }
     }
 }

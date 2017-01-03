@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!--Name, StartTime and DeadLine-->
         <Grid Grid.Row="0">
@@ -20,8 +21,8 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <GroupBox Grid.Row="0" Header="Name" BorderThickness="2" Margin="5" VerticalContentAlignment="Center">
-                <TextBox VerticalAlignment="Center"></TextBox>
-            </GroupBox>
+                <TextBox VerticalAlignment="Center" Text="{Binding Project.Name}"></TextBox>
+            </GroupBox> 
             <GroupBox Grid.Column="1" Margin="5" BorderThickness="2" Header="Start time" >
                 <DatePicker VerticalAlignment="Center" VerticalContentAlignment="Center"/>
             </GroupBox>
@@ -29,6 +30,7 @@
                 <DatePicker VerticalAlignment="Center" VerticalContentAlignment="Center"/>
             </GroupBox>
         </Grid>
+        <!--Short description-->
         <Grid Grid.Row="1">
             <GroupBox Grid.Row="0" Header="Short Description" BorderThickness="2" Margin="5" VerticalContentAlignment="Center">
                 <ScrollViewer Grid.Row="0" 
@@ -41,6 +43,7 @@
                 </ScrollViewer>
             </GroupBox>
         </Grid>
+        <!--User stories-->
         <Grid Grid.Row="2">
             <GroupBox Header="User stories" BorderThickness="2" Margin="5" VerticalContentAlignment="Center">
                 <ScrollViewer Grid.Row="0" 
@@ -49,6 +52,15 @@
                            Height="Auto" >
                 </ScrollViewer>
             </GroupBox>
+        </Grid>
+        <!--Action buttons-->
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="Save_btn" Grid.Column="0" Margin="5,2" Click="Save_Click">Save</Button>
+            <Button Name="Cancel_btn" Grid.Column="1" Margin="5,2" Click="Cancel_btn_Click" >Cancel</Button>
         </Grid>
     </Grid>
 </UserControl>

@@ -1,5 +1,6 @@
 ﻿using Client.View;
 using Common;
+using Common.Entities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -138,14 +139,15 @@ namespace Client.ViewModel
 			string username = parameters[0].ToString();
 			string pass = parameters[0].ToString();
 
-			using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, ((App)App.Current).HostAddress))
+			//using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, ((App)App.Current).HostAddress))
+            using (HiringClientProxy proxy = ((App)App.Current).Proxy)
 			{
 				bool success = proxy.LogIn(username, pass);
 
 				if (success)
 				{
 					LoggedUsername = username;
-					CurrentState = WindowState.COMPANIES;
+					CurrentState = WindowState.PROJECTS;
 				}
 			}
         }
@@ -161,9 +163,9 @@ namespace Client.ViewModel
 
 		private void LogOut(object param)
 		{
-			using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, ((App)App.Current).HostAddress))
-			{
-				bool success = proxy.LogOut(LoggedUsername);
+            using (HiringClientProxy proxy = ((App)App.Current).Proxy)
+            {
+                bool success = proxy.LogOut(LoggedUsername);
 
 				if (success)
 				{
@@ -178,7 +180,8 @@ namespace Client.ViewModel
 
 		void NewProject()
         {
-            CurrentState = WindowState.NEW_PROJECT;
+            ProjectViewDialog projectDialog = new ProjectViewDialog();
+            projectDialog.ShowDialog();
         }
 
         void FetchCompanies()
@@ -190,10 +193,22 @@ namespace Client.ViewModel
         void FetchProjects()
         {
             // TODO: INTGR call service and set projects
-            // TODO: INTGR remove this
-            Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Approved" });
-            Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Disapproved" });
 
+            // TODO: INTGR remove this
+            using (HiringClientProxy proxy = ((App)App.Current).Proxy)
+            {
+                List<Project> result = proxy.GetAllProjects();
+
+                if (result != null)
+                {
+                    Projects = new ObservableCollection<object>(result);
+                    CurrentState = WindowState.PROJECTS;
+                }
+            }
+
+            /*Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Approved" });
+            Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Disapproved" });
+            */
         }
 		#endregion Methods
 

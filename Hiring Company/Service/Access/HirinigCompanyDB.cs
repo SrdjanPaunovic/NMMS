@@ -230,5 +230,29 @@ namespace Service.Access
             original.Username = user.Username;
             original.Password_changed = user.Password_changed;
         }
+
+        public User GetUser(string username)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+
+                User user = context.Users.FirstOrDefault((x) => x.Username == username);
+                if (user != null)
+                {
+                    return user;
+                }
+            }
+
+            return null;
+        }
+
+        public List<Project> GetAllProjects()
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                List<Project> projects = context.Projects.ToList();
+                return projects;
+            }
+        }
     }
 }

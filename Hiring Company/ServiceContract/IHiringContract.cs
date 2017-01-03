@@ -26,7 +26,14 @@ namespace ServiceContract
         [OperationContract]
         bool UpdateUser(User user);
 
-		List<User> LoginUsersOverview();
+        [OperationContract]
+        bool AddProject(Project project);
 
-	}
+        [OperationContract]
+        List<Project> GetAllProjects();
+
+        [OperationContract]
+        List<User> LoginUsersOverview();
+
+    }
 }

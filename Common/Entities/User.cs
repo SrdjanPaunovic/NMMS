@@ -37,9 +37,6 @@ namespace Common.Entities
         public Roles.Role Role { get; set; }
 
         [DataMember]
-        public Project Project { get; set; }
-        
-        [DataMember]
         public DateTime StartTime { get; set; }
 
         
@@ -61,7 +58,6 @@ namespace Common.Entities
         public bool IsAuthenticated { get; set; }
 
         [DataMember]
-        [Index(IsUnique=true)]
         public string Username { get; set; }
 
         [DataMember]
