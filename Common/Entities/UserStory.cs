@@ -12,7 +12,7 @@ namespace Common.Entities
     [DataContract]
     public class UserStory
     {
-        public UserStory() { }
+       
 
         [DataMember]
         [Key]

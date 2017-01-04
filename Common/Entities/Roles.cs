@@ -11,10 +11,10 @@ namespace Common.Entities
 
        public enum Role
        {
-           CEO=1,
-           developer=2,
-           PO=3,
-           SM=5
+           Ceo=1,
+           Developer=2,
+           Po=3,
+           Sm=5
        }
     }
 }

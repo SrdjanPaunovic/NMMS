@@ -1,27 +1,21 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Entities
 {
     [DataContract]
     public class User
     {
-
-        public User() {
+        public User()
+        {
             StartTime = DateTime.Now;
             EndTime = DateTime.Now;
-            Password_changed = DateTime.Now;
-
+            PasswordChanged = DateTime.Now;
         }
 
-        public User(string username, string password, Roles.Role role):this()
+        public User(string username, string password, Roles.Role role) : this()
         {
             Username = username;
             Password = password;
@@ -35,20 +29,20 @@ namespace Common.Entities
 
         [DataMember]
         public Roles.Role Role { get; set; }
-
+        /*
         [DataMember]
-        public Project Project { get; set; }
-        
+        public Project Project { get; set; }*/
+
         [DataMember]
         public DateTime StartTime { get; set; }
 
-        
-        [DataMember]
-        public DateTime EndTime { get; set; }
-        
 
         [DataMember]
-        public DateTime Password_changed { get; set; }
+        public DateTime EndTime { get; set; }
+
+
+        [DataMember]
+        public DateTime PasswordChanged { get; set; }
 
 
         [DataMember]
@@ -61,15 +55,16 @@ namespace Common.Entities
         public bool IsAuthenticated { get; set; }
 
         [DataMember]
-        [Index(IsUnique=true)]
+      //  [Index(IsUnique = true)]
         public string Username { get; set; }
 
         [DataMember]
         public string Password { get; set; }
 
-        public void PasswordChange(string new_password){
-            Password=new_password;
-            Password_changed =DateTime.Now;
+        public void PasswordChange(string newPassword)
+        {
+            Password = newPassword;
+            PasswordChanged = DateTime.Now;
         }
     }
 }

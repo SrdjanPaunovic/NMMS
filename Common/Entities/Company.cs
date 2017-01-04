@@ -12,30 +12,17 @@ namespace Common.Entities
 {
     public class Company
     {
-        private int id;
-        private string name;
-		private Common.Entities.State.CompanyState state;
+        
 
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id
-		{
-			get { return id; }
-			set { id = value; }
-		}
-         
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+		public int Id { get; set; }
 
-		public Common.Entities.State.CompanyState State
-		{
-			get { return state; }
-			set { state = value; }
-		}
+        public string Name { get; set; }
 
+
+        public Common.Entities.State.CompanyState State { get; set; }
+		
 		
     }
 }

@@ -1,35 +1,22 @@
-﻿
-using Service;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Entities;
 
 namespace Service.Access
 {
     public class HiringCompanyDB : IHiringCompanyDB
     {
-
         public static HiringCompanyDB hirinigCompanyDB;
 
         public static HiringCompanyDB Instance
         {
-            get
-            {
-                if (hirinigCompanyDB == null)
-                {
-                    hirinigCompanyDB = new HiringCompanyDB();
-                }
-                return hirinigCompanyDB;
-            }
+            get { return hirinigCompanyDB ?? (hirinigCompanyDB = new HiringCompanyDB()); }
             set
             {
                 if (hirinigCompanyDB == null)
-                {
                     hirinigCompanyDB = value;
-                }
             }
         }
 
@@ -38,11 +25,9 @@ namespace Service.Access
             using (var db = new AccessDB())
             {
                 db.Users.Add(user);
-                int i = db.SaveChanges();
+                var i = db.SaveChanges();
                 if (i > 0)
-                {
                     return true;
-                }
                 return false;
             }
         }
@@ -52,13 +37,10 @@ namespace Service.Access
             using (var db = new AccessDB())
             {
                 db.Companies.Add(company);
-                int i = db.SaveChanges();
+                var i = db.SaveChanges();
                 if (i > 0)
-                {
                     return true;
-                }
                 return false;
-
             }
         }
 
@@ -67,28 +49,24 @@ namespace Service.Access
             using (var db = new AccessDB())
             {
                 db.Projects.Add(project);
-                int i = db.SaveChanges();
+                var i = db.SaveChanges();
                 if (i > 0)
-                {
                     return true;
-                }
                 return false;
-
             }
         }
 
 
         public bool LogIn(string username, string password)
         {
-            using (AccessDB context = new AccessDB())
+            using (var context = new AccessDB())
             {
-
-                User user = context.Users.FirstOrDefault((x) => x.Username == username);
+                var user = context.Users.FirstOrDefault(x => x.Username == username);
                 if (user != null)
                 {
                     if (user.Password.Equals(password))
                         user.IsAuthenticated = true;
-                    context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    context.Entry(user).State = EntityState.Modified;
                     context.SaveChanges();
                     return true;
                 }
@@ -98,45 +76,35 @@ namespace Service.Access
 
         public bool LogOut(string username)
         {
-            using (AccessDB context = new AccessDB())
+            using (var context = new AccessDB())
             {
                 var result = from b in context.Users
-                             where b.Username.Equals(username)
-                             select b;
-                User user = result.ToList().FirstOrDefault();
+                    where b.Username.Equals(username)
+                    select b;
+                var user = result.ToList().FirstOrDefault();
                 if (user != null)
-                {
                     if (user.IsAuthenticated)
                     {
                         user.IsAuthenticated = false;
-                        context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                        context.Entry(user).State = EntityState.Modified;
                         context.SaveChanges();
                         return true;
                     }
-                }
             }
             return false;
         }
 
         public bool UserRegister(User user)
         {
-            using (AccessDB context = new AccessDB())
+            using (var context = new AccessDB())
             {
-
                 var result = from users in context.Users select users;
-                List<User> userList = result.ToList();
+                var userList = result.ToList();
                 foreach (var registeredUser in userList)
-                {
                     if (registeredUser.Username.Equals(user.Username))
-                    {
                         return false;
-                    }
-                }
-                if (HiringCompanyDB.Instance.AddUser(user))
-                {
+                if (Instance.AddUser(user))
                     return true;
-                }
-
             }
 
             return false;
@@ -144,31 +112,25 @@ namespace Service.Access
 
         public List<User> LoginUsersOverview()
         {
-
-            using (AccessDB context = new AccessDB())
+            using (var context = new AccessDB())
             {
-                List<User> loginUsers = new List<User>();
+                var loginUsers = new List<User>();
                 var result = from users in context.Users select users;
-                List<User> userList = result.ToList();
+                var userList = result.ToList();
 
                 foreach (var user in userList)
-                {
                     if (user.IsAuthenticated)
-                    {
                         loginUsers.Add(user);
-                    }
-
-                }
                 return loginUsers;
             }
         }
 
         public List<Company> GetAllCompanies()
         {
-            using (AccessDB context = new AccessDB())
+            using (var context = new AccessDB())
             {
                 var result = from company in context.Companies select company;
-                List<Company> companies = result.ToList();
+                var companies = result.ToList();
                 return companies;
             }
         }
@@ -180,36 +142,35 @@ namespace Service.Access
 
         public bool UpdateUser(User user)
         {
-            using (AccessDB context = new AccessDB())
+            using (var context = new AccessDB())
             {
                 var result = from i in context.Users
-                             where i.Id == user.Id
-                             select i;
-                User us = result.ToList<User>().FirstOrDefault();
+                    where i.Id == user.Id
+                    select i;
+                var us = result.ToList().FirstOrDefault();
                 if (us != null)
                 {
                     if (us.Username != user.Username)
                     {
                         var res = from j in context.Users
-                                  where j.Username == user.Username
-                                  select j;
-                        List<User> users = res.ToList<User>();
+                            where j.Username == user.Username
+                            select j;
+                        var users = res.ToList();
                         if (users.Count == 0)
                         {
                             ModifieUserProperties(us, user);
-                            context.Entry(us).State = System.Data.Entity.EntityState.Modified;
+                            context.Entry(us).State = EntityState.Modified;
                             context.SaveChanges();
                         }
                         else
                         {
                             return false;
                         }
-
                     }
                     else
                     {
                         ModifieUserProperties(us, user);
-                        context.Entry(us).State = System.Data.Entity.EntityState.Modified;
+                        context.Entry(us).State = EntityState.Modified;
                         context.SaveChanges();
                     }
                     return true;
@@ -228,7 +189,7 @@ namespace Service.Access
             original.IsAuthenticated = user.IsAuthenticated;
             original.Surname = user.Surname;
             original.Username = user.Username;
-            original.Password_changed = user.Password_changed;
+            original.PasswordChanged = user.PasswordChanged;
         }
     }
 }

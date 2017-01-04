@@ -84,13 +84,13 @@ namespace CommonTest.EntitiesTest
 		public void PasswordChangedPropertyChanged()
 		{
 			DateTime dt = DateTime.Now;
-			userUnderTest.Password_changed = dt;
-			Assert.AreEqual(dt, userUnderTest.Password_changed);
+			userUnderTest.PasswordChanged = dt;
+			Assert.AreEqual(dt, userUnderTest.PasswordChanged);
 		}
 		[Test]
 		public void RolePropertyTest()
 		{
-			Roles.Role role = Roles.Role.CEO;
+			Roles.Role role = Roles.Role.Ceo;
 			userUnderTest.Role = role;
 			Assert.AreEqual(role, userUnderTest.Role);
 		}

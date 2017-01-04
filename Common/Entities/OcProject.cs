@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Common.Entities
 {
-    public class OcProject
+    public class OcProject:Project
     {
         public Team Team { get; set; }
     }

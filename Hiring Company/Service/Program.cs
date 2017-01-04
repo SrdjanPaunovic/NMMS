@@ -31,6 +31,10 @@ namespace HiringCompanyService
 			path = path.Substring(0, path.LastIndexOf("bin")) + "DB";
 			AppDomain.CurrentDomain.SetData("DataDirectory", path);
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
+            User user = new User("admin", "admin", Roles.Role.Ceo);
+            user.Name = "savo";
+            user.Surname = "oroz";
+            HiringCompanyDB.Instance.AddUser(user);
             /*
 			#region Test
 			
