@@ -192,17 +192,16 @@ namespace Client.ViewModel
 
         void FetchProjects()
         {
-            // TODO: INTGR call service and set projects
-
-            // TODO: INTGR remove this
             using (HiringClientProxy proxy = ((App)App.Current).Proxy)
             {
                 List<Project> result = proxy.GetAllProjects();
-
+				Projects.Clear();
                 if (result != null)
                 {
-                    Projects = new ObservableCollection<object>(result);
-                    CurrentState = WindowState.PROJECTS;
+					foreach(var proj in result)
+					{
+						Projects.Add(proj);
+					}
                 }
             }
 
