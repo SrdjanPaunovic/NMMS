@@ -35,6 +35,9 @@ namespace ServiceContract
         List<OcUser> LoginUsersOverview();
 
         [OperationContract]
+        bool AnswerToRequest(Company company);
+
+        [OperationContract]
         List<Company> GetAllCompanies();
 
 	}

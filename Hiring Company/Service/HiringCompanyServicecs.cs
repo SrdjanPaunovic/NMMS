@@ -67,5 +67,20 @@ namespace HiringCompanyService
         {
             return HiringCompanyDB.Instance.GetAllProjects();
         }
+
+
+        public bool SendRequest(string ipAdress, Company company)
+        {
+            try
+            {
+                Service.Hiring2OutSCompanyService.companies[company.Name].SendRequest(ipAdress, Program.myHiringCompany);
+                return true;
+            }
+            catch
+            {
+                //TODO
+                return false;
+            }
+        }
     }
 }

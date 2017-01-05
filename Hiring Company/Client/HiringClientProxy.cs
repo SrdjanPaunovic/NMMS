@@ -119,5 +119,11 @@ namespace Client
             }
             return result;
         }
+
+
+        public bool SendRequest(string ipAdress, Company company)
+        {
+            return factory.SendRequest(ipAdress, company);
+        }
     }
 }

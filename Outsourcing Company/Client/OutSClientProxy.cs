@@ -83,6 +83,12 @@ namespace Client
         {
             return factory.GetAllCompanies();
         }
+
+
+        public bool AnswerToRequest(Company company)
+        {
+           return factory.AnswerToRequest(company);
+        }
     }
 }
 
