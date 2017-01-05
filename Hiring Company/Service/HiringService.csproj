@@ -109,6 +109,7 @@
     <Compile Include="Access\Configuration.cs" />
     <Compile Include="Access\HirinigCompanyDB.cs" />
     <Compile Include="Access\IHiringCompanyDB.cs" />
+    <Compile Include="Hiring2OutSCompanyService.cs" />
     <Compile Include="HiringCompanyServicecs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
