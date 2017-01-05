@@ -34,11 +34,9 @@ namespace ServiceContract
 
         [OperationContract]
         List<User> LoginUsersOverview();
+
         [OperationContract]
         bool SendRequest(string ipAdress, Company company);
-
-   
-		List<User> LoginUsersOverview();
 
     }
 }
