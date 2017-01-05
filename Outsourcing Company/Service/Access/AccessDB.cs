@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 using ServiceContract;
 using Common.Entities;
 
-
-using Common.Entities;namespace Service.Access
+namespace Service.Access
 {
 	public class AccessDB : DbContext
 	{

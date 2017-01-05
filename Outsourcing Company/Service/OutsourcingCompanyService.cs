@@ -7,18 +7,19 @@ using ServiceContract;
 using Service.Access;
 using Common;
 using Common.Entities;
+using System.ServiceModel;
 
 
 namespace Service
 {
-	public class OutsourcingCompanyService : IOutsourcingCompanyService
-	{
+    public class OutsourcingCompanyService : IOutsourcingCompanyService
+    {
 
 
 
         public bool AddUser(OcUser user)
         {
-        return  OutsourcingCompanyDB.Instance.AddUser(user);
+            return OutsourcingCompanyDB.Instance.AddUser(user);
         }
 
         public bool AddCompany(Company company)
@@ -69,6 +70,24 @@ namespace Service
         public List<Company> GetAllCompanies()
         {
             return OutsourcingCompanyDB.Instance.GetAllCompanies();
+        }
+
+
+        public bool AnswerToRequest(Company company)
+        {
+            try
+            {
+                string ipAdress = OutSurce2HiringProxy.hiringAdress[company.Name];
+                Program.factory = new DuplexChannelFactory<IHiring2OutSourceContract>(Program.instanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(ipAdress));
+                IHiring2OutSourceContract proxy1 = Program.factory.CreateChannel();
+                proxy1.AnswerToRequest(Program.myOutSourceCompany);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
         }
     }
 }

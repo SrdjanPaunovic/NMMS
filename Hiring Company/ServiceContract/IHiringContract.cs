@@ -26,7 +26,12 @@ namespace ServiceContract
         [OperationContract]
         bool UpdateUser(User user);
 
+        [OperationContract]
+        bool SendRequest(string ipAdress, Company company);
+
+   
 		List<User> LoginUsersOverview();
 
+       
 	}
 }

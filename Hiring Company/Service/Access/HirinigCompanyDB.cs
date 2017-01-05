@@ -77,7 +77,6 @@ namespace Service.Access
             }
         }
 
-
         public bool LogIn(string username, string password)
         {
             using (AccessDB context = new AccessDB())
@@ -230,5 +229,7 @@ namespace Service.Access
             original.Username = user.Username;
             original.Password_changed = user.Password_changed;
         }
+
+     
     }
 }
