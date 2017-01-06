@@ -4,8 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Common.UserControls"
+             xmlns:converters="clr-namespace:Common.Converters"
              mc:Ignorable="d" 
+             x:Name="Root"
              d:DesignHeight="400" d:DesignWidth="500">
+    <UserControl.Resources>
+        <converters:MultiParamConverter x:Key="multiParamConverter"/>
+    </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -24,10 +29,10 @@
                 <TextBox VerticalAlignment="Center" Text="{Binding Project.Name}"></TextBox>
             </GroupBox> 
             <GroupBox Grid.Column="1" Margin="5" BorderThickness="2" Header="Start time" >
-                <DatePicker VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <DatePicker VerticalAlignment="Center" VerticalContentAlignment="Center" SelectedDate="{Binding Project.StartTime}"/>
             </GroupBox>
             <GroupBox Grid.Column="2" Margin="5" BorderThickness="2" Header="Deadline" >
-                <DatePicker VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                <DatePicker VerticalAlignment="Center" VerticalContentAlignment="Center" SelectedDate="{Binding Project.EndTime}"/>
             </GroupBox>
         </Grid>
         <!--Short description-->
@@ -39,18 +44,50 @@
                            Height="Auto" >
                     <TextBox Name="Description_TB"                       
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                      TextWrapping="Wrap"></TextBox>
+                      TextWrapping="Wrap" 
+                      Text="{Binding Project.Description}"></TextBox>
                 </ScrollViewer>
             </GroupBox>
         </Grid>
         <!--User stories-->
         <Grid Grid.Row="2">
             <GroupBox Header="User stories" BorderThickness="2" Margin="5" VerticalContentAlignment="Center">
-                <ScrollViewer Grid.Row="0" 
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Name="StoryName" Grid.Column="0" Margin="5,0" ></TextBox>
+                        <Button Name="AddStoryBtn" Grid.Column="1" Margin="2"
+                                Content="Add"
+                                Command="{Binding AddStoryCommand}"
+                                CommandParameter="{Binding Path=Text, ElementName=StoryName}">
+                        </Button>
+                    </Grid>
+                    <ScrollViewer Grid.Row="1" 
                            Margin="5" 
                            MaxHeight="170"
                            Height="Auto" >
-                </ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding Project.UserStories}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel  Background="White" IsItemsHost="True" Orientation="Vertical"></StackPanel>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <local:UserStoryShortView EditClicked="UserStoryShortView_EditClicked" DeleteClicked="UserStoryShortView_DeleteClicked"/>
+                                    <!--<TextBlock Text="{Binding Name}"></TextBlock>-->
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
             </GroupBox>
         </Grid>
         <!--Action buttons-->
@@ -59,8 +96,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Name="Save_btn" Grid.Column="0" Margin="5,2" Click="Save_Click">Save</Button>
-            <Button Name="Cancel_btn" Grid.Column="1" Margin="5,2" Click="Cancel_btn_Click" >Cancel</Button>
+            <Button Name="Save_btn" Grid.Column="0" Margin="5,2"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding ElementName=Root}">Save</Button>
+            <Button Name="Cancel_btn" Grid.Column="1" Margin="5,2" 
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding ElementName=Root}">Cancel</Button>
         </Grid>
     </Grid>
 </UserControl>

@@ -21,7 +21,7 @@ namespace Common.Entities
 
         }
 
-        public User(string username, string password, Roles.Role role):this()
+        public User(string username, string password, Role role):this()
         {
             Username = username;
             Password = password;
@@ -34,7 +34,7 @@ namespace Common.Entities
         public int Id { get; set; }
 
         [DataMember]
-        public Roles.Role Role { get; set; }
+        public Role Role { get; set; }
 
         [DataMember]
         public DateTime StartTime { get; set; }

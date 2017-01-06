@@ -131,8 +131,18 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="Start time" Width="120" DisplayMemberBinding="{Binding StartTime}"/>
-                        <GridViewColumn Header="End time" Width="120" DisplayMemberBinding="{Binding Deadline}"/>
+                        <GridViewColumn Header="Start time" DisplayMemberBinding="{Binding StartTime, StringFormat=dd/MM/yyyy}"/>
+                        <GridViewColumn Header="End time" DisplayMemberBinding="{Binding EndTime, StringFormat=dd/MM/yyyy}"/>
+                        <GridViewColumn >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Button Command="{Binding ElementName=viewModel,Path=EditProjectCommand}"
+                                                CommandParameter="{Binding}">E</Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
                 <ListView.GroupStyle>

@@ -1,4 +1,5 @@
-﻿using Common.Entities;
+﻿using Client.ViewModel;
+using Common.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,32 +21,27 @@ namespace Client.View
     /// </summary>
     public partial class ProjectViewDialog : Window
     {
-        public Project Project { get; set; }
-
         public ProjectViewDialog()
         {
-            Project = new Project();
-            DataContext = this;
+			/*UserStory us = new UserStory();
+			us.Name = "Moje ime";
+			UserStory us1 = new UserStory();
+			us1.Name = "Moje ime1";
+
+			Project.UserStories.Add(us);
+			Project.UserStories.Add(us1);*/
+
+			DataContext = new ProjectDialogViewModel();
             InitializeComponent();
-           
         }
 
-        private void CreateProjectView_SaveClicked(object sender, EventArgs e)
-        {
-            using (HiringClientProxy proxy = ((App)App.Current).Proxy)
-            {
-                bool success = proxy.AddProject(Project);
-                if (success)
-                {
-                    //TODO Logger
-                    this.Close();
-                }
-            }
-        }
+		public ProjectViewDialog(Project project)
+		{
+			DataContext = new ProjectDialogViewModel(project);
+			InitializeComponent();
+		}
 
-        private void CreateProjectView_CancelClicked(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-    }
+
+
+	}
 }
