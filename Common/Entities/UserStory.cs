@@ -12,7 +12,11 @@ namespace Common.Entities
     [DataContract]
     public class UserStory
     {
-        public UserStory() { }
+        public UserStory()
+		{
+			StartTime = DateTime.Now;
+			EndTime = DateTime.Now;
+		}
 
         [DataMember]
         [Key]
@@ -33,8 +37,9 @@ namespace Common.Entities
 
         [DataMember]
         public Project Project { get; set; }
+
         [DataMember]
-        public UserStoryState.StoryState State { get; set; }
+        public StoryState State { get; set; }
 
         [DataMember]
         public int StoryPoints { get; set; }

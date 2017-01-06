@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
-
+using System.Collections.ObjectModel;
 
 namespace Common.Entities
 {
@@ -15,7 +15,7 @@ namespace Common.Entities
     {
 
         public Project() {
-            UserStories = new List<UserStory>();
+            UserStories = new ObservableCollection<UserStory>();
             StartTime = DateTime.Now;
             EndTime = DateTime.Now;
         }
@@ -45,7 +45,7 @@ namespace Common.Entities
         public Company DevelopCompany { get; set; }
 
         [DataMember]
-        public List<UserStory> UserStories{ get; set; }
+        public ObservableCollection<UserStory> UserStories{ get; set; }
 
 
     }

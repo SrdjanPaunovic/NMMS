@@ -38,5 +38,8 @@ namespace ServiceContract
         [OperationContract]
         bool SendRequest(string ipAdress, Company company);
 
-    }
+        [OperationContract]
+		List<UserStory> GetUserStoryFromProject(Project project);
+
+	}
 }

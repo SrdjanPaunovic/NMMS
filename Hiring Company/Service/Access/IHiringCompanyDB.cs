@@ -26,6 +26,8 @@ namespace Service.Access
 
         bool RequestPartnership(int id);
 
+		List<UserStory> GetUserStoryFromProject(Project project);
+
 
         // double PasswordAge();
 

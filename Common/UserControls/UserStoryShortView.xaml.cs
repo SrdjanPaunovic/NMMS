@@ -23,34 +23,22 @@ namespace Common.UserControls
 	{
 		public UserStoryShortView()
 		{
-			DataContext = this;
 			InitializeComponent();
+			//DataContext = this;
+
 		}
 
 		public event EventHandler EditClicked;
 		public event EventHandler DeleteClicked;
 
-		public static readonly DependencyProperty UserStoryProperty =
-		DependencyProperty.Register(
-			"UserStory",
-			typeof(UserStory),
-			typeof(UserStoryShortView),
-			new UIPropertyMetadata(null));
-
-		public UserStory UserStory
-		{
-			get { return (UserStory)GetValue(UserStoryProperty); }
-			set { SetValue(UserStoryProperty, value); }
-		}
-
 		private void Edit_Click(object sender, RoutedEventArgs e)
 		{
-			EditClicked?.Invoke(sender, e);
+			EditClicked?.Invoke(DataContext, null);
 		}
 
 		private void Delete_Click(object sender, RoutedEventArgs e)
 		{
-			DeleteClicked?.Invoke(sender, e);
+			DeleteClicked?.Invoke(DataContext, null);
 		}
 	}
 }

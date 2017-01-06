@@ -115,7 +115,8 @@ namespace Client
             }
             catch (Exception e)
             {
-                //TODO log
+				//TODO log
+				var rre = e;
             }
             return result;
         }
@@ -125,5 +126,21 @@ namespace Client
         {
             return factory.SendRequest(ipAdress, company);
         }
-    }
+
+		public List<UserStory> GetUserStoryFromProject(Project project)
+		{
+			List<UserStory> result = null;
+
+			try
+			{
+				result = factory.GetUserStoryFromProject(project);
+			}
+			catch (Exception e)
+			{
+				//TODO log
+				var rre = e;
+			}
+			return result;
+		}
+	}
 }

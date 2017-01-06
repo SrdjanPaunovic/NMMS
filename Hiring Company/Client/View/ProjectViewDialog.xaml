@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client.View"
         xmlns:userctrl="clr-namespace:Common.UserControls;assembly=Common"
+        xmlns:viewModel="clr-namespace:Client.ViewModel"
         mc:Ignorable="d"
         Title="ProjectViewDialog" Height="400" Width="400"
         Name="root">
     <Grid>
-        <userctrl:CreateProjectView SaveClicked="CreateProjectView_SaveClicked" CancelClicked="CreateProjectView_CancelClicked" Project="{Binding ElementName=root,Path=Project}"></userctrl:CreateProjectView>
+        <userctrl:CreateProjectView EditStoryCommand="{Binding EditStoryCommand}" DeleteStoryCommand="{Binding DeleteStoryCommand}"/>
     </Grid>
 </Window>

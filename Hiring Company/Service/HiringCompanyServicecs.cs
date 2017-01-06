@@ -82,5 +82,10 @@ namespace HiringCompanyService
                 return false;
             }
         }
-    }
+
+		public List<UserStory> GetUserStoryFromProject(Project project)
+		{
+			return HiringCompanyDB.Instance.GetUserStoryFromProject(project);
+		}
+	}
 }

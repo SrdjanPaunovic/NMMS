@@ -113,16 +113,15 @@
   <ItemGroup>
     <Compile Include="Converters\MultiParamConverter.cs" />
     <Compile Include="Entities\Company.cs" />
+    <Compile Include="Entities\Enums.cs" />
     <Compile Include="Entities\OcProject.cs" />
     <Compile Include="Entities\OcUser.cs" />
     <Compile Include="Entities\Project.cs" />
-    <Compile Include="Entities\Roles.cs" />
     <Compile Include="Entities\State.cs" />
     <Compile Include="Entities\Task.cs" />
     <Compile Include="Entities\Team.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserStory.cs" />
-    <Compile Include="Entities\UserStoryState.cs" />
     <Compile Include="IHiring2OutSourceContract.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -189,6 +188,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\edit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

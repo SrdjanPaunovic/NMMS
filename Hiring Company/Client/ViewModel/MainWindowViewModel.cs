@@ -39,7 +39,8 @@ namespace Client.ViewModel
 		private ICommand logOutCommand;
 		private ICommand displayProjectsCommand;
         private ICommand newProjectCommand;
-        private ICommand showProfileCommand;
+        private ICommand editProjectCommand;
+		private ICommand showProfileCommand;
 
         
 		#endregion Fields
@@ -100,6 +101,14 @@ namespace Client.ViewModel
             }
         }
 
+		public ICommand EditProjectCommand
+		{
+			get
+			{
+				return editProjectCommand ?? (editProjectCommand = new RelayCommand((param) => this.EditProject(param as Project)));
+			}
+		}
+
 		public string LoggedUsername
 		{
 			get
@@ -155,8 +164,6 @@ namespace Client.ViewModel
         private void ShowProfile()
         {
             //TODO
-           
-            
             ProfileDialog profileDialog = new ProfileDialog(LoggedUsername);
             profileDialog.ShowDialog();
         }
@@ -184,7 +191,13 @@ namespace Client.ViewModel
             projectDialog.ShowDialog();
         }
 
-        void FetchCompanies()
+		void EditProject(Project project)
+		{
+			ProjectViewDialog projectDialog = new ProjectViewDialog(project);
+			projectDialog.ShowDialog();
+		}
+
+		void FetchCompanies()
         {
             // TODO: INTGR call service and set companies
             // TODO: INTGR remove this
