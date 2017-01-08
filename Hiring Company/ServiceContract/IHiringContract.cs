@@ -41,5 +41,7 @@ namespace ServiceContract
         [OperationContract]
 		List<UserStory> GetUserStoryFromProject(Project project);
 
+        [OperationContract]
+        List<Company> GetAllCompanies();
 	}
 }
