@@ -18,7 +18,6 @@ namespace Common.Entities
             StartTime = DateTime.Now;
             EndTime = DateTime.Now;
             Password_changed = DateTime.Now;
-
         }
 
         public User(string username, string password, Role role):this()
@@ -38,15 +37,12 @@ namespace Common.Entities
 
         [DataMember]
         public DateTime StartTime { get; set; }
-
         
         [DataMember]
         public DateTime EndTime { get; set; }
-        
 
         [DataMember]
         public DateTime Password_changed { get; set; }
-
 
         [DataMember]
         public string Name { get; set; }

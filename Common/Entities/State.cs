@@ -11,7 +11,7 @@ namespace Common.Entities
 		public enum CompanyState
 		{
 			NoPartner=0,
-			RequestSent=1,
+			Requested=1,
 			Partner=2
 		}
 	}
