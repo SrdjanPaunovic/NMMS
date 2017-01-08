@@ -10,55 +10,55 @@ using Common.Entities;
 
 namespace Client
 {
-	public class HiringClientProxy:ChannelFactory<IHiringContract>,IHiringContract
-	{
-		IHiringContract factory;
-		public HiringClientProxy(NetTcpBinding binding, string address)
-			:base(binding,address)
-		{
-			factory = this.CreateChannel();
-		}
+    public class HiringClientProxy : ChannelFactory<IHiringContract>, IHiringContract
+    {
+        IHiringContract factory;
+        public HiringClientProxy(NetTcpBinding binding, string address)
+            : base(binding, address)
+        {
+            factory = this.CreateChannel();
+        }
 
 
-		public bool LogIn(string username, string password)
-		{
-			bool result = false;
+        public bool LogIn(string username, string password)
+        {
+            bool result = false;
 
-			try
-			{
-				result = factory.LogIn(username, password);
-			}
-			catch (Exception e)
-			{
-				//TODO log
-			}
-			return result;
-		}
+            try
+            {
+                result = factory.LogIn(username, password);
+            }
+            catch (Exception e)
+            {
+                //TODO log
+            }
+            return result;
+        }
 
-		public bool LogOut(string username)
-		{
-			bool result = false;
+        public bool LogOut(string username)
+        {
+            bool result = false;
 
-			try
-			{
-				result = factory.LogOut(username);
-			}
-			catch (Exception e)
-			{
-				//TODO log
-			}
-			return result;
-		}
+            try
+            {
+                result = factory.LogOut(username);
+            }
+            catch (Exception e)
+            {
+                //TODO log
+            }
+            return result;
+        }
 
-		public bool UserRegister(Common.Entities.User user)
-		{
-			throw new NotImplementedException();
-		}
+        public bool UserRegister(Common.Entities.User user)
+        {
+            throw new NotImplementedException();
+        }
 
-		public List<Common.Entities.User> LoginUsersOverview()
-		{
-			throw new NotImplementedException();
-		}
+        public List<Common.Entities.User> LoginUsersOverview()
+        {
+            throw new NotImplementedException();
+        }
 
         public User GetUser(string username)
         {
@@ -115,8 +115,8 @@ namespace Client
             }
             catch (Exception e)
             {
-				//TODO log
-				var rre = e;
+                //TODO log
+                var rre = e;
             }
             return result;
         }
@@ -127,20 +127,36 @@ namespace Client
             return factory.SendRequest(ipAdress, company);
         }
 
-		public List<UserStory> GetUserStoryFromProject(Project project)
-		{
-			List<UserStory> result = null;
+        public List<UserStory> GetUserStoryFromProject(Project project)
+        {
+            List<UserStory> result = null;
 
-			try
-			{
-				result = factory.GetUserStoryFromProject(project);
-			}
-			catch (Exception e)
-			{
-				//TODO log
-				var rre = e;
-			}
-			return result;
-		}
-	}
+            try
+            {
+                result = factory.GetUserStoryFromProject(project);
+            }
+            catch (Exception e)
+            {
+                //TODO log
+                var rre = e;
+            }
+            return result;
+        }
+
+        public List<Company> GetAllCompanies()
+        {
+            List<Company> result = null;
+
+            try
+            {
+                result = factory.GetAllCompanies();
+            }
+            catch (Exception e)
+            {
+                //TODO log
+                var rre = e;
+            }
+            return result;
+        }
+    }
 }
