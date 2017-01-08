@@ -30,9 +30,9 @@ namespace Client
 		{
 			InitializeComponent();
 
-            // Grouping companies
-            CollectionView companiesView = (CollectionView)CollectionViewSource.GetDefaultView(companies.ItemsSource);
-            PropertyGroupDescription companyGroupDescription = new PropertyGroupDescription("Partnership");
+            // Grouping partnerCompanies
+            CollectionView companiesView = (CollectionView)CollectionViewSource.GetDefaultView(partnerCompanies.ItemsSource);
+            PropertyGroupDescription companyGroupDescription = new PropertyGroupDescription("State");
             companiesView.GroupDescriptions.Add(companyGroupDescription);
 
             // Grouping projects

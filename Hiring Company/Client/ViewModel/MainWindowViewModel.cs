@@ -27,10 +27,10 @@ namespace Client.ViewModel
 
 
 		#region Fields
-		//TODO: INTGR change classes
 		private string loggedUsername = "";
-		private ObservableCollection<Object> companies = new ObservableCollection<Object>();
-		private ObservableCollection<Object> projects = new ObservableCollection<Object>();
+		private ObservableCollection<Company> partnerCompanies = new ObservableCollection<Company>();
+		private ObservableCollection<Company> nonPartnerCompanies = new ObservableCollection<Company>();
+		private ObservableCollection<Project> projects = new ObservableCollection<Project>();
 
 		private WindowState currentState = WindowState.LOGIN;
 		private NetTcpBinding netTcpBinding = new NetTcpBinding();
@@ -44,6 +44,7 @@ namespace Client.ViewModel
 		private ICommand showEmployeesCommand;
 		private ICommand showCompaniesCommand;
 		private ICommand showProjectsCommand;
+		private ICommand displayCompaniesCommand;
 
 		#endregion Fields
 
@@ -57,13 +58,19 @@ namespace Client.ViewModel
 				OnPropertyChanged("CurrentState");
 			}
 		}
-		public ObservableCollection<Object> Companies
+		public ObservableCollection<Company> PartnerCompanies
 		{
-			get { return companies; }
-			set { companies = value; }
+			get { return partnerCompanies; }
+			set { partnerCompanies = value; }
 		}
 
-		public ObservableCollection<Object> Projects
+		public ObservableCollection<Company> NonPartnerCompanies
+		{
+			get { return nonPartnerCompanies; }
+			set { nonPartnerCompanies = value; }
+		}
+
+		public ObservableCollection<Project> Projects
 		{
 			get { return projects; }
 			set { projects = value; }
@@ -156,6 +163,14 @@ namespace Client.ViewModel
 
 		}
 
+		public ICommand DisplayCompaniesCommand
+		{
+			get
+			{
+				return displayCompaniesCommand ?? (displayCompaniesCommand = new RelayCommand((param) => this.FetchCompanies()));
+			}
+		}
+
 
 		#endregion Properties
 
@@ -239,13 +254,28 @@ namespace Client.ViewModel
 
 		void FetchCompanies()
 		{
-			// TODO: INTGR call service and set companies
-			// TODO: INTGR remove this
+			using (HiringClientProxy proxy = ((App)Application.Current).Proxy)
+			{
+				List<Company> result = proxy.GetAllCompanies();
+				PartnerCompanies.Clear();
+				NonPartnerCompanies.Clear();
+				foreach (Company company in result)
+				{
+					if (company.State == State.CompanyState.NoPartner)
+					{
+						NonPartnerCompanies.Add(company);
+					}
+					else
+					{
+						PartnerCompanies.Add(company);
+					}
+				}
+			}
 		}
 
 		void FetchProjects()
 		{
-			using (HiringClientProxy proxy = ((App)App.Current).Proxy)
+			using (HiringClientProxy proxy = ((App)Application.Current).Proxy)
 			{
 				List<Project> result = proxy.GetAllProjects();
 				Projects.Clear();
