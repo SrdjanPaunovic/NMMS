@@ -14,92 +14,116 @@ using System.Windows.Input;
 
 namespace Client.ViewModel
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
-    {
-        public enum WindowState
-        {
-            LOGIN,
-            COMPANIES,
-            PROJECTS,
-            NEW_PROJECT
-        }
+	public class MainWindowViewModel : INotifyPropertyChanged
+	{
+		public enum WindowState
+		{
+			LOGIN,
+			EMPLOYEES,
+			COMPANIES,
+			PROJECTS
+		}
 
 
 
 		#region Fields
 		//TODO: INTGR change classes
 		private string loggedUsername = "";
-        private ObservableCollection<Object> companies = new ObservableCollection<Object>();
-        private ObservableCollection<Object> projects = new ObservableCollection<Object>();
-        
-        private WindowState currentState = WindowState.LOGIN;
+		private ObservableCollection<Object> companies = new ObservableCollection<Object>();
+		private ObservableCollection<Object> projects = new ObservableCollection<Object>();
+
+		private WindowState currentState = WindowState.LOGIN;
 		private NetTcpBinding netTcpBinding = new NetTcpBinding();
 		//commands
 		private ICommand loginCommand;
 		private ICommand logOutCommand;
 		private ICommand displayProjectsCommand;
-        private ICommand newProjectCommand;
-        private ICommand editProjectCommand;
+		private ICommand newProjectCommand;
+		private ICommand editProjectCommand;
 		private ICommand showProfileCommand;
+		private ICommand showEmployeesCommand;
+		private ICommand showCompaniesCommand;
+		private ICommand showProjectsCommand;
 
-        
 		#endregion Fields
 
 		#region Properties
 		public WindowState CurrentState
-        {
-            get { return currentState; }
-            set
-            {
-                currentState = value;
-                OnPropertyChanged("CurrentState");
-            }
-        }
-        public ObservableCollection<Object> Companies
-        {
-            get { return companies; }
-            set { companies = value; }
-        }
+		{
+			get { return currentState; }
+			set
+			{
+				currentState = value;
+				OnPropertyChanged("CurrentState");
+			}
+		}
+		public ObservableCollection<Object> Companies
+		{
+			get { return companies; }
+			set { companies = value; }
+		}
 
-        public ObservableCollection<Object> Projects
-        {
-            get { return projects; }
-            set { projects = value; }
-        }
+		public ObservableCollection<Object> Projects
+		{
+			get { return projects; }
+			set { projects = value; }
+		}
 
-        public ICommand LoginCommand
-        {
-            get
-            {
-                return loginCommand ?? (loginCommand = new RelayCommand(param => this.LoginClick(param)));
-            }
-        }
+		public ICommand LoginCommand
+		{
+			get
+			{
+				return loginCommand ?? (loginCommand = new RelayCommand(param => this.LoginClick(param)));
+			}
+		}
 
-        public ICommand ShowProfileCommand
-        {
-            get
-            {
-                return showProfileCommand ?? (showProfileCommand = new RelayCommand(param => this.ShowProfile()));
-            }
-        }
+		public ICommand ShowProfileCommand
+		{
+			get
+			{
+				return showProfileCommand ?? (showProfileCommand = new RelayCommand(param => this.ShowProfile()));
+			}
+		}
 
-        
+		public ICommand ShowEmployeesCommand
+		{
+			get
+			{
+				return showEmployeesCommand ?? (showEmployeesCommand = new RelayCommand(param => this.ShowEmployees()));
+			}
+		}
 
-        public ICommand DisplayProjectsCommand
-        {
-            get
-            {
-                return displayProjectsCommand ?? (displayProjectsCommand = new RelayCommand((param) => this.FetchProjects()));
-            }
-        }
+		public ICommand ShowCompaniesCommand
+		{
+			get
+			{
+				return showCompaniesCommand ?? (showCompaniesCommand = new RelayCommand(param => this.ShowCompanies()));
+			}
+		}
 
-        public ICommand NewProjectCommand
-        {
-            get
-            {
-                return newProjectCommand ?? (newProjectCommand = new RelayCommand((param) => this.NewProject()));
-            }
-        }
+		public ICommand ShowProjectsCommand
+		{
+			get
+			{
+				return showProjectsCommand ?? (showProjectsCommand = new RelayCommand(param => this.ShowProjects()));
+			}
+		}
+
+		public ICommand DisplayProjectsCommand
+		{
+			get
+			{
+				return displayProjectsCommand ?? (displayProjectsCommand = new RelayCommand((param) => this.FetchProjects()));
+			}
+		}
+
+		public ICommand NewProjectCommand
+		{
+			get
+			{
+				return newProjectCommand ?? (newProjectCommand = new RelayCommand((param) => this.NewProject()));
+			}
+		}
 
 		public ICommand EditProjectCommand
 		{
@@ -132,24 +156,24 @@ namespace Client.ViewModel
 
 		}
 
-		
+
 		#endregion Properties
 
 		#region Methods
 		private void LoginClick(object param)
-        {
-            object[] parameters = param as object[];
+		{
+			object[] parameters = param as object[];
 
-            if (parameters == null)
-            {
-                throw new Exception("[LoginCommnad] Command parameters has NULL value");
-            }
+			if (parameters == null)
+			{
+				throw new Exception("[LoginCommnad] Command parameters has NULL value");
+			}
 
 			string username = parameters[0].ToString();
 			string pass = parameters[0].ToString();
 
 			//using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, ((App)App.Current).HostAddress))
-            using (HiringClientProxy proxy = ((App)App.Current).Proxy)
+			using (HiringClientProxy proxy = ((App)App.Current).Proxy)
 			{
 				bool success = proxy.LogIn(username, pass);
 
@@ -159,26 +183,42 @@ namespace Client.ViewModel
 					CurrentState = WindowState.PROJECTS;
 				}
 			}
-        }
+		}
 
-        private void ShowProfile()
-        {
-            //TODO
-            ProfileDialog profileDialog = new ProfileDialog(LoggedUsername);
-            profileDialog.ShowDialog();
-        }
+		private void ShowProfile()
+		{
+			//TODO
+			ProfileDialog profileDialog = new ProfileDialog(LoggedUsername);
+			profileDialog.ShowDialog();
+		}
+
+		private void ShowEmployees()
+		{
+			CurrentState = WindowState.EMPLOYEES;
+		}
+
+		private void ShowCompanies()
+		{
+			CurrentState = WindowState.COMPANIES;
+		}
+
+		private void ShowProjects()
+		{
+			CurrentState = WindowState.PROJECTS;
+		}
 
 		private void LogOut(object param)
 		{
-            using (HiringClientProxy proxy = ((App)App.Current).Proxy)
-            {
-                bool success = proxy.LogOut(LoggedUsername);
+			using (HiringClientProxy proxy = ((App)App.Current).Proxy)
+			{
+				bool success = proxy.LogOut(LoggedUsername);
 
 				if (success)
 				{
 					LoggedUsername = "";
 					CurrentState = WindowState.LOGIN;
-				}else
+				}
+				else
 				{
 					MessageBox.Show("Error while loggout");
 				}
@@ -186,10 +226,10 @@ namespace Client.ViewModel
 		}
 
 		void NewProject()
-        {
-            ProjectViewDialog projectDialog = new ProjectViewDialog();
-            projectDialog.ShowDialog();
-        }
+		{
+			ProjectViewDialog projectDialog = new ProjectViewDialog();
+			projectDialog.ShowDialog();
+		}
 
 		void EditProject(Project project)
 		{
@@ -198,30 +238,30 @@ namespace Client.ViewModel
 		}
 
 		void FetchCompanies()
-        {
-            // TODO: INTGR call service and set companies
-            // TODO: INTGR remove this
-        }
+		{
+			// TODO: INTGR call service and set companies
+			// TODO: INTGR remove this
+		}
 
-        void FetchProjects()
-        {
-            using (HiringClientProxy proxy = ((App)App.Current).Proxy)
-            {
-                List<Project> result = proxy.GetAllProjects();
+		void FetchProjects()
+		{
+			using (HiringClientProxy proxy = ((App)App.Current).Proxy)
+			{
+				List<Project> result = proxy.GetAllProjects();
 				Projects.Clear();
-                if (result != null)
-                {
-					foreach(var proj in result)
+				if (result != null)
+				{
+					foreach (var proj in result)
 					{
 						Projects.Add(proj);
 					}
-                }
-            }
+				}
+			}
 
-            /*Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Approved" });
+			/*Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Approved" });
             Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Disapproved" });
             */
-        }
+		}
 		#endregion Methods
 
 		#region PropertyChangedNotifier
