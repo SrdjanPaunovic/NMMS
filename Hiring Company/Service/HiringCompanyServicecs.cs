@@ -40,7 +40,7 @@ namespace HiringCompanyService
         {
             return HiringCompanyDB.Instance.GetAllCompanies();
         }
-
+		
         public bool RequestPartnership(int id)
         {
             throw new NotImplementedException();

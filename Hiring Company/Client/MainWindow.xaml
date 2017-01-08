@@ -19,6 +19,14 @@
 
         <!-- Toolbar -->
         <Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="auto"/>
+			</Grid.ColumnDefinitions>
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"></Setter>
@@ -29,12 +37,15 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <TextBlock Margin="10,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+			<Button Margin="10,2" Grid.Column="0" Command="{Binding ShowEmployeesCommand}">Employees</Button>
+			<Button Margin="10,2" Grid.Column="1" Command="{Binding ShowCompaniesCommand}">Companies</Button>
+			<Button Margin="10,2" Grid.Column="2" Command="{Binding ShowProjectsCommand}">Projects</Button>
+			<TextBlock Margin="10,2" Grid.Column="4" VerticalAlignment="Center">
                 <Hyperlink Command="{Binding ShowProfileCommand}"> 
                     <TextBlock Text="{Binding LoggedUsername}"></TextBlock>
                 </Hyperlink>
             </TextBlock>
-            <Button Margin="10,2"  HorizontalAlignment="Right" Command="{Binding LogOutCommand}">Log out</Button>
+			<Button Margin="10,2" Grid.Column="5" Command="{Binding LogOutCommand}">Log out</Button>
         </Grid>
         
         <!-- Login -->

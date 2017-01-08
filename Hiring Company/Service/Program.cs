@@ -38,11 +38,9 @@ namespace HiringCompanyService
             AppDomain.CurrentDomain.SetData("DataDirectory", path);
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
 
-            #region Test
-            /*
-                User user = new User("admin","admin",Roles.Role.CEO);
-                user.Name = "savo";
-                user.Surname = "oroz";
+			#region Test
+			/*
+                
 
                 User user1 = new User("admin1", "admin1", Roles.Role.developer);
                 user1.Name = "savo1";
@@ -55,13 +53,17 @@ namespace HiringCompanyService
                 user1.Project = project;
 			
 
-                HiringCompanyDB.Instance.AddUser(user);
                 HiringCompanyDB.Instance.AddUser(user1);
                 HiringCompanyDB.Instance.AddProject(project);
 			
                 //  HirinigCompanyDB.Instance.AddCompany(company);*/
-            #endregion
-            host = new ServiceHost(typeof(HiringCompanyService));
+			#endregion
+			User user = new User("admin", "admin", Role.CEO);
+			user.Name = "savo";
+			user.Surname = "oroz";
+			HiringCompanyDB.Instance.AddUser(user);
+
+			host = new ServiceHost(typeof(HiringCompanyService));
             host.AddServiceEndpoint(typeof(IHiringContract),
                 new NetTcpBinding(),
                 new Uri("net.tcp://localhost:4000/IHiringContract"));
