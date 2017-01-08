@@ -20,28 +20,28 @@ namespace ServiceContract
 		[OperationContract]
 		bool UserRegister(User user);
 
-        [OperationContract]
-        User GetUser(string username);
+		[OperationContract]
+		User GetUser(string username);
 
-        [OperationContract]
-        bool UpdateUser(User user);
+		[OperationContract]
+		bool UpdateUser(User user);
 
-        [OperationContract]
-        bool AddProject(Project project);
+		[OperationContract]
+		bool AddProject(Project project);
 
-        [OperationContract]
-        List<Project> GetAllProjects();
+		[OperationContract]
+		List<Project> GetAllProjects();
 
-        [OperationContract]
-        List<User> LoginUsersOverview();
+		[OperationContract]
+		List<User> LoginUsersOverview();
 
-        [OperationContract]
-        bool SendRequest(string ipAdress, Company company);
+		[OperationContract]
+		bool SendRequest(Company company);
 
-        [OperationContract]
+		[OperationContract]
 		List<UserStory> GetUserStoryFromProject(Project project);
 
-        [OperationContract]
-        List<Company> GetAllCompanies();
+		[OperationContract]
+		List<Company> GetAllCompanies();
 	}
 }

@@ -40,18 +40,12 @@ namespace HiringCompanyService
         {
             return HiringCompanyDB.Instance.GetAllCompanies();
         }
-		
-        public bool RequestPartnership(int id)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public bool UpdateUser(User user)
         {
             return HiringCompanyDB.Instance.UpdateUser(user);
         }
-        
+
 
         public User GetUser(string username)
         {
@@ -68,24 +62,15 @@ namespace HiringCompanyService
             return HiringCompanyDB.Instance.GetAllProjects();
         }
 
-
-        public bool SendRequest(string ipAdress, Company company)
+        public bool SendRequest(Company company)
         {
-            try
-            {
-                Service.Hiring2OutSCompanyService.companies[company.Name].SendRequest(ipAdress, Program.myHiringCompany);
-                return true;
-            }
-            catch
-            {
-                //TODO
-                return false;
-            }
+            //TODO send real request
+            return HiringCompanyDB.Instance.ChangeCompanyState(company);
         }
 
-		public List<UserStory> GetUserStoryFromProject(Project project)
-		{
-			return HiringCompanyDB.Instance.GetUserStoryFromProject(project);
-		}
-	}
+        public List<UserStory> GetUserStoryFromProject(Project project)
+        {
+            return HiringCompanyDB.Instance.GetUserStoryFromProject(project);
+        }
+    }
 }
