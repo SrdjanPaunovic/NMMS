@@ -37,6 +37,9 @@ namespace Common.Entities
 
         [DataMember]
         public DateTime StartTime { get; set; }
+
+		[DataMember]
+		public string MailAddress { get; set; }
         
         [DataMember]
         public DateTime EndTime { get; set; }

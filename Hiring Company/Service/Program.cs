@@ -10,6 +10,7 @@ using Service.Access;
 using Common.Entities;
 using Common;
 using System.ServiceModel.Description;
+using System.Threading;
 
 namespace HiringCompanyService
 {
@@ -21,11 +22,20 @@ namespace HiringCompanyService
 		public static string baseAddress;
 		public static Company myHiringCompany;
 		public static string companyName;
+		public static  Thread checkTimeThread;
+		public static Thread checkPasswordThread;
+
+
+
 
 		static void Main(string[] args)
 		{
 			Start();
+			//StartCheckingTimeTherad();
+			//StartCheckingPasswordThread();
 			Console.ReadKey(true);
+			//StopCheckingTimeTherad();
+			//StopCheckingPasswordThread();
 			Stop();
 		}
 
@@ -100,8 +110,62 @@ namespace HiringCompanyService
 
 		private static void Stop()
 		{
-
 			host.Close();
 		}
+
+		public static  void CheckingWorkingTime()
+		{
+			while(true){
+				Thread.Sleep(600000);
+				List<User> users=HiringCompanyDB.Instance.getAllUsers();
+				using (MailHelper helper = new MailHelper(users))
+				{
+					helper.CheckWorkingTime();
+
+				}
+
+			}			
+
+		}
+
+		public static void CheckingPassword()
+		{
+
+			while (true)
+			{
+				var sleepTime = DateTime.Today.AddDays(1).AddHours(1).Subtract(DateTime.Now); // jednom dnevno
+				Thread.Sleep(sleepTime);
+				List<User> users = HiringCompanyDB.Instance.getAllUsers();
+				using (MailHelper helper = new MailHelper(users))
+				{
+					helper.CheckPassword();
+
+				}
+
+			}		
+		}
+
+
+		private static void StartCheckingTimeTherad(){
+			checkTimeThread = new Thread(new ThreadStart(CheckingWorkingTime));
+			checkTimeThread.Start();
+		}
+
+		private static void StopCheckingTimeTherad()
+		{
+			checkTimeThread.Abort();
+		}
+
+		private static void StartCheckingPasswordThread()
+		{
+			checkPasswordThread = new Thread(new ThreadStart(CheckingPassword));
+			checkPasswordThread.Start();
+		}
+		private static void StopCheckingPasswordThread()
+		{
+			checkPasswordThread.Abort();
+		}
+
+		
 	}
 }
