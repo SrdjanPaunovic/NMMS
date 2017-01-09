@@ -141,6 +141,18 @@ namespace Service.Access
             return false;
         }
 
+		public List<User> getAllUsers()
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				List<User> users = new List<User>();
+				var result = context.Users;
+				users = result.ToList();
+				return users;
+
+			}
+		}
+
         public List<User> LoginUsersOverview()
         {
 
