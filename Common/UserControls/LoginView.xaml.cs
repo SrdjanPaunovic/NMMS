@@ -38,7 +38,7 @@ namespace Common.UserControls
 			"Username",
 			typeof(string),
 			typeof(LoginView),
-			new PropertyMetadata(String.Empty));
+			new PropertyMetadata(string.Empty));
 
 		public ICommand LoginCommand
 		{

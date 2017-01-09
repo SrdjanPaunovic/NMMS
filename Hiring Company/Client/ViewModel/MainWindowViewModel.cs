@@ -45,6 +45,7 @@ namespace Client.ViewModel
 		private ICommand showCompaniesCommand;
 		private ICommand showProjectsCommand;
 		private ICommand displayCompaniesCommand;
+		private ICommand sendCompanyRequestCommand;
 
 		#endregion Fields
 
@@ -171,6 +172,14 @@ namespace Client.ViewModel
 			}
 		}
 
+		public ICommand SendCompanyRequestCommand
+		{
+			get
+			{
+				return sendCompanyRequestCommand ?? (sendCompanyRequestCommand = new RelayCommand(param => this.SendCompanyRequest(param)));
+			}
+		}
+
 
 		#endregion Properties
 
@@ -292,6 +301,22 @@ namespace Client.ViewModel
             Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Disapproved" });
             */
 		}
+
+		private void SendCompanyRequest(object param)
+		{
+			if (param == null)
+			{
+				throw new Exception("[SendCompanyRequestCommnad] Command parameters has NULL value");
+			}
+			Company company = param as Company;
+
+			using (HiringClientProxy proxy = ((App)App.Current).Proxy)
+			{
+				bool success = proxy.SendRequest(company);
+				FetchCompanies();
+			}
+		}
+
 		#endregion Methods
 
 		#region PropertyChangedNotifier

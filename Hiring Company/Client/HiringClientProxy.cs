@@ -122,9 +122,19 @@ namespace Client
         }
 
 
-        public bool SendRequest(string ipAdress, Company company)
+        public bool SendRequest(Company company)
         {
-            return factory.SendRequest(ipAdress, company);
+            bool result = false;
+
+            try
+            {
+                result = factory.SendRequest(company);
+            }
+            catch (Exception e)
+            {
+                var rre = e;
+            }
+            return result;
         }
 
         public List<UserStory> GetUserStoryFromProject(Project project)
