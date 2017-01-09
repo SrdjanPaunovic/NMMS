@@ -265,7 +265,7 @@ namespace Service.Access
             }
         }
 
-        public bool ChangeCompanyState(Company company)
+        public bool ChangeCompanyState(Company company, State.CompanyState state)
         {
             using (AccessDB context = new AccessDB())
             {
@@ -274,7 +274,7 @@ namespace Service.Access
                              select i;
                 Company c = result.ToList<Company>().FirstOrDefault();
 
-                c.State = State.CompanyState.Requested;
+                c.State = state;
 
                 context.Entry(c).State = System.Data.Entity.EntityState.Modified;
                 context.SaveChanges();

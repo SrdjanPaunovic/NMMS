@@ -18,7 +18,7 @@ namespace HiringCompanyService
 
 		private static ServiceHost host;
 		private static ServiceHost hostForOutS;
-		private static string baseAddress;
+		public static string baseAddress;
 		public static Company myHiringCompany;
 		public static string companyName;
 
