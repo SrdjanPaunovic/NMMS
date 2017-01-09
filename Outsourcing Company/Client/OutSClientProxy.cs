@@ -84,11 +84,57 @@ namespace Client
             return factory.GetAllCompanies();
         }
 
+		public OcUser GetUser(string username)
+		{
+			OcUser result = null;
+
+			try
+			{
+				result = factory.GetUser(username);
+			}
+			catch (Exception e)
+			{
+				//TODO log
+			}
+			return result;
+		}
+
+		public bool UpdateUser(OcUser user)
+		{
+			bool result = false;
+
+			try
+			{
+				result = factory.UpdateUser(user);
+			}
+			catch (Exception e)
+			{
+				//TODO log
+			}
+			return result;
+		}
+
 
         public bool AnswerToRequest(Company company)
         {
            return factory.AnswerToRequest(company);
         }
+
+		public List<OcProject> GetAllProjects()
+		{
+			List<OcProject> result = null;
+
+			try
+			{
+				result = factory.GetAllProjects();
+			}
+			catch (Exception e)
+			{
+				//TODO log
+				var rre = e;
+			}
+			return result;
+		}
     }
 }
 
