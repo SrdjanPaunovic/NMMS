@@ -66,7 +66,9 @@ namespace HiringCompanyService
 		{
 			//TODO send real request
 			Service.Hiring2OutSCompanyService.companies[company.Name].SendRequest(Program.baseAddress, Program.myHiringCompany);
-			return HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
+			//return HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
+            return true;
+           
 		}
 
 		public List<UserStory> GetUserStoryFromProject(Project project)

@@ -80,7 +80,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntitiesTest\CompanyTest.cs" />
+    <Compile Include="EntitiesTest\OcProjectTest.cs" />
+    <Compile Include="EntitiesTest\OcUserTest.cs" />
     <Compile Include="EntitiesTest\ProjectTest.cs" />
+    <Compile Include="EntitiesTest\TaskTest.cs" />
+    <Compile Include="EntitiesTest\TeamTest.cs" />
     <Compile Include="EntitiesTest\UserStoryTest.cs" />
     <Compile Include="EntitiesTest\UserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
