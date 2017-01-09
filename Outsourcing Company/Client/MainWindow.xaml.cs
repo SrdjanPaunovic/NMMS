@@ -13,6 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ServiceModel;
+using Common;
+
+
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace Client
 {
@@ -24,19 +28,15 @@ namespace Client
 		public MainWindow()
 		{
 			InitializeComponent();
-			NetTcpBinding binding = new NetTcpBinding();
-			binding.Security.Mode = SecurityMode.Transport;
-			binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
-			
-			string address = "net.tcp://localhost:9999/WCFService";
-			EndpointAddress endpointAddress = new EndpointAddress(new Uri(address));
+			/*CollectionView companiesView = (CollectionView)CollectionViewSource.GetDefaultView(partnerCompanies.ItemsSource);
+			PropertyGroupDescription companyGroupDescription = new PropertyGroupDescription("State");
+			companiesView.GroupDescriptions.Add(companyGroupDescription);
 
-			using (OutSClientProxy proxy = new OutSClientProxy(binding, endpointAddress))
-			{
-				//proxy.Read();
-			}
-
-			Console.ReadLine();
+			// Grouping projects
+			CollectionView projectsView = (CollectionView)CollectionViewSource.GetDefaultView(projects.ItemsSource);
+			PropertyGroupDescription projectGroupDescription = new PropertyGroupDescription("Status");
+			projectsView.GroupDescriptions.Add(projectGroupDescription);
+			LogHelper.GetLogger().Debug("asdsadasd");*/
 		}
 	}
 }

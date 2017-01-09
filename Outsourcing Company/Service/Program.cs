@@ -27,7 +27,7 @@ namespace Service
             binding.Security.Mode = SecurityMode.Transport;
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
 
-            string address = "net.tcp://localhost:9999/WCFService";
+            string address = "net.tcp://localhost:5000/IOutSourceContract";
             ServiceHost host = new ServiceHost(typeof(OutsourcingCompanyService));
             host.AddServiceEndpoint(typeof(IOutsourcingCompanyService), binding, address);
 
@@ -49,10 +49,32 @@ namespace Service
             Console.WriteLine("Enter company name:");
             companyName = Console.ReadLine();
 
-            /*Console.WriteLine("Enter ip adress of hiring company");
-            string ipAdress = Console.ReadLine();*/
+			#region test
+			OcUser user1 = new OcUser("admin1", "admin1", Role.developer);
+			user1.Name = "savo1";
+			user1.Surname = "oroz1";
 
-            myOutSourceCompany = new Company(companyName);
+			Project project = new Project();
+
+
+			//  user.Project = project;
+			//  user1.Project = project;
+
+
+			OutsourcingCompanyDB.Instance.AddUser(user1);
+			//OutsourcingCompanyDB.Instance.AddProject(project);
+
+			//  HirinigCompanyDB.Instance.AddCompany(company);
+			OcUser user = new OcUser("admin", "admin", Role.CEO);
+			user.Name = "savo";
+			user.Surname = "oroz";
+			OutsourcingCompanyDB.Instance.AddUser(user);
+
+			/*Console.WriteLine("Enter ip adress of hiring company");
+			string ipAdress = Console.ReadLine();*/
+			#endregion
+
+			myOutSourceCompany = new Company(companyName);
             Console.WriteLine("WCFService service is started.");
             Console.WriteLine("Press <enter> to stop service...");
 
@@ -60,7 +82,7 @@ namespace Service
             factory = new DuplexChannelFactory<IHiring2OutSourceContract>(instanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(baseAddress));
             IHiring2OutSourceContract proxy = factory.CreateChannel();
 
-          //  proxy.Introduce(new Company(companyName));
+            proxy.Introduce(new Company(companyName));
 
             Console.ReadLine();
 

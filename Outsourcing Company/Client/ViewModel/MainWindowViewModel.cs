@@ -45,7 +45,6 @@ namespace Client.ViewModel
 		private ICommand showCompaniesCommand;
 		private ICommand showProjectsCommand;
 		private ICommand displayCompaniesCommand;
-		private ICommand sendCompanyRequestCommand;
 
 		#endregion Fields
 
@@ -172,14 +171,6 @@ namespace Client.ViewModel
 			}
 		}
 
-		public ICommand SendCompanyRequestCommand
-		{
-			get
-			{
-				return sendCompanyRequestCommand ?? (sendCompanyRequestCommand = new RelayCommand(param => this.SendCompanyRequest(param)));
-			}
-		}
-
 
 		#endregion Properties
 
@@ -197,7 +188,7 @@ namespace Client.ViewModel
 			string pass = parameters[0].ToString();
 
 			//using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, ((App)App.Current).HostAddress))
-			using (HiringClientProxy proxy = ((App)App.Current).Proxy)
+			using (OutSClientProxy proxy = ((App)App.Current).Proxy)
 			{
 				bool success = proxy.LogIn(username, pass);
 
@@ -233,7 +224,7 @@ namespace Client.ViewModel
 
 		private void LogOut(object param)
 		{
-			using (HiringClientProxy proxy = ((App)App.Current).Proxy)
+			using (OutSClientProxy proxy = ((App)App.Current).Proxy)
 			{
 				bool success = proxy.LogOut(LoggedUsername);
 
@@ -263,7 +254,7 @@ namespace Client.ViewModel
 
 		void FetchCompanies()
 		{
-			using (HiringClientProxy proxy = ((App)Application.Current).Proxy)
+			using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
 			{
 				List<Company> result = proxy.GetAllCompanies();
 				PartnerCompanies.Clear();
@@ -284,9 +275,9 @@ namespace Client.ViewModel
 
 		void FetchProjects()
 		{
-			using (HiringClientProxy proxy = ((App)Application.Current).Proxy)
+			using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
 			{
-				List<Project> result = proxy.GetAllProjects();
+				List<OcProject> result = proxy.GetAllProjects();
 				Projects.Clear();
 				if (result != null)
 				{
@@ -301,22 +292,6 @@ namespace Client.ViewModel
             Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Disapproved" });
             */
 		}
-
-		private void SendCompanyRequest(object param)
-		{
-			if (param == null)
-			{
-				throw new Exception("[SendCompanyRequestCommnad] Command parameters has NULL value");
-			}
-			Company company = param as Company;
-
-			using (HiringClientProxy proxy = ((App)App.Current).Proxy)
-			{
-				bool success = proxy.SendRequest("aa",company);
-				FetchCompanies();
-			}
-		}
-
 		#endregion Methods
 
 		#region PropertyChangedNotifier
@@ -333,3 +308,4 @@ namespace Client.ViewModel
 
 	}
 }
+

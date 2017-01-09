@@ -89,5 +89,25 @@ namespace Service
             }
             
         }
-    }
+
+
+		public List<OcProject> GetAllProjects()
+		{
+			return OutsourcingCompanyDB.Instance.GetAllProjects();
+		}
+
+		public OcUser GetUser(string username)
+		{
+			//throw new NotImplementedException();
+			return OutsourcingCompanyDB.Instance.GetUser(username);           ///////////////////////odje
+		}
+
+		public bool UpdateUser(OcUser user)
+		{
+			return OutsourcingCompanyDB.Instance.UpdateUser(user);
+		}
+
+
+		
+	}
 }

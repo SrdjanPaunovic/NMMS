@@ -21,8 +21,6 @@ namespace Common.Entities
         [DataMember]
         private Common.Entities.State.CompanyState state;
 
-
-
         public Company() { }
 
         public Company(string name)
@@ -51,7 +49,5 @@ namespace Common.Entities
             get { return state; }
             set { state = value; }
         }
-
-
     }
 }

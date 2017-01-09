@@ -121,12 +121,6 @@ namespace Client
             return result;
         }
 
-
-        public bool SendRequest(string ipAdress, Company company)
-        {
-            return factory.SendRequest(ipAdress, company);
-        }
-
         public List<UserStory> GetUserStoryFromProject(Project project)
         {
             List<UserStory> result = null;
@@ -188,6 +182,12 @@ namespace Client
                 //TODO log
             }
             return result;
+        }
+
+
+        public bool SendRequest(string ipAdress, Company company)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -45,7 +45,7 @@ namespace ServiceContract
 		List<UserStory> GetUserStoryFromProject(Project project);
 
         [OperationContract]
-        bool UpdateUserStory(UserStory userStory);
+        bool UpdateUserStory(UserStory UserStory);
 
         [OperationContract]
         List<Company> GetAllCompanies();

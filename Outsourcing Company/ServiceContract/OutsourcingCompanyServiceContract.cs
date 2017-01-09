@@ -40,5 +40,13 @@ namespace ServiceContract
         [OperationContract]
         List<Company> GetAllCompanies();
 
+		[OperationContract]
+		List<OcProject> GetAllProjects();
+
+		[OperationContract]
+		OcUser GetUser(string username);
+
+		[OperationContract]
+		bool UpdateUser(OcUser user);
 	}
 }

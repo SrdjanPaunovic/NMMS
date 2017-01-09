@@ -24,5 +24,11 @@ namespace Service.Access
         bool UserRegister(OcUser user);
         List<OcUser> LoginUsersOverview();
         List<Company> GetAllCompanies();
+
+		OcUser GetUser(string username);
+
+		bool UpdateUser(OcUser user);
+
+		List<OcProject> GetAllProjects();
 	}
 }
