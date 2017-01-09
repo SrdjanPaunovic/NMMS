@@ -13,6 +13,10 @@ namespace Common.Entities
     public class Task
     {
 
+        public Task()
+		{
+		}
+
         [DataMember]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,5 +24,11 @@ namespace Common.Entities
 
         [DataMember]
         public UserStory UserStory { get; set; }
+
+        [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
+        public string Description { get; set; }
     }
 }

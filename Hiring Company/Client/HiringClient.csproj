@@ -115,11 +115,15 @@
     <Compile Include="HiringClientProxy.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ProjectDialogViewModel.cs" />
+    <Compile Include="ViewModel\UserStoryViewModel.cs" />
     <Compile Include="View\ProfileDialog.xaml.cs">
       <DependentUpon>ProfileDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ProjectViewDialog.xaml.cs">
       <DependentUpon>ProjectViewDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserStoryViewDialog.xaml.cs">
+      <DependentUpon>UserStoryViewDialog.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -138,6 +142,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ProjectViewDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserStoryViewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -47,6 +47,13 @@ namespace Common.Entities
         [DataMember]
         public ObservableCollection<UserStory> UserStories{ get; set; }
 
-
+        public void UpdateProperties(Project project)
+        {
+            this.Name = project.Name;
+            //this.ProductOwner = project.ProductOwner;
+            this.StartTime = project.StartTime;
+            this.EndTime = project.EndTime;
+            this.Description = project.Description;
+        }
     }
 }

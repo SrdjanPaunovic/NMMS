@@ -62,25 +62,11 @@ namespace Service.Access
             }
         }
 
-        public bool AddProject(Project project)
-        {
-            using (var db = new AccessDB())
-            {
-                db.Projects.Add(project);
-                int i = db.SaveChanges();
-                if (i > 0)
-                {
-                    return true;
-                }
-                return false;
 
-            }
-        }
-
-        public bool LogIn(string username, string password)
-        {
-            using (AccessDB context = new AccessDB())
-            {
+		public bool LogIn(string username, string password)
+		{
+			using (AccessDB context = new AccessDB())
+			{
 
                 User user = context.Users.FirstOrDefault((x) => x.Username == username);
                 if (user != null)
@@ -254,18 +240,68 @@ namespace Service.Access
                 }
             }
 
-            return null;
+			return null;
+		}
+
+        public bool AddProject(Project project)
+        {
+            using (var db = new AccessDB())
+            {
+                db.Projects.Add(project);
+                int i = db.SaveChanges();
+                if (i > 0)
+                {
+                    return true;
+                }
+                return false;
+
+            }
         }
 
-        public List<Project> GetAllProjects()
+        public bool UpdateProject(Project project)
         {
             using (AccessDB context = new AccessDB())
             {
-                List<Project> projects = context.Projects.ToList();
+                Project proj = context.Projects.FirstOrDefault<Project>((x) => x.Id == project.Id);
 
-                return projects;
+                if (proj != null)
+                {
+
+                    proj.UpdateProperties(project);
+                    List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
+                    foreach (var us in userStories)
+                    {
+                        if(project.UserStories.ToList().Exists((x)=> x.Id!=us.Id)){
+                            context.Entry(us).State=System.Data.Entity.EntityState.Deleted;
+                        }
+                    }
+
+                    foreach (var us in project.UserStories)
+                    {
+                        if (us.Id == 0)
+                        {
+                            proj.UserStories.Add(us);
+                        }
+                    }
+                    context.Entry(proj).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+
+                return false;
             }
         }
+
+		public List<Project> GetAllProjects()
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				List<Project> projects = context.Projects.ToList();
+
+				
+				return projects;
+			}
+		}
 
         public List<UserStory> GetUserStoryFromProject(Project project)
         {
@@ -273,25 +309,31 @@ namespace Service.Access
             {
                 List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
 
-                return userStories;
-            }
-        }
+				return userStories;
+			}
+		}
 
-        public bool ChangeCompanyState(Company company, State.CompanyState state)
+        public bool UpdateUserStory(UserStory userStory)
         {
             using (AccessDB context = new AccessDB())
             {
-                var result = from i in context.Companies
-                             where i.Id == company.Id
-                             select i;
-                Company c = result.ToList<Company>().FirstOrDefault();
+                UserStory us = context.UserStories.FirstOrDefault<UserStory>((x) => x.Id == userStory.Id);
 
-                c.State = state;
+                if (us != null)
+                {
+                    us.UpdateProperties(userStory);
+                    context.Entry(us).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
 
-                context.Entry(c).State = System.Data.Entity.EntityState.Modified;
-                context.SaveChanges();
+                return false;
             }
-            return true;
+        }
+
+        public bool UpdateTask(Common.Entities.Task task)
+        {
+            throw new NotImplementedException();
         }
     }
 }

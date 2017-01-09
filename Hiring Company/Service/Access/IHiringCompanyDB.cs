@@ -23,11 +23,16 @@ namespace Service.Access
 
         bool AddProject(Project project);
         List<Project> GetAllProjects();
+        bool UpdateProject(Project project);
+
 
         bool RequestPartnership(int id);
 
 		List<UserStory> GetUserStoryFromProject(Project project);
 
+        bool UpdateUserStory(UserStory userStory);
+
+        bool UpdateTask(Common.Entities.Task task);
 
         // double PasswordAge();
 

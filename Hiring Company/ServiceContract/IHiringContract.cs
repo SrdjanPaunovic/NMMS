@@ -29,8 +29,11 @@ namespace ServiceContract
 		[OperationContract]
 		bool AddProject(Project project);
 
-		[OperationContract]
-		List<Project> GetAllProjects();
+        [OperationContract]
+        bool UpdateProject(Project project);
+
+        [OperationContract]
+        List<Project> GetAllProjects();
 
 		[OperationContract]
 		List<User> LoginUsersOverview();
@@ -41,7 +44,10 @@ namespace ServiceContract
 		[OperationContract]
 		List<UserStory> GetUserStoryFromProject(Project project);
 
-		[OperationContract]
-		List<Company> GetAllCompanies();
+        [OperationContract]
+        bool UpdateUserStory(UserStory UserStory);
+
+        [OperationContract]
+        List<Company> GetAllCompanies();
 	}
 }

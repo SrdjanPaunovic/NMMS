@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Client.View;
+using Common;
 using Common.Entities;
 using System;
 using System.Collections.Generic;
@@ -129,12 +130,13 @@ namespace Client.ViewModel
 				bool success = false;
 				if (isEditing)
 				{
-					//TODO proxy.UpdateProject(Project);
+					proxy.UpdateProject(Project);
 				}
 				else
 				{
-					proxy.AddProject(Project);
+                    success = proxy.AddProject(Project);
 				}
+
 				if (success)
 				{
 					//TODO Logger
@@ -161,7 +163,9 @@ namespace Client.ViewModel
 		private void EditStoryClick(object param)
 		{
 			var story = param as UserStory;
-			
+
+            UserStoryViewDialog usDialog = new UserStoryViewDialog(story);
+            usDialog.ShowDialog();
 			
 		}
 

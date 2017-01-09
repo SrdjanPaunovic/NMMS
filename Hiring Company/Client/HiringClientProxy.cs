@@ -168,5 +168,37 @@ namespace Client
             }
             return result;
         }
+
+
+        public bool UpdateProject(Project project)
+        {
+            bool result = false;
+
+            try
+            {
+                result = factory.UpdateProject(project);
+            }
+            catch (Exception e)
+            {
+                //TODO log
+            }
+            return result;
+        }
+
+        public bool UpdateUserStory(UserStory userStory)
+        {
+            bool result = false;
+
+            try
+            {
+                result = factory.UpdateUserStory(userStory);
+            }
+            catch (Exception e)
+            {
+                //TODO log
+            }
+            return result;
+        }
+
     }
 }
