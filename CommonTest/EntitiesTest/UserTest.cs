@@ -90,7 +90,7 @@ namespace CommonTest.EntitiesTest
 		[Test]
 		public void RolePropertyTest()
 		{
-			Roles.Role role = Roles.Role.CEO;
+			Role role = Role.CEO;
 			userUnderTest.Role = role;
 			Assert.AreEqual(role, userUnderTest.Role);
 		}

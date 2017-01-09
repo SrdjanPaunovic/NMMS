@@ -33,12 +33,17 @@ namespace Common.UserControls
 
 		private void Edit_Click(object sender, RoutedEventArgs e)
 		{
-			EditClicked?.Invoke(DataContext, null);
+            if (EditClicked != null)
+            {
+                EditClicked.Invoke(DataContext, null);
+            }
 		}
 
 		private void Delete_Click(object sender, RoutedEventArgs e)
 		{
-			DeleteClicked?.Invoke(DataContext, null);
+            if(EditClicked!=null){
+			    DeleteClicked.Invoke(DataContext, null);
+            }
 		}
 	}
 }

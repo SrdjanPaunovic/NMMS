@@ -78,7 +78,7 @@ namespace CommonTest.EntitiesTest
         [Test]
         public void StatePropertyTest()
         {
-            UserStoryState.StoryState state = UserStoryState.StoryState.Active;
+            StoryState state = StoryState.Active;
             userStoryUnderTest.State = state;
             Assert.AreEqual(state, userStoryUnderTest.State);
         }

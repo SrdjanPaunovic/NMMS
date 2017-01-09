@@ -36,7 +36,7 @@ namespace CommonTest.EntitiesTest
         public void ProductOwnerPropertyTest()
         {
             User po = new User();
-            po.Role = Roles.Role.PO;
+            po.Role = Role.PO;
             projectUnderTest.ProductOwner = po;
             Assert.AreEqual(po, projectUnderTest.ProductOwner);
         }
@@ -87,7 +87,11 @@ namespace CommonTest.EntitiesTest
             List<UserStory> userStories = new List<UserStory>();
             userStories.Add(new UserStory());
             userStories.Add(new UserStory());
-            projectUnderTest.UserStories = userStories;
+            foreach(var us in userStories)
+            {
+                projectUnderTest.UserStories.Add(us);
+
+            }
             Assert.AreEqual(userStories, projectUnderTest.UserStories);
         }
 		
