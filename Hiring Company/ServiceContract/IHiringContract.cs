@@ -30,6 +30,9 @@ namespace ServiceContract
         bool AddProject(Project project);
 
         [OperationContract]
+        bool UpdateProject(Project project);
+
+        [OperationContract]
         List<Project> GetAllProjects();
 
         [OperationContract]
@@ -40,6 +43,9 @@ namespace ServiceContract
 
         [OperationContract]
 		List<UserStory> GetUserStoryFromProject(Project project);
+
+        [OperationContract]
+        bool UpdateUserStory(UserStory userStory);
 
         [OperationContract]
         List<Company> GetAllCompanies();

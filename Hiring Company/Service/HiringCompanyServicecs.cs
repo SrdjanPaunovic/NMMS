@@ -87,5 +87,16 @@ namespace HiringCompanyService
 		{
 			return HiringCompanyDB.Instance.GetUserStoryFromProject(project);
 		}
-	}
+
+
+        public bool UpdateProject(Project project)
+        {
+            return HiringCompanyDB.Instance.UpdateProject(project);
+        }
+
+        public bool UpdateUserStory(UserStory userStory)
+        {
+            return HiringCompanyDB.Instance.UpdateUserStory(userStory);
+        }
+    }
 }

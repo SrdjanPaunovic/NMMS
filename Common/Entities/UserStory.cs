@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.ObjectModel;
 
 namespace Common.Entities
 {
@@ -16,6 +17,7 @@ namespace Common.Entities
 		{
 			StartTime = DateTime.Now;
 			EndTime = DateTime.Now;
+            Tasks = new ObservableCollection<Task>();
 		}
 
         [DataMember]
@@ -45,6 +47,17 @@ namespace Common.Entities
         public int StoryPoints { get; set; }
 
         [DataMember]
-        public List<Task> Tasks { get; set; }
+        public ObservableCollection<Task> Tasks { get; set; }
+
+        public void UpdateProperties(UserStory userStory)
+        {
+            this.Name = userStory.Name;
+            this.State = userStory.State;
+            this.StartTime = userStory.StartTime;
+            this.StoryPoints = userStory.StoryPoints;
+            this.EndTime = userStory.EndTime;
+            this.AcceptanceCriteria = userStory.AcceptanceCriteria;
+            this.Tasks = userStory.Tasks;
+        }
     }
 }

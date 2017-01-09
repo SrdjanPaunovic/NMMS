@@ -38,28 +38,19 @@ namespace HiringCompanyService
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
 
 			#region Test
-			/*
+			
                 
 
-                User user1 = new User("admin1", "admin1", Roles.Role.developer);
+                User user1 = new User("admin1", "admin1", Role.developer);
                 user1.Name = "savo1";
                 user1.Surname = "oroz1";
-            
-                Project project = new Project();
 
+                User user = new User("admin", "admin", Role.developer);
+                user.Name = "savo";
+                user.Surname = "oroz";
 
-                user.Project = project;
-                user1.Project = project;
-			
-
+                HiringCompanyDB.Instance.AddUser(user);
                 HiringCompanyDB.Instance.AddUser(user1);
-                HiringCompanyDB.Instance.AddProject(project);
-			
-                //  HirinigCompanyDB.Instance.AddCompany(company);
-						User user = new User("admin", "admin", Role.CEO);
-				user.Name = "savo";
-				user.Surname = "oroz";
-				HiringCompanyDB.Instance.AddUser(user);
 
 				Company c1 = new Company("C1");
 				Company c2 = new Company();
@@ -72,7 +63,7 @@ namespace HiringCompanyService
 				HiringCompanyDB.Instance.AddCompany(c2);
 				HiringCompanyDB.Instance.AddCompany(c3);
 	
-			 */
+			 
 
 			#endregion
 

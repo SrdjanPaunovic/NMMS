@@ -15,6 +15,8 @@ namespace Service.Access
         public DbSet<Company> Companies { get; set; }
         public DbSet<UserStory> UserStories { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<Common.Entities.Task> Tasks { get; set; }
+
 
 	}
 }
