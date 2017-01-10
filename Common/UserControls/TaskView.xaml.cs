@@ -23,7 +23,11 @@ namespace Common.UserControls
         public TaskView()
         {
             InitializeComponent();
-        }
+			string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+			string path = System.IO.Path.GetDirectoryName(executable);
+			path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
+			Delete_btn.NormalImage = new BitmapImage(new Uri(path + "/Images/close.png"));
+		}
         public event EventHandler DeleteClicked;
 
         private void Delete_Click(object sender, RoutedEventArgs e)

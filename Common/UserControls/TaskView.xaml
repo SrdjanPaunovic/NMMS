@@ -3,42 +3,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Common.UserControls"
              mc:Ignorable="d"              
              d:DesignHeight="300" d:DesignWidth="300">
     <Border BorderBrush="#FFAE7F03" BorderThickness="2" CornerRadius="5">
         <Grid  Background="#FFFFD669">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions> 
-        <!--Top bar-->
-            <Grid Grid.Row="0" Background="#FFAE7F03">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <CheckBox Grid.Column="0" VerticalAlignment="Center">Finished</CheckBox>
-            <Button Grid.Column="1" Click="Delete_Click">X</Button>
-        </Grid>
-            <Grid Grid.Row="1" Margin="4"  >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <GroupBox Header="Assigned to" Grid.Row="0" >
-                <ComboBox></ComboBox>
-            </GroupBox>
-            <GroupBox Header="Description" Grid.Row="1">
-                <ScrollViewer Grid.Row="0" 
+            <!--Top bar-->
+            <Grid Grid.Row="0" Background="#FFAE7F03">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox Grid.Column="0" VerticalAlignment="Center">Finished</CheckBox>
+                <local:ImageButton x:Name="Delete_btn" Grid.Column="1" Click="Delete_Click" VerticalAlignment="Center"/>
+                <!--<Button Grid.Column="1" Click="Delete_Click">X</Button>-->
+            </Grid>
+            <Grid Grid.Row="1" Margin="4"  >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <GroupBox Header="Assigned to" Grid.Row="0" >
+                    <ComboBox></ComboBox>
+                </GroupBox>
+                <GroupBox Header="Description" Grid.Row="1">
+                    <ScrollViewer Grid.Row="0" 
                            Margin="5" 
                            Height="Auto" >
-                    <TextBox Name="Description_TB"                       
+                        <TextBox Name="Description_TB"                       
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       TextWrapping="Wrap" 
                       Text="{Binding Description}"></TextBox>
-                </ScrollViewer>
-            </GroupBox>
-        </Grid>        
-    </Grid>
+                    </ScrollViewer>
+                </GroupBox>
+            </Grid>
+        </Grid>
     </Border>
 </UserControl>

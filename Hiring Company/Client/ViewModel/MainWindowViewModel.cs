@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace Client.ViewModel
 {
@@ -24,6 +25,13 @@ namespace Client.ViewModel
 			PROJECTS
 		}
 
+		public MainWindowViewModel()
+		{
+			string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+			string path = System.IO.Path.GetDirectoryName(executable);
+			path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
+			EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
+		}
 
 
 		#region Fields
@@ -50,6 +58,9 @@ namespace Client.ViewModel
 		#endregion Fields
 
 		#region Properties
+
+		public BitmapImage EditIcon { get; set; }
+
 		public WindowState CurrentState
 		{
 			get { return currentState; }
