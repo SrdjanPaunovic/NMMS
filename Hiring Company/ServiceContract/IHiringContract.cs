@@ -49,5 +49,11 @@ namespace ServiceContract
 
         [OperationContract]
         List<Company> GetAllCompanies();
+
+		[OperationContract]
+		bool SendProject(Company company, Project project);
+
+		[OperationContract]
+		bool AnswerToUserStory(Company company, Project project, UserStory userStory);
 	}
 }

@@ -62,6 +62,21 @@ namespace Service.Access
 			}
 		}
 
+		public bool AddUserStory(UserStory userStory)
+		{
+			using (var db = new AccessDB())
+			{
+				db.UserStories.Add(userStory);
+				int i = db.SaveChanges();
+				if (i > 0)
+				{
+					return true;
+				}
+				return false;
+
+			}
+		}
+
 
 		public bool LogIn(string username, string password)
 		{

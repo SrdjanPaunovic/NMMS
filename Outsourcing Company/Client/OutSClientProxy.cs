@@ -135,6 +135,40 @@ namespace Client
 			}
 			return result;
 		}
-    }
+
+
+
+
+
+		public bool SendUserStory(Company company, UserStory userStrory, Project project)
+		{
+			bool result = false;
+			try
+			{
+				result = factory.SendUserStory(company, userStrory, project);
+			}
+			catch (Exception)
+			{
+				
+				throw;
+			}
+			return result;
+		}
+
+		public bool AnswerToProject(Company company, Project project)
+		{
+			bool result = false;
+			try
+			{
+				result = factory.AnswerToProject(company, project);
+			}
+			catch (Exception)
+			{
+				
+				throw;
+			}
+			return result;
+		}
+	}
 }
 

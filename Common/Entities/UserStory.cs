@@ -49,6 +49,9 @@ namespace Common.Entities
         [DataMember]
         public ObservableCollection<Task> Tasks { get; set; }
 
+		[DataMember]
+		public bool IsUserStoryAccepted { get; set; }
+
         public void UpdateProperties(UserStory userStory)
         {
             this.Name = userStory.Name;
