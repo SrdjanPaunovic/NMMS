@@ -44,7 +44,13 @@ namespace ServiceContract
 		[OperationContract]
 		List<UserStory> GetUserStoryFromProject(Project project);
 
-        [OperationContract]
+		[OperationContract]
+		List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
+
+		[OperationContract]
+		Project GetProjectFromUserStory(UserStory userStory);
+
+		[OperationContract]
         bool UpdateUserStory(UserStory UserStory);
 
         [OperationContract]
