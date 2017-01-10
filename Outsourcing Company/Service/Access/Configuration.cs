@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -15,7 +16,6 @@ namespace Service.Access
 			AutomaticMigrationDataLossAllowed = true;
 			ContextKey = "OutSourceDB";
 			LogHelper.GetLogger().Info("Configuration initialized");
-
 		}
 	}
 }

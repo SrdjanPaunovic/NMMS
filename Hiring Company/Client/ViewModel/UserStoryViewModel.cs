@@ -118,8 +118,8 @@ namespace Client.ViewModel
         {
 			LogHelper.GetLogger().Info("Add Task click occurred.");
 
-            var name = param as string;
-            if (name == String.Empty)
+            var desc = param as string;
+            if (desc == String.Empty)
             {
                 return;
             }
@@ -129,7 +129,7 @@ namespace Client.ViewModel
             };
 
             UserStory.Tasks.Add(task);
-			LogHelper.GetLogger().Info("Task "+task.Name+" added");
+			LogHelper.GetLogger().Info("Task "+task.Description+" added");
 
         }
 
