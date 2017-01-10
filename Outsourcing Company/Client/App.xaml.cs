@@ -7,6 +7,8 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
 
+
+
 namespace Client
 {
 	/// <summary>
@@ -20,6 +22,8 @@ namespace Client
 		public App()
 		{
 			proxy = new OutSClientProxy(new NetTcpBinding(), HostAddress);
+			log4net.Config.XmlConfigurator.Configure();
+
 		}
 
 		public OutSClientProxy Proxy
@@ -32,6 +36,6 @@ namespace Client
 				}
 				return proxy;
 			}
-		}
+		}  
 	}
 }

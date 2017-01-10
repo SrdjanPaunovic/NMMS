@@ -12,6 +12,9 @@ using Common;
 using System.ServiceModel.Description;
 using System.Threading;
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
+
 namespace HiringCompanyService
 {
 	class Program
@@ -22,15 +25,15 @@ namespace HiringCompanyService
 		public static string baseAddress;
 		public static Company myHiringCompany;
 		public static string companyName;
-		public static  Thread checkTimeThread;
+		public static Thread checkTimeThread;
 		public static Thread checkPasswordThread;
-
-
-
 
 		static void Main(string[] args)
 		{
+			log4net.Config.XmlConfigurator.Configure();
+
 			Start();
+
 			//StartCheckingTimeTherad();
 			//StartCheckingPasswordThread();
 			Console.ReadKey(true);
@@ -41,6 +44,7 @@ namespace HiringCompanyService
 
 		private static void Start()
 		{
+
 			string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
 			string path = System.IO.Path.GetDirectoryName(executable);
 			path = path.Substring(0, path.LastIndexOf("bin")) + "DB";
@@ -102,6 +106,8 @@ namespace HiringCompanyService
 			hostForOutS.Description.Behaviors.Remove(typeof(ServiceDebugBehavior));
 			hostForOutS.Description.Behaviors.Add(new ServiceDebugBehavior() { IncludeExceptionDetailInFaults = true });
 			hostForOutS.Open();
+			LogHelper.GetLogger().Info("Hiring Service host opened : net.tcp://localhost:4000/IHiringContract ");
+
 
 			Console.WriteLine("Host opened");
 			Console.WriteLine("Server is ready ! ");
@@ -111,20 +117,24 @@ namespace HiringCompanyService
 		private static void Stop()
 		{
 			host.Close();
+			LogHelper.GetLogger().Info("Hiring Service host closed.");
+
 		}
 
-		public static  void CheckingWorkingTime()
+		public static void CheckingWorkingTime()
 		{
-			while(true){
+
+			while (true)
+			{
 				Thread.Sleep(600000);
-				List<User> users=HiringCompanyDB.Instance.getAllUsers();
+				List<User> users = HiringCompanyDB.Instance.getAllUsers();
 				using (MailHelper helper = new MailHelper(users))
 				{
 					helper.CheckWorkingTime();
 
 				}
 
-			}			
+			}
 
 		}
 
@@ -142,30 +152,40 @@ namespace HiringCompanyService
 
 				}
 
-			}		
+			}
 		}
 
 
-		private static void StartCheckingTimeTherad(){
+		private static void StartCheckingTimeTherad()
+		{
 			checkTimeThread = new Thread(new ThreadStart(CheckingWorkingTime));
 			checkTimeThread.Start();
+			LogHelper.GetLogger().Info("CheckingPassword thread started.");
+
 		}
 
 		private static void StopCheckingTimeTherad()
 		{
 			checkTimeThread.Abort();
+			LogHelper.GetLogger().Info("CheckingPassword thread aborted.");
+
 		}
 
 		private static void StartCheckingPasswordThread()
 		{
 			checkPasswordThread = new Thread(new ThreadStart(CheckingPassword));
 			checkPasswordThread.Start();
+			LogHelper.GetLogger().Info("StartCheckingPasswordThread thread started.");
+
+
 		}
 		private static void StopCheckingPasswordThread()
 		{
 			checkPasswordThread.Abort();
+			LogHelper.GetLogger().Info("StartCheckingPasswordThread thread aborted.");
+
 		}
 
-		
+
 	}
 }

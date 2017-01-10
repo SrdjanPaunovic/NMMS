@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Common;
 
 namespace Client.View
 {
@@ -30,13 +31,15 @@ namespace Client.View
 
 				if (User == null)
 				{
-					//TODO
-					MessageBox.Show("Error while loading ProfileDialog, User = NULL");
+					LogHelper.GetLogger().Error("Error while loading ProfileDialog, User = NULL");
+
 				}
 			}
 
 			InitializeComponent();
 			DataContext = this;
+			LogHelper.GetLogger().Info("Profile Dialog initialized.");
+
 
 		}
 
@@ -48,7 +51,8 @@ namespace Client.View
 
 				if (success)
 				{
-					//TODO Logger
+					LogHelper.GetLogger().Info("Profile Dialog closed.");
+
 					this.Close();
 				}
 			}
@@ -57,6 +61,8 @@ namespace Client.View
 
 		private void UserInputView_CancelClicked(object sender, EventArgs e)
 		{
+			LogHelper.GetLogger().Info("Cancel click occurred. Profile Dialog closed.");
+
 			this.Close();
 		}
 	}

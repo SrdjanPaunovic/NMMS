@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Common;
 
 namespace Client.ViewModel
 {
@@ -86,13 +87,18 @@ namespace Client.ViewModel
 
         private void CancelClick(object param)
         {
+			LogHelper.GetLogger().Info("Cancel click occurred.");
             var userControl = param as UserControl;
             Window parentWindow = Window.GetWindow(userControl);
+			LogHelper.GetLogger().Info(parentWindow.Name+" closed");
+
             parentWindow.Close();
         }
 
         private void SaveClick(object param)
         {
+			LogHelper.GetLogger().Info("Save click occurred.");
+
             var userControl = param as UserControl;
             Window parentWindow = Window.GetWindow(userControl);
 
@@ -118,6 +124,8 @@ namespace Client.ViewModel
 
         private void AddTaskClick(object param)
         {
+			LogHelper.GetLogger().Info("Add Task click occurred.");
+
             var name = param as string;
             if (name == String.Empty)
             {
@@ -127,16 +135,21 @@ namespace Client.ViewModel
             {
                 Name = name
             };
+
             UserStory.Tasks.Add(task);
+			LogHelper.GetLogger().Info("Task "+task.Name+" added");
+
         }
 
         private void EditTaskClick(object param)
         {
+			LogHelper.GetLogger().Info("Edit Task click occurred.");
           
         }
 
         private void DeleteTaskClick(object param)
         {
+			LogHelper.GetLogger().Info("Delete Task click occurred.");
            
         }
         #endregion Methods

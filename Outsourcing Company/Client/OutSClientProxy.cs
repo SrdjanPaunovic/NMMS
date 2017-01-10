@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using ServiceContract;
 using Common.Entities;
+using Common;
 
 namespace Client
 {
@@ -22,6 +23,8 @@ namespace Client
 			: base(binding, address)
 		{
 			factory = this.CreateChannel();
+			LogHelper.GetLogger().Info("Outsourcing company client started comunication with service.");
+
 		}
 
 
@@ -31,17 +34,59 @@ namespace Client
 
         public bool AddUser(OcUser user)
         {
-          return  factory.AddUser(user);
+			bool result = false;
+			try
+			{
+				result= factory.AddUser(user);
+				LogHelper.GetLogger().Info("AddUser method succeeded.");
+
+			}
+			catch (Exception e)
+			{
+				LogHelper.GetLogger().Error("AddUser method failed. " ,e);
+				
+			}
+			return result;
         }
 
         public bool AddCompany(Company company)
-        {
-            return factory.AddCompany(company);
+		{
+			bool result = false;
+
+			try
+			{
+				LogHelper.GetLogger().Info("AddUser method succeeded.");
+
+            result= factory.AddCompany(company);
+
+			}
+			catch (Exception e)
+			{
+
+				LogHelper.GetLogger().Error("AddCompany method failed. " ,e);
+				
+			}
+			return result;
         }
 
         public bool AddProject(OcProject project)
         {
-            return factory.AddProject(project);
+			bool result = false;
+
+			try
+			{
+				result=factory.AddProject(project);
+				LogHelper.GetLogger().Info("AddProject method succeeded.");
+
+
+			}
+			catch (Exception e)
+			{
+
+				LogHelper.GetLogger().Error("AddCompany method failed. " + e.ToString());
+
+			}
+			return result;
         }
 
         public bool AddUserStory(UserStory userStory)
@@ -51,38 +96,131 @@ namespace Client
 
         public bool AddTask(Common.Entities.Task task)
         {
-            return factory.AddTask(task);
+			bool result = false;
+
+			try
+			{
+			result=factory.AddTask(task);
+			LogHelper.GetLogger().Info("AddTask method succeeded.");
+		
+			}
+			catch (Exception e)
+			{
+				LogHelper.GetLogger().Error("AddCompany method failed. " + e.ToString());
+			}
+			return result;
+
         }
 
         public bool AddTeam(Team team)
         {
-            return factory.AddTeam(team);
+			bool result = false;
+			try
+			{
+				result= factory.AddTeam(team);
+				LogHelper.GetLogger().Info("AddTeam method succeeded.");
+
+			}
+			catch (Exception e)
+			{
+				LogHelper.GetLogger().Error("AddTeam method failed. " + e.ToString());
+						
+			}
+			return result;
+
         }
 
-        public bool LogIn(string username, string password)
-        {
-            return factory.LogIn(username, password);
-        }
+		public bool LogIn(string username, string password)
+		{
+			bool result = false;
 
-        public bool LogOut(string username)
-        {
-            return factory.LogOut(username);
-        }
+			try
+			{
+				result = factory.LogIn(username, password);
+				LogHelper.GetLogger().Info(" Login method succeeded.");
+			}
+			catch (Exception e)
+			{
+				LogHelper.GetLogger().Error("Loging method failed. " + e.ToString());
+			}
+			return result;
+		}
+
+		public bool LogOut(string username)
+		{
+			bool result = false;
+
+			try
+			{
+				result = factory.LogOut(username);
+				LogHelper.GetLogger().Info("Logout method succeeded.");
+
+			}
+			catch (Exception e)
+			{
+				//TODO log
+				LogHelper.GetLogger().Error("Logout method failed.  " + e.ToString());
+
+			}
+			return result;
+		}
 
         public bool UserRegister(OcUser user)
         {
-            return factory.UserRegister(user);
+			bool result = false;
+			try
+			{
+				result= factory.UserRegister(user);
+				LogHelper.GetLogger().Info("UserRegister method succeeded.");
+
+
+			}
+			catch (Exception e)
+			{
+
+				LogHelper.GetLogger().Error("UserRegister method failed.  " + e.ToString());
+
+			}
+			return result;
+
         }
 
         public List<OcUser> LoginUsersOverview()
         {
-           return  factory.LoginUsersOverview();
+			List<OcUser> result=new List<OcUser>();
+			try
+			{
+				 result=factory.LoginUsersOverview();
+				 LogHelper.GetLogger().Info("LoginUsersOverview method succeeded.");
+
+
+			}
+			catch (Exception e)
+			{
+				LogHelper.GetLogger().Error("UserRegister method failed.  " + e.ToString());
+				
+				
+			}
+			return result;
         }
 
-        public List<Company> GetAllCompanies()
-        {
-            return factory.GetAllCompanies();
-        }
+		public List<Company> GetAllCompanies()
+		{
+			List<Company> result = null;
+
+			try
+			{
+				result = factory.GetAllCompanies();
+				LogHelper.GetLogger().Info("GetAllCompanies method succeeded.");
+
+			}
+			catch (Exception e)
+			{
+				LogHelper.GetLogger().Error("GetAllCompanies method failed. " + e.ToString());
+
+			}
+			return result;
+		}
 
 		public OcUser GetUser(string username)
 		{
@@ -91,10 +229,13 @@ namespace Client
 			try
 			{
 				result = factory.GetUser(username);
+				LogHelper.GetLogger().Info("GetUser method succeeded.");
+
 			}
 			catch (Exception e)
 			{
-				//TODO log
+				LogHelper.GetLogger().Error("GetUser method failed. " + e.ToString());
+
 			}
 			return result;
 		}
@@ -106,10 +247,12 @@ namespace Client
 			try
 			{
 				result = factory.UpdateUser(user);
+				LogHelper.GetLogger().Info("UpdateUser method succeeded.");
+
 			}
 			catch (Exception e)
 			{
-				//TODO log
+				LogHelper.GetLogger().Error("UpdateUser method failed. " + e.ToString());
 			}
 			return result;
 		}
@@ -117,7 +260,19 @@ namespace Client
 
         public bool AnswerToRequest(Company company)
         {
-           return factory.AnswerToRequest(company);
+			bool result = false;
+			try
+			{
+				result = factory.AnswerToRequest(company);
+				LogHelper.GetLogger().Info("AnswerToRequest method succeeded.");
+
+			}
+			catch (Exception e)
+			{
+				LogHelper.GetLogger().Error("AnswerToRequest method failed. " + e.ToString());
+
+			}
+			return result;
         }
 
 		public List<OcProject> GetAllProjects()
@@ -127,11 +282,13 @@ namespace Client
 			try
 			{
 				result = factory.GetAllProjects();
+				LogHelper.GetLogger().Info("GetAllProjects method succeeded.");
+
 			}
 			catch (Exception e)
 			{
-				//TODO log
-				var rre = e;
+				LogHelper.GetLogger().Error("GetAllProjects method failed. " + e.ToString());
+
 			}
 			return result;
 		}

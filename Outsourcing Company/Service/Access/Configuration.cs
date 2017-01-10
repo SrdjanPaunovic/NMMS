@@ -14,6 +14,8 @@ namespace Service.Access
 			AutomaticMigrationsEnabled = true;
 			AutomaticMigrationDataLossAllowed = true;
 			ContextKey = "OutSourceDB";
+			LogHelper.GetLogger().Info("Configuration initialized");
+
 		}
 	}
 }

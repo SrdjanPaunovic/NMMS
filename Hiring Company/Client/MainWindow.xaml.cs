@@ -15,7 +15,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-[assembly: log4net.Config.XmlConfigurator(Watch =true)]
+//[assembly: log4net.Config.XmlConfigurator(Watch =true)]
+//[assembly: log4net.Config.XmlConfigurator(ConfigFile = "App.config", Watch = true)]
+
 
 namespace Client
 {
@@ -39,7 +41,7 @@ namespace Client
             CollectionView projectsView = (CollectionView)CollectionViewSource.GetDefaultView(projects.ItemsSource);
             PropertyGroupDescription projectGroupDescription = new PropertyGroupDescription("Status");
             projectsView.GroupDescriptions.Add(projectGroupDescription);
-			LogHelper.GetLogger().Debug("asdsadasd");
+			LogHelper.GetLogger().Debug("Main window initialized.");
 		}
 
 	}

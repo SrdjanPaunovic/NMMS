@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Common;
 
 namespace Client.View
 {
@@ -25,6 +26,8 @@ namespace Client.View
         {
             DataContext = new UserStoryViewModel(userStory);
             InitializeComponent();
+			LogHelper.GetLogger().Info(" User Story dialog initialized for ."+userStory.Name);
+
         }
     }
 }

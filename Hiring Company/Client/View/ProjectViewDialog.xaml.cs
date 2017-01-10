@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Common;
 
 namespace Client.View
 {
@@ -33,12 +34,15 @@ namespace Client.View
 
 			DataContext = new ProjectDialogViewModel();
             InitializeComponent();
+			LogHelper.GetLogger().Info(" Project view dialog initialized.");
+
         }
 
 		public ProjectViewDialog(Project project)
 		{
 			DataContext = new ProjectDialogViewModel(project);
 			InitializeComponent();
+			LogHelper.GetLogger().Info(" Project view dialog initialized.");
 		}
 
 
