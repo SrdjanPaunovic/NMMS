@@ -85,7 +85,7 @@ namespace Service
             proxy.Introduce(new Company(companyName));
 
             Console.ReadLine();
-
+			proxy.CloseCompany(myOutSourceCompany);
 
 
 

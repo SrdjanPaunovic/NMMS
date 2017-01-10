@@ -81,8 +81,8 @@ namespace HiringCompanyService
 			c3.Name = "C3";
 			c3.State = State.CompanyState.Partner;
 			HiringCompanyDB.Instance.AddCompany(c1);
-			HiringCompanyDB.Instance.AddCompany(c2);
-			HiringCompanyDB.Instance.AddCompany(c3);
+			//HiringCompanyDB.Instance.AddCompany(c2);
+			//HiringCompanyDB.Instance.AddCompany(c3);
 
 
 			host = new ServiceHost(typeof(HiringCompanyService));

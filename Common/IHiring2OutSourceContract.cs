@@ -14,7 +14,9 @@ namespace Common
         bool Introduce(Company company);
         [OperationContract]
         bool AnswerToRequest(Company company);
-    }
+		[OperationContract]
+		bool CloseCompany(Company company);
+	}
 
     [ServiceContract]
     public interface IHiring2OutSourceContract_CallBack

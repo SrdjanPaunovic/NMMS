@@ -65,10 +65,16 @@ namespace HiringCompanyService
 		public bool SendRequest(Company company)
 		{
 			//TODO send real request
-			Service.Hiring2OutSCompanyService.companies[company.Name].SendRequest(Program.baseAddress, Program.myHiringCompany);
-			//return HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
-            return true;
-           
+			bool success = HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
+			if (success)
+			{
+				Service.Hiring2OutSCompanyService.companies[company.Name].SendRequest(Program.baseAddress, Program.myHiringCompany);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public List<UserStory> GetUserStoryFromProject(Project project)
@@ -77,14 +83,14 @@ namespace HiringCompanyService
 		}
 
 
-        public bool UpdateProject(Project project)
-        {
-            return HiringCompanyDB.Instance.UpdateProject(project);
-        }
+		public bool UpdateProject(Project project)
+		{
+			return HiringCompanyDB.Instance.UpdateProject(project);
+		}
 
-        public bool UpdateUserStory(UserStory userStory)
-        {
-            return HiringCompanyDB.Instance.UpdateUserStory(userStory);
-        }
-    }
+		public bool UpdateUserStory(UserStory userStory)
+		{
+			return HiringCompanyDB.Instance.UpdateUserStory(userStory);
+		}
+	}
 }
