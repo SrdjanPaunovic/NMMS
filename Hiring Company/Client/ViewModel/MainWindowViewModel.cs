@@ -186,11 +186,16 @@ namespace Client.ViewModel
 		#region Methods
 		private void LoginClick(object param)
 		{
+			LogHelper.GetLogger().Info("LoginClick occurred.");
+
 			object[] parameters = param as object[];
 
 			if (parameters == null)
 			{
+				LogHelper.GetLogger().Error("Command parameters has NULL value.");
+
 				throw new Exception("[LoginCommnad] Command parameters has NULL value");
+			
 			}
 
 			string username = parameters[0].ToString();
@@ -212,27 +217,37 @@ namespace Client.ViewModel
 		private void ShowProfile()
 		{
 			//TODO
+			LogHelper.GetLogger().Info("ShowProfile called.");
+
 			ProfileDialog profileDialog = new ProfileDialog(LoggedUsername);
 			profileDialog.ShowDialog();
 		}
 
 		private void ShowEmployees()
 		{
+			LogHelper.GetLogger().Info("ShowEmployees called.");
+			
 			CurrentState = WindowState.EMPLOYEES;
 		}
 
 		private void ShowCompanies()
 		{
+			LogHelper.GetLogger().Info("ShowCompanies called.");
+
 			CurrentState = WindowState.COMPANIES;
 		}
 
 		private void ShowProjects()
 		{
+			LogHelper.GetLogger().Info("ShowProjects called.");
+
 			CurrentState = WindowState.PROJECTS;
 		}
 
 		private void LogOut(object param)
 		{
+			LogHelper.GetLogger().Info("LogOut called.");
+
 			using (HiringClientProxy proxy = ((App)App.Current).Proxy)
 			{
 				bool success = proxy.LogOut(LoggedUsername);
@@ -245,24 +260,33 @@ namespace Client.ViewModel
 				else
 				{
 					MessageBox.Show("Error while loggout");
+					LogHelper.GetLogger().Error("Error while loggout");
+
 				}
 			}
 		}
 
 		void NewProject()
 		{
+			LogHelper.GetLogger().Info("NewProject called.");
+
 			ProjectViewDialog projectDialog = new ProjectViewDialog();
 			projectDialog.ShowDialog();
 		}
 
 		void EditProject(Project project)
 		{
+			LogHelper.GetLogger().Info("EditProject called.");
+
 			ProjectViewDialog projectDialog = new ProjectViewDialog(project);
 			projectDialog.ShowDialog();
 		}
 
 		void FetchCompanies()
 		{
+
+			LogHelper.GetLogger().Info("FetchCompanies called.");
+
 			using (HiringClientProxy proxy = ((App)Application.Current).Proxy)
 			{
 				List<Company> result = proxy.GetAllCompanies();
@@ -284,6 +308,8 @@ namespace Client.ViewModel
 
 		void FetchProjects()
 		{
+			LogHelper.GetLogger().Info("FetchProjects called.");
+
 			using (HiringClientProxy proxy = ((App)Application.Current).Proxy)
 			{
 				List<Project> result = proxy.GetAllProjects();
@@ -304,6 +330,8 @@ namespace Client.ViewModel
 
 		private void SendCompanyRequest(object param)
 		{
+			LogHelper.GetLogger().Info("SendCompanyRequest called.");
+
 			if (param == null)
 			{
 				throw new Exception("[SendCompanyRequestCommnad] Command parameters has NULL value");

@@ -28,6 +28,8 @@ namespace Client
 		public MainWindow()
 		{
 			InitializeComponent();
+			LogHelper.GetLogger().Debug("Main window for outsourcing company initialized.");
+
 			/*CollectionView companiesView = (CollectionView)CollectionViewSource.GetDefaultView(partnerCompanies.ItemsSource);
 			PropertyGroupDescription companyGroupDescription = new PropertyGroupDescription("State");
 			companiesView.GroupDescriptions.Add(companyGroupDescription);

@@ -19,57 +19,69 @@ namespace Service
 
         public bool AddUser(OcUser user)
         {
+			LogHelper.GetLogger().Info("Call AddUser method.");
+
             return OutsourcingCompanyDB.Instance.AddUser(user);
         }
 
         public bool AddCompany(Company company)
         {
-            return OutsourcingCompanyDB.Instance.AddCompany(company);
+			LogHelper.GetLogger().Info("Call AddCompany method.");
+			return OutsourcingCompanyDB.Instance.AddCompany(company);
         }
 
         public bool AddProject(OcProject project)
         {
-            return OutsourcingCompanyDB.Instance.AddProject(project);
+			LogHelper.GetLogger().Info("Call AddProject method.");
+			return OutsourcingCompanyDB.Instance.AddProject(project);
         }
 
         public bool AddUserStory(UserStory userStory)
         {
-            return OutsourcingCompanyDB.Instance.AddUserStory(userStory);
+			LogHelper.GetLogger().Info("Call AddUserStory method.");
+			return OutsourcingCompanyDB.Instance.AddUserStory(userStory);
         }
 
         public bool AddTask(Common.Entities.Task task)
         {
-            return OutsourcingCompanyDB.Instance.AddTask(task);
+			LogHelper.GetLogger().Info("Call AddTask method.");
+			return OutsourcingCompanyDB.Instance.AddTask(task);
         }
 
         public bool AddTeam(Team team)
         {
-            return OutsourcingCompanyDB.Instance.AddTeam(team);
+			LogHelper.GetLogger().Info("Call AddTeam method.");
+			return OutsourcingCompanyDB.Instance.AddTeam(team);
         }
 
         public bool LogIn(string username, string password)
         {
-            return OutsourcingCompanyDB.Instance.LogIn(username, password);
+			LogHelper.GetLogger().Info("Call Login method.");
+			return OutsourcingCompanyDB.Instance.LogIn(username, password);
         }
 
         public bool LogOut(string username)
         {
-            return OutsourcingCompanyDB.Instance.LogOut(username);
+			LogHelper.GetLogger().Info("Call LogOut method.");
+			return OutsourcingCompanyDB.Instance.LogOut(username);
         }
 
         public bool UserRegister(OcUser user)
         {
-            return OutsourcingCompanyDB.Instance.UserRegister(user);
+			LogHelper.GetLogger().Info("Call UserRegister method.");
+			return OutsourcingCompanyDB.Instance.UserRegister(user);
         }
 
         public List<OcUser> LoginUsersOverview()
         {
-            return OutsourcingCompanyDB.Instance.LoginUsersOverview();
+			LogHelper.GetLogger().Info("Call LoginUsersOverview method.");
+			return OutsourcingCompanyDB.Instance.LoginUsersOverview();
         }
 
         public List<Company> GetAllCompanies()
         {
-            return OutsourcingCompanyDB.Instance.GetAllCompanies();
+			LogHelper.GetLogger().Info("Call GetAllCompanies method.");
+			return OutsourcingCompanyDB.Instance.GetAllCompanies();
         }
 
 
@@ -93,17 +105,21 @@ namespace Service
 
 		public List<OcProject> GetAllProjects()
 		{
+			LogHelper.GetLogger().Info("Call GetAllProjects method.");
 			return OutsourcingCompanyDB.Instance.GetAllProjects();
 		}
 
 		public OcUser GetUser(string username)
 		{
 			//throw new NotImplementedException();
+			LogHelper.GetLogger().Info("Call GetUser method.");
 			return OutsourcingCompanyDB.Instance.GetUser(username);           ///////////////////////odje
 		}
 
 		public bool UpdateUser(OcUser user)
 		{
+			//throw new NotImplementedException();
+			LogHelper.GetLogger().Info("Call UpdateUser method.");
 			return OutsourcingCompanyDB.Instance.UpdateUser(user);
 		}
 

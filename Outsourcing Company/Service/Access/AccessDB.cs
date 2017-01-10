@@ -6,12 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using ServiceContract;
 using Common.Entities;
+using Common;
 
 namespace Service.Access
 {
 	public class AccessDB : DbContext
 	{
-		public AccessDB() : base("OutSourceDB") { }
+		public AccessDB() : base("OutSourceDB") {
+			LogHelper.GetLogger().Info("AccessDB initialized");
+		}
 
 		public DbSet<OcUser> Users{get;set;}
         public DbSet<Team> Teams{get;set;}

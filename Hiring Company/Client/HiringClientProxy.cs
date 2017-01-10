@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 using ServiceContract;
 using System.ServiceModel;
 using Common.Entities;
+using Common;
 
+//[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+//[assembly: log4net.Config.XmlConfigurator(ConfigFile = "App.config", Watch = true)]
 
 namespace Client
 {
@@ -17,6 +20,7 @@ namespace Client
             : base(binding, address)
         {
             factory = this.CreateChannel();
+			LogHelper.GetLogger().Info("Hiring company client started comunication with service.");
         }
 
 
@@ -27,10 +31,11 @@ namespace Client
             try
             {
                 result = factory.LogIn(username, password);
+				LogHelper.GetLogger().Info("Login method succeeded.");
             }
             catch (Exception e)
             {
-                //TODO log
+				LogHelper.GetLogger().Error("Loging method failed. "+e.ToString());
             }
             return result;
         }
@@ -42,10 +47,14 @@ namespace Client
             try
             {
                 result = factory.LogOut(username);
+				LogHelper.GetLogger().Info("Logout method succeeded.");
+
             }
             catch (Exception e)
             {
                 //TODO log
+				LogHelper.GetLogger().Error(" Logout method failed.  "+e.ToString());
+
             }
             return result;
         }
@@ -67,10 +76,13 @@ namespace Client
             try
             {
                 result = factory.GetUser(username);
+				LogHelper.GetLogger().Info("GetUser method succeeded.");
+
             }
             catch (Exception e)
             {
-                //TODO log
+				LogHelper.GetLogger().Error("GetUser method failed. " + e.ToString());
+
             }
             return result;
         }
@@ -82,10 +94,13 @@ namespace Client
             try
             {
                 result = factory.UpdateUser(user);
+				LogHelper.GetLogger().Info("UpdateUser method succeeded.");
+
             }
             catch (Exception e)
             {
-                //TODO log
+				LogHelper.GetLogger().Error("UpdateUser method failed. " +e.ToString());
+
             }
             return result;
         }
@@ -97,10 +112,13 @@ namespace Client
             try
             {
                 result = factory.AddProject(project);
+				LogHelper.GetLogger().Info("AddProject method succeeded.");
+
             }
             catch (Exception e)
             {
-                //TODO log
+				LogHelper.GetLogger().Error("AddProject method failed. "+e.ToString());
+
             }
             return result;
         }
@@ -112,11 +130,13 @@ namespace Client
             try
             {
                 result = factory.GetAllProjects();
+				LogHelper.GetLogger().Info("GetAllProjects method succeeded.");
+
             }
             catch (Exception e)
             {
-                //TODO log
-                var rre = e;
+				LogHelper.GetLogger().Error("GetAllProjects method failed. "+e.ToString());
+
             }
             return result;
         }
@@ -129,10 +149,13 @@ namespace Client
             try
             {
                 result = factory.SendRequest(company);
+				LogHelper.GetLogger().Info("SendRequest method succeeded.");
+
             }
             catch (Exception e)
             {
-                var rre = e;
+				LogHelper.GetLogger().Error("SendRequest method failed. "+e.ToString());
+
             }
             return result;
         }
@@ -144,11 +167,14 @@ namespace Client
             try
             {
                 result = factory.GetUserStoryFromProject(project);
+
+				LogHelper.GetLogger().Info("GetUserStoryFromProject method succeeded.");
+
             }
             catch (Exception e)
             {
-                //TODO log
-                var rre = e;
+				LogHelper.GetLogger().Error("GetUserStoryFromProject method failed. " + e.ToString());
+
             }
             return result;
         }
@@ -160,11 +186,13 @@ namespace Client
             try
             {
                 result = factory.GetAllCompanies();
+				LogHelper.GetLogger().Info("GetAllCompanies method succeeded.");
+
             }
             catch (Exception e)
             {
-                //TODO log
-                var rre = e;
+				LogHelper.GetLogger().Error("GetAllCompanies method failed. "+e.ToString());
+
             }
             return result;
         }
@@ -177,10 +205,12 @@ namespace Client
             try
             {
                 result = factory.UpdateProject(project);
+				LogHelper.GetLogger().Info("UpdateProject method succeeded.");
+
             }
             catch (Exception e)
             {
-                //TODO log
+				LogHelper.GetLogger().Error("UpdateProject method failed. "+e.ToString());
             }
             return result;
         }
@@ -192,6 +222,9 @@ namespace Client
             try
             {
                 result = factory.UpdateUserStory(userStory);
+
+				LogHelper.GetLogger().Info("UpdateUserStory method succeeded.");
+
             }
             catch (Exception e)
             {

@@ -4,6 +4,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common;
 
 namespace Service.Access
 {
@@ -14,6 +15,8 @@ namespace Service.Access
 			AutomaticMigrationsEnabled = true;
 			AutomaticMigrationDataLossAllowed = true;
 			ContextKey = "HiringDB";
+			LogHelper.GetLogger().Info("Configuration initialized");
+
 		}
 	}
 }

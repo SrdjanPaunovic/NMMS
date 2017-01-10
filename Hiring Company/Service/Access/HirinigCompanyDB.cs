@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Entities;
+using Common;
 
 namespace Service.Access
 {
@@ -41,22 +42,28 @@ namespace Service.Access
 				int i = db.SaveChanges();
 				if (i > 0)
 				{
+					LogHelper.GetLogger().Info(" AddUser method succeeded. Returned true.");
 					return true;
 				}
+				LogHelper.GetLogger().Info("AddUser method returned false.");
 				return false;
 			}
 		}
 
 		public bool AddCompany(Company company)
 		{
+
 			using (var db = new AccessDB())
 			{
 				db.Companies.Add(company);
 				int i = db.SaveChanges();
 				if (i > 0)
 				{
+					LogHelper.GetLogger().Info("AddCompany method succeeded. Returned true.");
+
 					return true;
 				}
+				LogHelper.GetLogger().Info("AddCompany method succeeded. Returned false.");
 				return false;
 
 			}
@@ -90,9 +97,12 @@ namespace Service.Access
 						user.IsAuthenticated = true;
 					context.Entry(user).State = System.Data.Entity.EntityState.Modified;
 					context.SaveChanges();
+					LogHelper.GetLogger().Info("AddCompany method succeeded. Returned true.");
+
 					return true;
 				}
 			}
+			LogHelper.GetLogger().Info("AddCompany method returned false.");
 			return false;
 		}
 
@@ -111,10 +121,12 @@ namespace Service.Access
 						user.IsAuthenticated = false;
 						context.Entry(user).State = System.Data.Entity.EntityState.Modified;
 						context.SaveChanges();
+						LogHelper.GetLogger().Info("LogOut method succeeded. Returned true.");
 						return true;
 					}
 				}
 			}
+			LogHelper.GetLogger().Info("LogOut method returned false.");
 			return false;
 		}
 
@@ -129,16 +141,18 @@ namespace Service.Access
 				{
 					if (registeredUser.Username.Equals(user.Username))
 					{
+						LogHelper.GetLogger().Info(" UserRegister method returned false.");
 						return false;
 					}
 				}
 				if (HiringCompanyDB.Instance.AddUser(user))
 				{
+					LogHelper.GetLogger().Info("Call UserRegister method succeeded. Returned true.");
 					return true;
 				}
 
 			}
-
+			LogHelper.GetLogger().Info(" UserRegister method returned false.");
 			return false;
 		}
 
@@ -149,6 +163,8 @@ namespace Service.Access
 				List<User> users = new List<User>();
 				var result = context.Users;
 				users = result.ToList();
+				LogHelper.GetLogger().Info("GetAllUsers method succeeded.");
+
 				return users;
 
 			}
@@ -171,6 +187,8 @@ namespace Service.Access
 					}
 
 				}
+				LogHelper.GetLogger().Info("LoginUsersOverview method succeeded. Returned list of users loged in.");
+
 				return loginUsers;
 			}
 		}
@@ -181,6 +199,8 @@ namespace Service.Access
 			{
 				var result = from company in context.Companies select company;
 				List<Company> companies = result.ToList();
+				LogHelper.GetLogger().Info("GetAllCompanies method succeeded. Returned list of all companies.");
+
 				return companies;
 			}
 		}
@@ -211,9 +231,13 @@ namespace Service.Access
 							ModifyUserProperties(us, user);
 							context.Entry(us).State = System.Data.Entity.EntityState.Modified;
 							context.SaveChanges();
+							LogHelper.GetLogger().Info(" UpdateUser method succeeded.");
+
 						}
 						else
 						{
+							LogHelper.GetLogger().Info("UpdateUser method returned false.");
+
 							return false;
 						}
 
@@ -224,9 +248,12 @@ namespace Service.Access
 						context.Entry(us).State = System.Data.Entity.EntityState.Modified;
 						context.SaveChanges();
 					}
+					LogHelper.GetLogger().Info(" UpdateUser method succeeded. Returned true.");
+
 					return true;
 				}
 			}
+			LogHelper.GetLogger().Info(" UpdateUser method returned false.");
 
 			return false;
 		}
@@ -241,6 +268,9 @@ namespace Service.Access
 			original.Surname = user.Surname;
 			original.Username = user.Username;
 			original.Password_changed = user.Password_changed;
+
+			LogHelper.GetLogger().Info("ModifyUserProperties method succeeded.");
+
 		}
 
 		public User GetUser(string username)
@@ -251,9 +281,12 @@ namespace Service.Access
 				User user = context.Users.FirstOrDefault((x) => x.Username == username);
 				if (user != null)
 				{
+					LogHelper.GetLogger().Info("GetUser method succeeded.");
+
 					return user;
 				}
 			}
+			LogHelper.GetLogger().Info(" GetUser returned null.");
 
 			return null;
 		}
@@ -266,8 +299,12 @@ namespace Service.Access
 				int i = db.SaveChanges();
 				if (i > 0)
 				{
+					LogHelper.GetLogger().Info("AddProject method succeeded. Returned true.");
+
 					return true;
 				}
+				LogHelper.GetLogger().Info(" AddProject method returned false.");
+
 				return false;
 
 			}
@@ -302,8 +339,11 @@ namespace Service.Access
 					}
 					context.Entry(proj).State = System.Data.Entity.EntityState.Modified;
 					context.SaveChanges();
+					LogHelper.GetLogger().Info(" UpdateProject method succeeded. Returned true.");
+
 					return true;
 				}
+				LogHelper.GetLogger().Info("UpdateProject method returned false.");
 
 				return false;
 			}
@@ -315,6 +355,7 @@ namespace Service.Access
 			{
 				List<Project> projects = context.Projects.ToList();
 
+				LogHelper.GetLogger().Info("GetAllProjects method succeeded. Returned list of projects.");
 
 				return projects;
 			}
@@ -325,8 +366,8 @@ namespace Service.Access
 			using (AccessDB context = new AccessDB())
 			{
 				List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
-
-                return userStories;
+				LogHelper.GetLogger().Info("GetUserStoryFromProject method succeeded. Returned list of user stories.");
+				return userStories;
 			}
 		}
 

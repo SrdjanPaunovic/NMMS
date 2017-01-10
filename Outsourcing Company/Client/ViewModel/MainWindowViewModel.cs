@@ -177,10 +177,14 @@ namespace Client.ViewModel
 		#region Methods
 		private void LoginClick(object param)
 		{
+			LogHelper.GetLogger().Info("LoginClick occurred.");
+
 			object[] parameters = param as object[];
 
 			if (parameters == null)
 			{
+				LogHelper.GetLogger().Error("Command parameters has NULL value.");
+
 				throw new Exception("[LoginCommnad] Command parameters has NULL value");
 			}
 
@@ -202,23 +206,30 @@ namespace Client.ViewModel
 
 		private void ShowProfile()
 		{
-			//TODO
+			LogHelper.GetLogger().Info("ShowProfile called.");
+
 			ProfileDialog profileDialog = new ProfileDialog(LoggedUsername);
 			profileDialog.ShowDialog();
 		}
 
 		private void ShowEmployees()
 		{
+			LogHelper.GetLogger().Info("ShowEmployees called.");
+
 			CurrentState = WindowState.EMPLOYEES;
 		}
 
 		private void ShowCompanies()
 		{
+			LogHelper.GetLogger().Info("ShowCompanies called.");
+
 			CurrentState = WindowState.COMPANIES;
 		}
 
 		private void ShowProjects()
 		{
+			LogHelper.GetLogger().Info("ShowProjects called.");
+
 			CurrentState = WindowState.PROJECTS;
 		}
 

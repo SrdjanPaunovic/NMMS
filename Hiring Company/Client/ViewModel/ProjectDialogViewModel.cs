@@ -115,13 +115,19 @@ namespace Client.ViewModel
 
 		private void CancelClick(object param)
 		{
+			LogHelper.GetLogger().Info("Cancel click occurred.");
+
 			var userControl = param as UserControl;
 			Window parentWindow = Window.GetWindow(userControl);
+			LogHelper.GetLogger().Info(parentWindow.Name+" closed.");
+
 			parentWindow.Close();
 		}
 
 		private void SaveClick(object param)
 		{
+			LogHelper.GetLogger().Info("Save click occurred.");
+
 			var userControl = param as UserControl;
 			Window parentWindow = Window.GetWindow(userControl);
 
@@ -141,12 +147,16 @@ namespace Client.ViewModel
 				{
 					//TODO Logger
 					parentWindow.Close();
+					LogHelper.GetLogger().Info(parentWindow.Name + " closed.");
+
 				}
 			}
 		}
 
 		private void AddStoryClick(object param)
 		{
+			LogHelper.GetLogger().Info("AddStoryClick called.");
+
 			var name = param as string;
 			if(name == String.Empty)
 			{
@@ -162,15 +172,19 @@ namespace Client.ViewModel
 
 		private void EditStoryClick(object param)
 		{
+			LogHelper.GetLogger().Info("EditStoryClick called.");
+
 			var story = param as UserStory;
 
             UserStoryViewDialog usDialog = new UserStoryViewDialog(story);
             usDialog.ShowDialog();
+			LogHelper.GetLogger().Info(usDialog.Name+ "shown");
 			
 		}
 
 		private void DeleteStoryClick(object param)
 		{
+			LogHelper.GetLogger().Info("DeleteStoryClick called.");
 			var story = param as UserStory;
 			Project.UserStories.Remove(story);
 
