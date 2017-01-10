@@ -61,5 +61,8 @@ namespace ServiceContract
 
 		[OperationContract]
 		bool AnswerToUserStory(Company company, Project project, UserStory userStory);
+
+        [OperationContract]
+        bool ModifyCompany(Company company);
 	}
 }

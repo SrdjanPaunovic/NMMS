@@ -113,7 +113,16 @@
                         <GridViewColumn Width="120">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Command="{Binding SendCompanyRequestCommand}" CommandParameter="{Binding Id}">Send request</Button>
+                                    <Button Name="company_btn" Command="{Binding ElementName=viewModel, Path=AcceptCompanyRequestCommand}" CommandParameter="{Binding ElementName=company_btn,Path=DataContext}">Accept Request
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="120">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="company_btn2" Command="{Binding ElementName=viewModel, Path=RejectCompanyRequestCommand}" CommandParameter="{Binding ElementName=company_btn2,Path=DataContext}">Reject Request
+                                    </Button>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
