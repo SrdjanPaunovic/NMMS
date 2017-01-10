@@ -7,6 +7,9 @@
              mc:Ignorable="d" 
              Name="Root"
              d:DesignHeight="30" d:DesignWidth="300">
+    <UserControl.Resources>
+        <BitmapImage x:Key="MyImageSource" UriSource="/Common;component/Images/edit.png" />
+    </UserControl.Resources>
     <Border BorderThickness="2" >
         <Border.Style>
             <Style TargetType="Border">
@@ -42,8 +45,10 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>-->
-            <Button Name="Edit" Grid.Column="1" Margin="2" Click="Edit_Click">E</Button>
-            <Button Name="Delete" Grid.Column="2" Margin="2" Click="Delete_Click">X</Button>
+            <local:ImageButton x:Name="Edit_btn" Grid.Column="1" Margin="2" Click="Edit_Click" Width="24" Height="24"/>
+            <local:ImageButton x:Name="Delete_btn" Grid.Column="2" Margin="2" Click="Delete_Click" Width="24" Height="24"/>
+            <!--<Button Name="Edit" Grid.Column="1" Margin="2" Click="Edit_Click">E</Button>-->
+            <!--<Button Name="Delete" Grid.Column="2" Margin="2" Click="Delete_Click">X</Button>-->
         </Grid>
     </Border>
 </UserControl>

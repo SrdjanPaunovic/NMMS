@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Common;
+using System.Windows.Media.Imaging;
 
 namespace Client.ViewModel
 {
@@ -22,7 +23,9 @@ namespace Client.ViewModel
 
         public UserStoryViewModel(UserStory userStory)
         {
-            this.UserStory = userStory;
+			
+
+			this.UserStory = userStory;
             using (HiringClientProxy proxy = ((App)App.Current).Proxy)
             {
                 List<Common.Entities.Task> tasks = proxy.GetTasksFromUserStory(UserStory);
@@ -69,10 +72,10 @@ namespace Client.ViewModel
                 return deleteTaskCommand ?? (deleteTaskCommand = new RelayCommand((param) => this.DeleteTaskClick(param)));
             }
         }
-        #endregion Commands
+		#endregion Commands
 
-        #region Properties
-        public UserStory UserStory
+		#region Properties
+		public UserStory UserStory
         {
             get { return userStory; }
             set { userStory = value; }
