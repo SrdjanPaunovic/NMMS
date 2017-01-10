@@ -65,10 +65,24 @@ namespace HiringCompanyService
 		public bool SendRequest(Company company)
 		{
 			//TODO send real request
-			Service.Hiring2OutSCompanyService.companies[company.Name].SendRequest(Program.baseAddress, Program.myHiringCompany);
-			//return HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
-            return true;
-           
+			bool success = HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
+			if (success)
+			{
+				try
+				{
+					Service.Hiring2OutSCompanyService.companies[company.Name].SendRequest(Program.baseAddress, Program.myHiringCompany);
+					return true;
+				}
+				catch (Exception)
+				{
+					
+					throw;
+				}
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public List<UserStory> GetUserStoryFromProject(Project project)
@@ -77,16 +91,46 @@ namespace HiringCompanyService
 		}
 
 
-        public bool UpdateProject(Project project)
-        {
-            return HiringCompanyDB.Instance.UpdateProject(project);
-        }
+		public bool UpdateProject(Project project)
+		{
+			return HiringCompanyDB.Instance.UpdateProject(project);
+		}
 
-        public bool UpdateUserStory(UserStory userStory)
-        {
-            return HiringCompanyDB.Instance.UpdateUserStory(userStory);
-        }
+		public bool UpdateUserStory(UserStory userStory)
+		{
+			return HiringCompanyDB.Instance.UpdateUserStory(userStory);
+		}
 
+
+		public bool SendProject(Company company, Project project)
+		{
+			try
+			{
+				// salje napravljen i odobren projekat
+				Service.Hiring2OutSCompanyService.companies[company.Name].SendProject(Program.myHiringCompany, project);  
+				return true;
+			}
+			catch (Exception)
+			{
+				
+				throw;
+			}
+		}
+
+		public bool AnswerToUserStory(Company company, Project project, UserStory userStory)
+		{
+			try
+			{
+				// odgovara na zahtev za US
+				Service.Hiring2OutSCompanyService.companies[company.Name].AnswerToUserStory(Program.myHiringCompany, userStory, project); 
+				return true;
+			}
+			catch (Exception)
+			{
+				
+				throw;
+			}
+		}
 
         public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
         {

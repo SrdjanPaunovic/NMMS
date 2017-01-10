@@ -50,10 +50,10 @@ namespace ServiceContract
         [OperationContract]
         List<Company> GetAllCompanies();
 
-        [OperationContract]
-        List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
+		[OperationContract]
+		bool SendProject(Company company, Project project);
 
-        [OperationContract]
-        Project GetProjectFromUserStory(UserStory userStory);
+		[OperationContract]
+		bool AnswerToUserStory(Company company, Project project, UserStory userStory);
 	}
 }
