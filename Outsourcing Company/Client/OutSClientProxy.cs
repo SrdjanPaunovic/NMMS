@@ -265,6 +265,7 @@ namespace Client
 			{
 				result = factory.AnswerToRequest(company);
 				LogHelper.GetLogger().Info("AnswerToRequest method succeeded.");
+                
 
 			}
 			catch (Exception e)
@@ -326,6 +327,54 @@ namespace Client
 			}
 			return result;
 		}
-	}
+
+
+        public bool ModifyCompany(Company company)
+        {
+            bool result = false;
+            try
+            {
+                result = factory.ModifyCompany(company);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return result;
+        }
+
+
+        public bool ChangeCompanyState(Company company, State.CompanyState state)
+        {
+            bool result = false;
+            try
+            {
+                result = factory.ChangeCompanyState(company, state);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return result;
+        }
+
+
+        public bool RemoveCompany(Company company)
+        {
+            bool result = false;
+            try
+            {
+                result = factory.RemoveCompany(company);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return result;
+        }
+    }
 }
 

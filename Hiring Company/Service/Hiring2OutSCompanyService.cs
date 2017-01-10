@@ -27,7 +27,10 @@ namespace Service
 		public bool AnswerToRequest(Company company)
 		{
 			// add to DB and change status to partner(modify current)
-			return HiringCompanyDB.Instance.AddCompany(company);
+            if (company.State == State.CompanyState.NoPartner)
+                return HiringCompanyDB.Instance.RemoveCompany(company);
+            else
+                return HiringCompanyDB.Instance.ModifyCompanyToPartner(company);
 		}
 
 		public static IHiring2OutSourceContract_CallBack Callback

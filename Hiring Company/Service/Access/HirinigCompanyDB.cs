@@ -416,7 +416,7 @@ namespace Service.Access
 		{
 			using (AccessDB context = new AccessDB())
 			{
-				Company c = context.Companies.FirstOrDefault<Company>((x) => x.Id == company.Id);
+				Company c = context.Companies.FirstOrDefault<Company>((x) => x.Name == company.Name);
 				if (c == null)
 				{
 					return false;
@@ -464,6 +464,25 @@ namespace Service.Access
                 proj.UserStories = null; //because of circular reference
                 return proj;
             }
+        }
+
+
+
+        public bool ModifyCompanyToPartner(Company company)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+
+                Company com = context.Companies.FirstOrDefault((x) => x.Name == company.Name);
+                if (com != null)
+                {
+                    com.State = State.CompanyState.Partner;
+                    context.Entry(com).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

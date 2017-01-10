@@ -467,5 +467,11 @@ namespace Client
         {
             throw new NotImplementedException();
         }
+
+
+        public bool ModifyCompany(Company company)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

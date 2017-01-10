@@ -49,9 +49,19 @@ namespace ServiceContract
 		[OperationContract]
 		bool UpdateUser(OcUser user);
 
+        [OperationContract]
+        bool ModifyCompany(Company company);
+
+        [OperationContract]
+        bool ChangeCompanyState(Company company, State.CompanyState state);
+        [OperationContract]
+        bool RemoveCompany(Company company);
+
+
 		[OperationContract]
 		bool SendUserStory(Company company, UserStory userStrory, Project project);
 		[OperationContract]
 		bool AnswerToProject(Company company, Project project);
+       
 	}
 }
