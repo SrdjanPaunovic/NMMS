@@ -108,6 +108,31 @@ namespace Service
 		}
 
 
-		
+
+
+
+		public bool SendUserStory(Company company, UserStory userStrory, Project project)
+		{
+			return OutsourcingCompanyDB.Instance.AddUserStory(userStrory);   // promeniti u bazi (modyfy)
+		}
+
+		public bool AnswerToProject(Company company, Project project)
+		{
+			try
+			{
+				string ipAdress = OutSurce2HiringProxy.hiringAdress[company.Name];
+				Program.factory = new DuplexChannelFactory<IHiring2OutSourceContract>(Program.instanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(ipAdress));
+				IHiring2OutSourceContract proxy1 = Program.factory.CreateChannel();
+				proxy1.AnswerToProject(Program.myOutSourceCompany, project);
+				return true;
+
+			}
+			catch (Exception)
+			{
+				return false;
+				throw;
+			}
+			
+		}
 	}
 }

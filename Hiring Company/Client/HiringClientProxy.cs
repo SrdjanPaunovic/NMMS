@@ -200,5 +200,35 @@ namespace Client
             return result;
         }
 
-    }
+
+
+		public bool SendProject(Company company, Project project)
+		{
+			bool result = false;
+			try
+			{
+				result = factory.SendProject(company, project);
+			}
+			catch (Exception)
+			{
+				
+				throw;
+			}
+			return result;
+		}
+
+		public bool AnswerToUserStory(Company company, Project project, UserStory userStory)
+		{
+			bool result = false;
+			try
+			{
+				result = factory.AnswerToUserStory(company, project, userStory);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+			return result;
+		}
+	}
 }

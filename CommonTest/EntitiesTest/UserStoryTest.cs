@@ -83,5 +83,13 @@ namespace CommonTest.EntitiesTest
             Assert.AreEqual(state, userStoryUnderTest.State);
         }
 
+		[Test]
+		public void IsUserStoryPropertyTest()
+		{
+			bool accept = true;
+			userStoryUnderTest.IsUserStoryAccepted = accept;
+			Assert.AreEqual(accept, userStoryUnderTest.IsUserStoryAccepted);
+		}
+
     }
 }

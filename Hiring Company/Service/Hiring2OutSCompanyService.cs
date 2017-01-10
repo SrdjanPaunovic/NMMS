@@ -42,5 +42,16 @@ namespace Service
 			companies.Remove(company.Name);
 			return HiringCompanyDB.Instance.RemoveCompany(company);
 		}
+
+
+		public bool SendUserStory(Company company, UserStory userStrory, Project project)
+		{
+			return HiringCompanyDB.Instance.AddUserStory(userStrory);   // nova prica ide u bazu
+		}
+
+		public bool AnswerToProject(Company company, Project project)
+		{
+			return HiringCompanyDB.Instance.AddProject(project);   // odgovor na projekat
+		}
 	}
 }

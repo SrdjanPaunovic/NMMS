@@ -30,5 +30,7 @@ namespace Service.Access
 		bool UpdateUser(OcUser user);
 
 		List<OcProject> GetAllProjects();
+
+		bool ModyfyUserStory(UserStory userStory);
 	}
 }

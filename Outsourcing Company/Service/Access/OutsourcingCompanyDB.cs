@@ -317,13 +317,22 @@ namespace Service.Access
 			}
 		}
 
-
-
-
-
-		public List<OcProject> GetAllProject()
+		public bool ModyfyUserStory(UserStory userStory)
 		{
-			throw new NotImplementedException();
+			using (AccessDB context = new AccessDB())
+			{
+
+				UserStory us = context.UserStories.FirstOrDefault((x) => x.Id == userStory.Id);
+				if (us != null)
+				{
+					us.IsUserStoryAccepted = true;
+					context.Entry(us).State = System.Data.Entity.EntityState.Modified;
+					context.SaveChanges();
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }
+

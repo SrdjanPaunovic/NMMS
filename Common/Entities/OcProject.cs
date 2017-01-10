@@ -12,5 +12,15 @@ namespace Common.Entities
     public class OcProject:Project
     {
         public Team Team { get; set; }
+
+		public OcProject()
+		{
+
+		}
+		public OcProject(Project proj):base()
+		{
+			
+		} 
+	
     }
 }

@@ -17,5 +17,22 @@ namespace Service
             hiringAdress.Add(company.Name, ipAdress);
             return OutsourcingCompanyDB.Instance.AddCompany(company);
         }
-    }
+
+
+		public bool SendProject(Company company, Project project)
+		{
+			OcProject proj = new OcProject(project);
+			return OutsourcingCompanyDB.Instance.AddProject(proj);
+		}
+
+		public bool AnswerToUserStory(Company company, UserStory userStory, Project project)
+		{
+			if (userStory.IsUserStoryAccepted)
+			{
+				return OutsourcingCompanyDB.Instance.ModyfyUserStory(userStory);
+
+			}
+			else return false;
+		}
+	}
 }
