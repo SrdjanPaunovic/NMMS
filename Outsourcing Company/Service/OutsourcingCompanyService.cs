@@ -92,6 +92,7 @@ namespace Service
                 string ipAdress = OutSurce2HiringProxy.hiringAdress[company.Name];
                 Program.factory = new DuplexChannelFactory<IHiring2OutSourceContract>(Program.instanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(ipAdress));
                 IHiring2OutSourceContract proxy1 = Program.factory.CreateChannel();
+                Program.myOutSourceCompany.State = company.State;
                 proxy1.AnswerToRequest(Program.myOutSourceCompany);
                 return true;
             }
@@ -150,5 +151,23 @@ namespace Service
 			}
 			
 		}
-	}
+
+
+        public bool ModifyCompany(Company company)
+        {
+            return OutsourcingCompanyDB.Instance.ModifyCompanyToPartner(company);
+        }
+
+
+        public bool ChangeCompanyState(Company company, State.CompanyState state)
+        {
+            return OutsourcingCompanyDB.Instance.ChangeCompanyState(company, state);
+        }
+
+
+        public bool RemoveCompany(Company company)
+        {
+            return OutsourcingCompanyDB.Instance.RemoveCompany(company);
+        }
+    }
 }

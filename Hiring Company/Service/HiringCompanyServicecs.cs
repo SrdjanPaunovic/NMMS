@@ -165,5 +165,11 @@ namespace HiringCompanyService
         {
             return HiringCompanyDB.Instance.GetProjectFromUserStory(userStory);
         }
+
+
+        public bool ModifyCompany(Company company)
+        {
+            return HiringCompanyDB.Instance.ModifyCompanyToPartner(company);
+        }
     }
 }

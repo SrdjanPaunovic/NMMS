@@ -32,5 +32,10 @@ namespace Service.Access
 		List<OcProject> GetAllProjects();
 
 		bool ModyfyUserStory(UserStory userStory);
-	}
+
+        bool ModifyCompanyToPartner(Company company);
+        bool ChangeCompanyState(Company company, State.CompanyState state);
+
+        bool RemoveCompany(Company company);
+    }
 }

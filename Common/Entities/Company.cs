@@ -37,13 +37,13 @@ namespace Common.Entities
             get { return id; }
             set { id = value; }
         }
-
+        [DataMember]
         public string Name
         {
             get { return name; }
             set { name = value; }
         }
-
+        [DataMember]
         public Common.Entities.State.CompanyState State
         {
             get { return state; }

@@ -15,6 +15,7 @@ namespace Service
         public bool SendRequest(string ipAdress, Company company)
         {
             hiringAdress.Add(company.Name, ipAdress);
+            company.State = State.CompanyState.NoPartner;
             return OutsourcingCompanyDB.Instance.AddCompany(company);
         }
 
