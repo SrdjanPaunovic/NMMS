@@ -34,6 +34,9 @@ namespace Service.Access
 
         bool UpdateTask(Common.Entities.Task task);
 
+        List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
+        Project GetProjectFromUserStory(UserStory userStory);
+
         // double PasswordAge();
 
         // jos treba funkcija za provjeru koliko je user storija zavrseno od nekog projekta.

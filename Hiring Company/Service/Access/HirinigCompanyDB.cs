@@ -271,9 +271,11 @@ namespace Service.Access
                     List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
                     foreach (var us in userStories)
                     {
-                        if(project.UserStories.ToList().Exists((x)=> x.Id!=us.Id)){
-                            context.Entry(us).State=System.Data.Entity.EntityState.Deleted;
+                        if(project.UserStories.ToList().Exists((x)=> x.Id==us.Id)){
+                            continue;
                         }
+
+                        context.Entry(us).State = System.Data.Entity.EntityState.Deleted;
                     }
 
                     foreach (var us in project.UserStories)
@@ -309,7 +311,7 @@ namespace Service.Access
             {
                 List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
 
-				return userStories;
+                return userStories;
 			}
 		}
 
@@ -322,6 +324,24 @@ namespace Service.Access
                 if (us != null)
                 {
                     us.UpdateProperties(userStory);
+                    List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
+                    foreach (var t in tasks)
+                    {
+                        if (userStory.Tasks.ToList().Exists((x) => x.Id == t.Id))
+                        {
+                            continue;
+                        }
+
+                        context.Entry(t).State = System.Data.Entity.EntityState.Deleted;
+                    }
+
+                    foreach (var t in userStory.Tasks)
+                    {
+                        if (t.Id == 0)
+                        {
+                            us.Tasks.Add(t);
+                        }
+                    }
                     context.Entry(us).State = System.Data.Entity.EntityState.Modified;
                     context.SaveChanges();
                     return true;
@@ -334,6 +354,27 @@ namespace Service.Access
         public bool UpdateTask(Common.Entities.Task task)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
+
+                return tasks;
+            }
+        }
+
+        public Project GetProjectFromUserStory(UserStory userStory)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                UserStory us = context.UserStories.Include("Project").FirstOrDefault<UserStory>((x) => x.Id == userStory.Id);
+                Project proj = context.Entry(us).Reference("Project").CurrentValue as Project;
+                proj.UserStories = null; //because of circular reference
+                return proj;
+            }
         }
     }
 }

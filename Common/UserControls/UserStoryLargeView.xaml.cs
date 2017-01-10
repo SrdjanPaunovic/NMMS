@@ -25,19 +25,6 @@ namespace Common.UserControls
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty EditTaskCommandProperty =
-        DependencyProperty.Register(
-            "EditTaskCommand",
-            typeof(ICommand),
-            typeof(UserStoryLargeView),
-            new UIPropertyMetadata(null));
-
-        public ICommand EditTaskCommand
-        {
-            get { return (ICommand)GetValue(EditTaskCommandProperty); }
-            set { SetValue(EditTaskCommandProperty, value); }
-        }
-
         public static readonly DependencyProperty DeleteTaskCommandProperty =
         DependencyProperty.Register(
             "DeleteTaskCommand",
@@ -49,14 +36,6 @@ namespace Common.UserControls
         {
             get { return (ICommand)GetValue(DeleteTaskCommandProperty); }
             set { SetValue(DeleteTaskCommandProperty, value); }
-        }
-
-        private void Task_EditClicked(object sender, EventArgs e)
-        {
-            if (EditTaskCommand != null && EditTaskCommand.CanExecute(sender))
-            {
-                EditTaskCommand.Execute(sender);
-            }
         }
 
         private void Task_DeleteClicked(object sender, EventArgs e)

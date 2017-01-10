@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:Common.UserControls"
              x:Name="Root"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="500">
+             d:DesignHeight="600" d:DesignWidth="600">
     <UserControl.Resources>
         <ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
@@ -32,7 +32,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <GroupBox Grid.Column="0" Header="Project Name" BorderThickness="2" Margin="5,0">
-                <TextBlock Grid.Column="0" Text="{Binding UserStory.Project.Name}"/>
+                <TextBlock Grid.Column="0" Text="{Binding UserStory.Project.Name}" VerticalAlignment="Center"/>
             </GroupBox>
             <GroupBox Grid.Column="1" Header="Story State" BorderThickness="2" Margin="5,0">
                 <ComboBox ItemsSource="{Binding Source={StaticResource dataFromEnum}}" SelectedItem="{Binding UserStory.State}"/>
@@ -90,19 +90,17 @@
                         </Button>
                     </Grid>
                     <ScrollViewer Grid.Row="1" 
-                           Margin="5" 
-                           MaxHeight="170"
+                           Margin="5"
                            Height="Auto" >
                         <ItemsControl ItemsSource="{Binding UserStory.Tasks}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel  Background="White" IsItemsHost="True" Orientation="Vertical"></StackPanel>
+                                    <WrapPanel IsItemsHost="True" Orientation="Horizontal"></WrapPanel>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <local:UserStoryShortView EditClicked="Task_EditClicked" 
-                                                              DeleteClicked="Task_DeleteClicked"/>
+                                    <local:TaskView DeleteClicked="Task_DeleteClicked" Width="200" Height="250" Margin="5"/>
                                     <!--<TextBlock Text="{Binding Name}"></TextBlock>-->
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

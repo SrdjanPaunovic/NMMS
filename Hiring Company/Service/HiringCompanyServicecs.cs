@@ -86,5 +86,17 @@ namespace HiringCompanyService
         {
             return HiringCompanyDB.Instance.UpdateUserStory(userStory);
         }
+
+
+        public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
+        {
+            return HiringCompanyDB.Instance.GetTasksFromUserStory(userStory);
+        }
+
+
+        public Project GetProjectFromUserStory(UserStory userStory)
+        {
+            return HiringCompanyDB.Instance.GetProjectFromUserStory(userStory);
+        }
     }
 }

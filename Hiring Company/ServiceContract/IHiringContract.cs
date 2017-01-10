@@ -49,5 +49,11 @@ namespace ServiceContract
 
         [OperationContract]
         List<Company> GetAllCompanies();
+
+        [OperationContract]
+        List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
+
+        [OperationContract]
+        Project GetProjectFromUserStory(UserStory userStory);
 	}
 }

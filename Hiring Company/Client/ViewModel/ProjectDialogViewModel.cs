@@ -130,7 +130,7 @@ namespace Client.ViewModel
 				bool success = false;
 				if (isEditing)
 				{
-					proxy.UpdateProject(Project);
+					success = proxy.UpdateProject(Project);
 				}
 				else
 				{

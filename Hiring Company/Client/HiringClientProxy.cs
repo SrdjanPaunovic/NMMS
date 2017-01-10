@@ -196,9 +196,40 @@ namespace Client
             catch (Exception e)
             {
                 //TODO log
+                var r = e;
             }
             return result;
         }
 
+        public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
+        {
+            List<Common.Entities.Task> result = null;
+
+            try
+            {
+                result = factory.GetTasksFromUserStory(userStory);
+            }
+            catch (Exception e)
+            {
+                //TODO log
+            }
+            return result;
+        }
+
+
+        public Project GetProjectFromUserStory(UserStory userStory)
+        {
+            Project result = null;
+
+            try
+            {
+                result = factory.GetProjectFromUserStory(userStory);
+            }
+            catch (Exception e)
+            {
+                //TODO log
+            }
+            return result;
+        }
     }
 }

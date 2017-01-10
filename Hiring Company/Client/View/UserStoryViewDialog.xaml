@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:usercontorls="clr-namespace:Common.UserControls;assembly=Common"
-        Title="UserStoryViewDialog" Height="400" Width="450">
+        Title="UserStoryViewDialog" Height="600" Width="600">
     <Grid>
-        <usercontorls:UserStoryLargeView EditTaskCommand="{Binding EditTaskCommand}" DeleteTaskCommand="{Binding DeleteTaskCommand}"/>
+        <usercontorls:UserStoryLargeView DeleteTaskCommand="{Binding DeleteTaskCommand}"/>
     </Grid>
 </Window>

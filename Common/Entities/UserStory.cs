@@ -57,7 +57,6 @@ namespace Common.Entities
             this.StoryPoints = userStory.StoryPoints;
             this.EndTime = userStory.EndTime;
             this.AcceptanceCriteria = userStory.AcceptanceCriteria;
-            this.Tasks = userStory.Tasks;
         }
     }
 }
