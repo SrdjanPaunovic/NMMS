@@ -17,53 +17,53 @@ using Common;
 
 namespace Client.View
 {
-    /// <summary>
-    /// Interaction logic for ProfileDialog.xaml
-    /// </summary>
-    public partial class ProfileDialog : Window
-    {
-        public User User { get; set; }
+	/// <summary>
+	/// Interaction logic for ProfileDialog.xaml
+	/// </summary>
+	public partial class ProfileDialog : Window
+	{
+		public User User { get; set; }
 
-        public ProfileDialog(string LoggedUsername)
-        {
+		private HiringClientProxy proxy = ((App)App.Current).Proxy;
 
-            using (HiringClientProxy proxy = ((App)App.Current).Proxy)
-            {
-                User = proxy.GetUser(LoggedUsername);
+		public ProfileDialog(string LoggedUsername)
+		{
 
-                if (User == null)
-                {
-                    //TODO
-					LogHelper.GetLogger().Error("Error while loading ProfileDialog, User = NULL");
+			User = proxy.GetUser(LoggedUsername);
 
-                }
-            }
-            InitializeComponent();
-            DataContext = this;
+			if (User == null)
+			{
+				LogHelper.GetLogger().Error("Error while loading ProfileDialog, User = NULL");
+			}
+
+			InitializeComponent();
+			DataContext = this;
 			LogHelper.GetLogger().Info("Profile Dialog initialized.");
-        }
+		}
 
-        private void UserInputView_SaveClicked(object sender, EventArgs e)
-        {
+		private void UserInputView_SaveClicked(object sender, EventArgs e)
+		{
 			LogHelper.GetLogger().Info("Save click occurred.");
-            using (HiringClientProxy proxy = ((App)App.Current).Proxy)
-            {
-                bool success = proxy.UpdateUser(User);
 
-                if (success)
-                {
-					LogHelper.GetLogger().Info("Profile Dialog closed.");
-                    this.DialogResult = true;
-                    this.Close();
-                }
-            }
+			bool success = proxy.UpdateUser(User);
 
-        }
+			if (success)
+			{
+				LogHelper.GetLogger().Info("Profile Dialog closed.");
+				this.DialogResult = true;
+				this.Close();
+			}else
+			{
+				LogHelper.GetLogger().Warn("Profile Dialog UpdateUser failed.");
+				LogHelper.GetLogger().Info("Profile Dialog closed.");
+				this.Close();
+			}
+		}
 
-        private void UserInputView_CancelClicked(object sender, EventArgs e)
-        {
+		private void UserInputView_CancelClicked(object sender, EventArgs e)
+		{
 			LogHelper.GetLogger().Info("Cancel click occurred. Profile Dialog closed.");
-            this.Close();
-        }
-    }
+			this.Close();
+		}
+	}
 }
