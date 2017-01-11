@@ -386,6 +386,25 @@ namespace Client
             }
             return result;
         }
+
+
+        public List<OcUser> GetAllUsers()
+        {
+            List<OcUser> result = null;
+
+            try
+            {
+                result = factory.GetAllUsers();
+                LogHelper.GetLogger().Info("GetAllUsers method succeeded.");
+
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("GetAllUsers method failed. " + e.ToString());
+
+            }
+            return result;
+        }
     }
 }
 

@@ -26,6 +26,7 @@ namespace Service.Access
         List<Company> GetAllCompanies();
 
         OcUser GetUser(string username);
+        List<OcUser> GetAllUsers();
 
         bool UpdateUser(OcUser user);
 

@@ -235,6 +235,17 @@ namespace Service.Access
             return false;
         }
 
+        public List<OcUser> GetAllUsers()
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                List<OcUser> users = context.Users.ToList();
+                LogHelper.GetLogger().Info("GetAllUsers method succeeded. Returned list of all users.");
+
+                return users;
+            }
+        }
+
         public List<Company> GetAllCompanies()
         {
             using (AccessDB context = new AccessDB())

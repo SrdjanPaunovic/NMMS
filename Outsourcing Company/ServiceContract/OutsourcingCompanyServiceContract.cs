@@ -43,6 +43,9 @@ namespace ServiceContract
 		[OperationContract]
 		List<OcProject> GetAllProjects();
 
+        [OperationContract]
+        List<OcUser> GetAllUsers();
+
 		[OperationContract]
 		OcUser GetUser(string username);
 

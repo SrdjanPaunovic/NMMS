@@ -14,9 +14,6 @@ namespace Service
 {
     public class OutsourcingCompanyService : IOutsourcingCompanyService
     {
-
-
-
         public bool AddUser(OcUser user)
         {
             LogHelper.GetLogger().Info("Call AddUser method.");
@@ -175,6 +172,13 @@ namespace Service
         {
             LogHelper.GetLogger().Info("Call GetAllTeams method.");
             return OutsourcingCompanyDB.Instance.GetAllTeams();
+        }
+
+
+        public List<OcUser> GetAllUsers()
+        {
+            LogHelper.GetLogger().Info("Call GetAllUsers method.");
+            return OutsourcingCompanyDB.Instance.GetAllUsers();
         }
     }
 }

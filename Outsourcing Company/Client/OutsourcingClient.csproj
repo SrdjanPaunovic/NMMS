@@ -114,11 +114,15 @@
     </ApplicationDefinition>
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ProjectDialogViewModel.cs" />
+    <Compile Include="ViewModel\TeamDialogViewModel.cs" />
     <Compile Include="View\ProfileDialog.xaml.cs">
       <DependentUpon>ProfileDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ProjectViewDialog.xaml.cs">
       <DependentUpon>ProjectViewDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TeamViewDialog.xaml.cs">
+      <DependentUpon>TeamViewDialog.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -137,6 +141,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ProjectViewDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TeamViewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

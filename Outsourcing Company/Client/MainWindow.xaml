@@ -223,6 +223,7 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
+            <Button HorizontalAlignment="Left" Command="{Binding NewTeamCommand}">New team</Button>
             <Button HorizontalAlignment="Right" Command="{Binding DisplayTeamsCommand}">Display teams</Button>
             <ListView Name="teams" Grid.Row="1" ItemsSource="{Binding Teams}">
                 <ListView.View>

@@ -51,6 +51,7 @@ namespace Client.ViewModel
         private ICommand acceptCompanyRequest;
         private ICommand rejectCompanyRequestCommand;
         private ICommand displayTeamsCommand;
+        private ICommand newTeamCommand;
 
         #endregion Fields
 
@@ -217,10 +218,13 @@ namespace Client.ViewModel
 
         }
 
-
-
-
-
+        public ICommand NewTeamCommand
+        {
+            get
+            {
+                return newTeamCommand ?? (newTeamCommand = new RelayCommand((param) => this.NewTeam()));
+            }
+        }
         #endregion Properties
 
         #region Methods
@@ -421,9 +425,12 @@ namespace Client.ViewModel
             }
         }
 
-
-
-
+        private void NewTeam()
+        {
+            LogHelper.GetLogger().Info("NewTeam called.");
+            TeamViewDialog teamDialog = new TeamViewDialog();
+            teamDialog.ShowDialog();
+        }
         #endregion Methods
 
         #region PropertyChangedNotifier
