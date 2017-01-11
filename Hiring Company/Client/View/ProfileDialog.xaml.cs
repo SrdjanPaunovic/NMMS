@@ -23,6 +23,7 @@ namespace Client.View
     public partial class ProfileDialog : Window
     {
         public User User { get; set; }
+
         public ProfileDialog(string LoggedUsername)
         {
 
