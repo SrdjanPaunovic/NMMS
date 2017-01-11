@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\MultiParamConverter.cs" />
+    <Compile Include="Converters\ProjectNameConverter.cs" />
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\Enums.cs" />
     <Compile Include="Entities\OcProject.cs" />
@@ -211,6 +212,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\close.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\edit.png" />
   </ItemGroup>

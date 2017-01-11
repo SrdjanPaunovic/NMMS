@@ -24,13 +24,22 @@ namespace ServiceContract
 		User GetUser(string username);
 
 		[OperationContract]
+		bool AddUser(User user);
+
+		[OperationContract]
 		bool UpdateUser(User user);
+
+		[OperationContract]
+        bool RemoveUser(User user);
 
 		[OperationContract]
 		bool AddProject(Project project);
 
         [OperationContract]
         bool UpdateProject(Project project);
+
+        [OperationContract]
+        List<User> GetAllUsers();
 
         [OperationContract]
         List<Project> GetAllProjects();

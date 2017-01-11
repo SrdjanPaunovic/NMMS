@@ -23,16 +23,24 @@ namespace Client
             proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
 
 			log4net.Config.XmlConfigurator.Configure();
+			Exit += App_Exit;
         }
 
-        public HiringClientProxy Proxy
+		private void App_Exit(object sender, ExitEventArgs e)
+		{
+			proxy.Close();
+		}
+
+
+
+		public HiringClientProxy Proxy
         {
             get
             {
-                if (proxy.State != CommunicationState.Opened)
-                {
-                    proxy= new HiringClientProxy(new NetTcpBinding(), HostAddress);
-                }
+                //if (proxy.State != CommunicationState.Opened)
+                //{
+                //    proxy= new HiringClientProxy(new NetTcpBinding(), HostAddress);
+                //}
                 return proxy;
             }
         }

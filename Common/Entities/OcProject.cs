@@ -17,7 +17,7 @@ namespace Common.Entities
 		{
 
 		}
-		public OcProject(Project proj):base()
+		public OcProject(Project proj):base(proj)
 		{
 			
 		} 

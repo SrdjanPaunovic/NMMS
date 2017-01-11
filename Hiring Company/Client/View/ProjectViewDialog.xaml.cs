@@ -24,14 +24,6 @@ namespace Client.View
     {
         public ProjectViewDialog()
         {
-			/*UserStory us = new UserStory();
-			us.Name = "Moje ime";
-			UserStory us1 = new UserStory();
-			us1.Name = "Moje ime1";
-
-			Project.UserStories.Add(us);
-			Project.UserStories.Add(us1);*/
-
 			DataContext = new ProjectDialogViewModel();
             InitializeComponent();
 			LogHelper.GetLogger().Info(" Project view dialog initialized.");

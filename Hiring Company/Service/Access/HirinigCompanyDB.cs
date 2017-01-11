@@ -38,6 +38,13 @@ namespace Service.Access
 		{
 			using (var db = new AccessDB())
 			{
+				var uList = db.Users.ToList();
+				if (uList.Exists(x => x.Username == user.Username))
+				{
+					LogHelper.GetLogger().Info("AddUser method returned false. User with username:" + user.Name + " already exists");
+
+					return false;
+				}
 				db.Users.Add(user);
 				int i = db.SaveChanges();
 				if (i > 0)
@@ -84,7 +91,6 @@ namespace Service.Access
 			}
 		}
 
-
 		public bool LogIn(string username, string password)
 		{
 			using (AccessDB context = new AccessDB())
@@ -94,12 +100,14 @@ namespace Service.Access
 				if (user != null)
 				{
 					if (user.Password.Equals(password))
+					{
 						user.IsAuthenticated = true;
-					context.Entry(user).State = System.Data.Entity.EntityState.Modified;
-					context.SaveChanges();
-					LogHelper.GetLogger().Info("AddCompany method succeeded. Returned true.");
+						context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+						context.SaveChanges();
+						LogHelper.GetLogger().Info("AddCompany method succeeded. Returned true.");
 
-					return true;
+						return true;
+					}
 				}
 			}
 			LogHelper.GetLogger().Info("AddCompany method returned false.");
@@ -154,20 +162,6 @@ namespace Service.Access
 			}
 			LogHelper.GetLogger().Info(" UserRegister method returned false.");
 			return false;
-		}
-
-		public List<User> getAllUsers()
-		{
-			using (AccessDB context = new AccessDB())
-			{
-				List<User> users = new List<User>();
-				var result = context.Users;
-				users = result.ToList();
-				LogHelper.GetLogger().Info("GetAllUsers method succeeded.");
-
-				return users;
-
-			}
 		}
 
 		public List<User> LoginUsersOverview()
@@ -228,7 +222,7 @@ namespace Service.Access
 						List<User> users = res.ToList<User>();
 						if (users.Count == 0)
 						{
-							ModifyUserProperties(us, user);
+							us.UpdateProperties(user);
 							context.Entry(us).State = System.Data.Entity.EntityState.Modified;
 							context.SaveChanges();
 							LogHelper.GetLogger().Info(" UpdateUser method succeeded.");
@@ -244,7 +238,7 @@ namespace Service.Access
 					}
 					else
 					{
-						ModifyUserProperties(us, user);
+						us.UpdateProperties(user);
 						context.Entry(us).State = System.Data.Entity.EntityState.Modified;
 						context.SaveChanges();
 					}
@@ -256,21 +250,6 @@ namespace Service.Access
 			LogHelper.GetLogger().Info(" UpdateUser method returned false.");
 
 			return false;
-		}
-
-		private void ModifyUserProperties(User original, User user)
-		{
-			original.Name = user.Name;
-			original.Password = user.Password;
-			original.StartTime = user.StartTime;
-			original.EndTime = user.EndTime;
-			original.IsAuthenticated = user.IsAuthenticated;
-			original.Surname = user.Surname;
-			original.Username = user.Username;
-			original.Password_changed = user.Password_changed;
-
-			LogHelper.GetLogger().Info("ModifyUserProperties method succeeded.");
-
 		}
 
 		public User GetUser(string username)
@@ -319,16 +298,17 @@ namespace Service.Access
 				if (proj != null)
 				{
 
-                    proj.UpdateProperties(project);
-                    List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
-                    foreach (var us in userStories)
-                    {
-                        if(project.UserStories.ToList().Exists((x)=> x.Id==us.Id)){
-                            continue;
-                        }
+					proj.UpdateProperties(project);
+					List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
+					foreach (var us in userStories)
+					{
+						if (project.UserStories.ToList().Exists((x) => x.Id == us.Id))
+						{
+							continue;
+						}
 
-                        context.Entry(us).State = System.Data.Entity.EntityState.Deleted;
-                    }
+						context.Entry(us).State = System.Data.Entity.EntityState.Deleted;
+					}
 
 					foreach (var us in project.UserStories)
 					{
@@ -377,31 +357,31 @@ namespace Service.Access
 			{
 				UserStory us = context.UserStories.FirstOrDefault<UserStory>((x) => x.Id == userStory.Id);
 
-                if (us != null)
-                {
-                    us.UpdateProperties(userStory);
-                    List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
-                    foreach (var t in tasks)
-                    {
-                        if (userStory.Tasks.ToList().Exists((x) => x.Id == t.Id))
-                        {
-                            continue;
-                        }
+				if (us != null)
+				{
+					us.UpdateProperties(userStory);
+					List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
+					foreach (var t in tasks)
+					{
+						if (userStory.Tasks.ToList().Exists((x) => x.Id == t.Id))
+						{
+							continue;
+						}
 
-                        context.Entry(t).State = System.Data.Entity.EntityState.Deleted;
-                    }
+						context.Entry(t).State = System.Data.Entity.EntityState.Deleted;
+					}
 
-                    foreach (var t in userStory.Tasks)
-                    {
-                        if (t.Id == 0)
-                        {
-                            us.Tasks.Add(t);
-                        }
-                    }
-                    context.Entry(us).State = System.Data.Entity.EntityState.Modified;
-                    context.SaveChanges();
-                    return true;
-                }
+					foreach (var t in userStory.Tasks)
+					{
+						if (t.Id == 0)
+						{
+							us.Tasks.Add(t);
+						}
+					}
+					context.Entry(us).State = System.Data.Entity.EntityState.Modified;
+					context.SaveChanges();
+					return true;
+				}
 
 				return false;
 			}
@@ -443,46 +423,78 @@ namespace Service.Access
 			}
 			return true;
 		}
-	
 
-        public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
+		public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
 
-                return tasks;
-            }
-        }
+				return tasks;
+			}
+		}
 
-        public Project GetProjectFromUserStory(UserStory userStory)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                UserStory us = context.UserStories.Include("Project").FirstOrDefault<UserStory>((x) => x.Id == userStory.Id);
-                Project proj = context.Entry(us).Reference("Project").CurrentValue as Project;
-                proj.UserStories = null; //because of circular reference
-                return proj;
-            }
-        }
+		public Project GetProjectFromUserStory(UserStory userStory)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				UserStory us = context.UserStories.Include("Project").FirstOrDefault<UserStory>((x) => x.Id == userStory.Id);
+				Project proj = context.Entry(us).Reference("Project").CurrentValue as Project;
+				proj.UserStories = null; //because of circular reference
+				return proj;
+			}
+		}
+
+		public bool ModifyCompanyToPartner(Company company)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+
+				Company com = context.Companies.FirstOrDefault((x) => x.Name == company.Name);
+				if (com != null)
+				{
+					com.State = State.CompanyState.Partner;
+					context.Entry(com).State = System.Data.Entity.EntityState.Modified;
+					context.SaveChanges();
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public List<User> GetAllUsers()
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				List<User> users = context.Users.ToList();
+
+				LogHelper.GetLogger().Info("GetAllUsers method succeeded. Returned list of users.");
+
+				return users;
+			}
+		}
 
 
+		public bool RemoveUser(User user)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				User us = context.Users.FirstOrDefault<User>((x) => x.Id == user.Id);
 
-        public bool ModifyCompanyToPartner(Company company)
-        {
-            using (AccessDB context = new AccessDB())
-            {
+				if (us != null)
+				{
 
-                Company com = context.Companies.FirstOrDefault((x) => x.Name == company.Name);
-                if (com != null)
-                {
-                    com.State = State.CompanyState.Partner;
-                    context.Entry(com).State = System.Data.Entity.EntityState.Modified;
-                    context.SaveChanges();
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
+					context.Entry(us).State = System.Data.Entity.EntityState.Deleted;
+					context.SaveChanges();
+					LogHelper.GetLogger().Info(" RemoveUser method succeeded. Returned true.");
+
+					return true;
+				}
+				LogHelper.GetLogger().Info("RemoveUser method returned false.");
+
+				return false;
+			}
+
+		}
+	}
 }

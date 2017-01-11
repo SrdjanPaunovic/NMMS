@@ -44,5 +44,16 @@ namespace Client
 			LogHelper.GetLogger().Debug("Main window initialized.");
 		}
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var viewModel = DataContext as MainWindowViewModel;
+            if (viewModel != null)
+            {
+                if(viewModel.LoggedUsername.Trim() != ""){
+                    viewModel.LogOutCommand.Execute(viewModel.LoggedUsername);
+                }
+            }
+        }
+
 	}
 }
