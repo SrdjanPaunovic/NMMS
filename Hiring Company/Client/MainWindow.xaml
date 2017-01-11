@@ -261,6 +261,8 @@
                                                                   CommandParameter="{Binding ElementName=grid,Path=DataContext}"
                                                                   Width="24" Height="24"/>
                                         <userControls:ImageButton Grid.Column="1" NormalImage="{Binding ElementName=viewModel,Path=RemoveIcon}"
+                                                                  Command="{Binding ElementName=viewModel,Path=DeleteUserCommand}"
+                                                                  CommandParameter="{Binding ElementName=grid,Path=DataContext}"
                                                                   Width="24" Height="24"/>
                                     </Grid>
                                 </DataTemplate>

@@ -440,16 +440,33 @@ namespace Client.ViewModel
 
         private void DeleteUser(object param)
         {
+
             LogHelper.GetLogger().Info("DeleteUser called.");
-            try
-            {
+
+			var user = param as User;
+			if (user == null)
+			{
+				LogHelper.GetLogger().Warn("DeleteUser params NULL.");
+			}
+			LogHelper.GetLogger().Info("DeleteUser params ok.");
+
+			try
+			{
                 using (HiringClientProxy proxy = ((App)Application.Current).Proxy)
                 {
                     bool success = false;
 
-                    //success = proxy.RemoveUser(user);
-                }
-                LogHelper.GetLogger().Info("DeleteUser is done successfuly");
+                    success = proxy.RemoveUser(user);
+					if (success)
+					{
+						LogHelper.GetLogger().Info("DeleteUser is done successfuly");
+						ShowEmployees();
+					}else
+					{
+						LogHelper.GetLogger().Info("DeleteUser failed");
+
+					}
+				}
             }
             catch (Exception e)
             {
