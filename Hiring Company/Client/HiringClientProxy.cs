@@ -1,298 +1,471 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ServiceContract;
-using System.ServiceModel;
-using Common.Entities;
-using Common;
-
-//[assembly: log4net.Config.XmlConfigurator(Watch = true)]
-//[assembly: log4net.Config.XmlConfigurator(ConfigFile = "App.config", Watch = true)]
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright company="NMMS" file="HiringClientProxy.cs">
+//   bfbhtgfgbnthg
+// </copyright>
+// <summary>
+//   dgnbgngngn
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 namespace Client
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ServiceModel;
+
+    using Common;
+    using Common.Entities;
+
+    using ServiceContract;
+
+    /// <summary>
+    /// The hiring client proxy.
+    /// </summary>
     public class HiringClientProxy : ChannelFactory<IHiringContract>, IHiringContract
     {
-        IHiringContract factory;
+        /// <summary>
+        /// The factory.
+        /// </summary>
+        private IHiringContract factory;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HiringClientProxy"/> class.
+        /// </summary>
+        /// <param name="binding">
+        /// The binding.
+        /// </param>
+        /// <param name="address">
+        /// The address.
+        /// </param>
         public HiringClientProxy(NetTcpBinding binding, string address)
             : base(binding, address)
         {
-            factory = this.CreateChannel();
-			LogHelper.GetLogger().Info("Hiring company client started comunication with service.");
+            this.factory = this.CreateChannel();
+            LogHelper.GetLogger().Info("Hiring company client started comunication with service.");
         }
 
-
-        public bool LogIn(string username, string password)
-        {
-            bool result = false;
-
-            try
-            {
-                result = factory.LogIn(username, password);
-				LogHelper.GetLogger().Info("Login method succeeded.");
-            }
-            catch (Exception e)
-            {
-				LogHelper.GetLogger().Error("Loging method failed. "+e.ToString());
-            }
-            return result;
-        }
-
-        public bool LogOut(string username)
-        {
-            bool result = false;
-
-            try
-            {
-                result = factory.LogOut(username);
-				LogHelper.GetLogger().Info("Logout method succeeded.");
-
-            }
-            catch (Exception e)
-            {
-                //TODO log
-				LogHelper.GetLogger().Error(" Logout method failed.  "+e.ToString());
-
-            }
-            return result;
-        }
-
-        public bool UserRegister(Common.Entities.User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Common.Entities.User> LoginUsersOverview()
-        {
-            throw new NotImplementedException();
-        }
-
-        public User GetUser(string username)
-        {
-            User result = null;
-
-            try
-            {
-                result = factory.GetUser(username);
-				LogHelper.GetLogger().Info("GetUser method succeeded.");
-
-            }
-            catch (Exception e)
-            {
-				LogHelper.GetLogger().Error("GetUser method failed. " + e.ToString());
-
-            }
-            return result;
-        }
-
-        public bool UpdateUser(User user)
-        {
-            bool result = false;
-
-            try
-            {
-                result = factory.UpdateUser(user);
-				LogHelper.GetLogger().Info("UpdateUser method succeeded.");
-
-            }
-            catch (Exception e)
-            {
-				LogHelper.GetLogger().Error("UpdateUser method failed. " +e.ToString());
-
-            }
-            return result;
-        }
-
+        /// <summary>
+        /// The add project.
+        /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
         public bool AddProject(Project project)
         {
             bool result = false;
 
             try
             {
-                result = factory.AddProject(project);
-				LogHelper.GetLogger().Info("AddProject method succeeded.");
-
+                result = this.factory.AddProject(project);
+                LogHelper.GetLogger().Info("AddProject method succeeded.");
             }
             catch (Exception e)
             {
-				LogHelper.GetLogger().Error("AddProject method failed. "+e.ToString());
-
+                LogHelper.GetLogger().Error("AddProject method failed. ", e);
             }
+
             return result;
         }
 
-        public List<Project> GetAllProjects()
-        {
-            List<Project> result = null;
-
-            try
-            {
-                result = factory.GetAllProjects();
-				LogHelper.GetLogger().Info("GetAllProjects method succeeded.");
-
-            }
-            catch (Exception e)
-            {
-				LogHelper.GetLogger().Error("GetAllProjects method failed. "+e.ToString());
-
-            }
-            return result;
-        }
-
-
-        public bool SendRequest(Company company)
+        /// <summary>
+        /// The answer to user story.
+        /// </summary>
+        /// <param name="company">
+        /// The company.
+        /// </param>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <param name="userStory">
+        /// The user story.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool AnswerToUserStory(Company company, Project project, UserStory userStory)
         {
             bool result = false;
-
             try
             {
-                result = factory.SendRequest(company);
-				LogHelper.GetLogger().Info("SendRequest method succeeded.");
-
+                result = this.factory.AnswerToUserStory(company, project, userStory);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-				LogHelper.GetLogger().Error("SendRequest method failed. "+e.ToString());
-
+                throw;
             }
+
             return result;
         }
 
-        public List<UserStory> GetUserStoryFromProject(Project project)
-        {
-            List<UserStory> result = null;
-
-            try
-            {
-                result = factory.GetUserStoryFromProject(project);
-
-				LogHelper.GetLogger().Info("GetUserStoryFromProject method succeeded.");
-
-            }
-            catch (Exception e)
-            {
-				LogHelper.GetLogger().Error("GetUserStoryFromProject method failed. " + e.ToString());
-
-            }
-            return result;
-        }
-
+        /// <summary>
+        /// The get all companies.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// </returns>
         public List<Company> GetAllCompanies()
         {
             List<Company> result = null;
 
             try
             {
-                result = factory.GetAllCompanies();
-				LogHelper.GetLogger().Info("GetAllCompanies method succeeded.");
-
+                result = this.factory.GetAllCompanies();
+                LogHelper.GetLogger().Info("GetAllCompanies method succeeded.");
             }
             catch (Exception e)
             {
-				LogHelper.GetLogger().Error("GetAllCompanies method failed. "+e.ToString());
-
+                LogHelper.GetLogger().Error("GetAllCompanies method failed. " + e.ToString());
             }
+
             return result;
         }
 
-
-        public bool UpdateProject(Project project)
+        /// <summary>
+        /// The get all projects.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// </returns>
+        public List<Project> GetAllProjects()
         {
-            bool result = false;
+            List<Project> result = null;
 
             try
             {
-                result = factory.UpdateProject(project);
-				LogHelper.GetLogger().Info("UpdateProject method succeeded.");
-
+                result = this.factory.GetAllProjects();
+                LogHelper.GetLogger().Info("GetAllProjects method succeeded.");
             }
             catch (Exception e)
             {
-				LogHelper.GetLogger().Error("UpdateProject method failed. "+e.ToString());
+                LogHelper.GetLogger().Error("GetAllProjects method failed. " + e.ToString());
             }
+
             return result;
         }
 
-        public bool UpdateUserStory(UserStory userStory)
-        {
-            bool result = false;
-
-            try
-            {
-                result = factory.UpdateUserStory(userStory);
-
-				LogHelper.GetLogger().Info("UpdateUserStory method succeeded.");
-
-            }
-            catch (Exception e)
-            {
-                //TODO log
-                var r = e;
-            }
-            return result;
-        }
-
-        public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
-        {
-            List<Common.Entities.Task> result = null;
-
-            try
-            {
-                result = factory.GetTasksFromUserStory(userStory);
-            }
-            catch (Exception e)
-            {
-                //TODO log
-            }
-            return result;
-        }
-
-
-
-		public bool SendProject(Company company, Project project)
-		{
-			bool result = false;
-			try
-			{
-				result = factory.SendProject(company, project);
-			}
-			catch (Exception)
-			{
-				
-				throw;
-			}
-			return result;
-		}
-
-		public bool AnswerToUserStory(Company company, Project project, UserStory userStory)
-		{
-			bool result = false;
-			try
-			{
-				result = factory.AnswerToUserStory(company, project, userStory);
-			}
-			catch (Exception)
-			{
-				throw;
-			}
-			return result;
-		}
-
+        /// <summary>
+        /// The get project from user story.
+        /// </summary>
+        /// <param name="userStory">
+        /// The user story.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Project"/>.
+        /// </returns>
         public Project GetProjectFromUserStory(UserStory userStory)
         {
             Project result = null;
 
             try
             {
-                result = factory.GetProjectFromUserStory(userStory);
+                result = this.factory.GetProjectFromUserStory(userStory);
             }
             catch (Exception e)
             {
-                //TODO log
+                // TODO log
             }
+
             return result;
+        }
+
+        /// <summary>
+        /// The get tasks from user story.
+        /// </summary>
+        /// <param name="userStory">
+        /// The user story.
+        /// </param>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// </returns>
+        public List<Task> GetTasksFromUserStory(UserStory userStory)
+        {
+            List<Task> result = null;
+
+            try
+            {
+                result = this.factory.GetTasksFromUserStory(userStory);
+            }
+            catch (Exception e)
+            {
+                // TODO log
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// The get user.
+        /// </summary>
+        /// <param name="username">
+        /// The username.
+        /// </param>
+        /// <returns>
+        /// The <see cref="User"/>.
+        /// </returns>
+        public User GetUser(string username)
+        {
+            User result = null;
+
+            try
+            {
+                result = this.factory.GetUser(username);
+                LogHelper.GetLogger().Info("GetUser method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("GetUser method failed. " + e.ToString());
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// The get user story from project.
+        /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// </returns>
+        public List<UserStory> GetUserStoryFromProject(Project project)
+        {
+            List<UserStory> result = null;
+
+            try
+            {
+                result = this.factory.GetUserStoryFromProject(project);
+
+                LogHelper.GetLogger().Info("GetUserStoryFromProject method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("GetUserStoryFromProject method failed. " + e.Message);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// The log in.
+        /// </summary>
+        /// <param name="username">
+        /// The username.
+        /// </param>
+        /// <param name="password">
+        /// The password.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool LogIn(string username, string password)
+        {
+            bool result = false;
+
+            try
+            {
+                result = this.factory.LogIn(username, password);
+                LogHelper.GetLogger().Info("Login method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("Loging method failed. " + e.ToString());
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// The login users overview.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// </returns>
+        /// <exception cref="NotImplementedException">
+        ///  This is big big 
+        /// </exception>
+        public List<User> LoginUsersOverview()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// The log out.
+        /// </summary>
+        /// <param name="username">
+        /// The username.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool LogOut(string username)
+        {
+            bool result = false;
+
+            try
+            {
+                result = this.factory.LogOut(username);
+                LogHelper.GetLogger().Info("Logout method succeeded.");
+            }
+            catch (Exception e)
+            {
+                // TODO log
+                LogHelper.GetLogger().Error(" Logout method failed.  " + e.ToString());
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// The send project.
+        /// </summary>
+        /// <param name="company">
+        /// The company.
+        /// </param>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool SendProject(Company company, Project project)
+        {
+            bool result = false;
+            try
+            {
+                result = this.factory.SendProject(company, project);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// The send request.
+        /// </summary>
+        /// <param name="company">
+        /// The company.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool SendRequest(Company company)
+        {
+            bool result = false;
+
+            try
+            {
+                result = this.factory.SendRequest(company);
+                LogHelper.GetLogger().Info("SendRequest method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("SendRequest method failed. " + e.ToString());
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// The update project.
+        /// </summary>
+        /// <param name="project">
+        /// The project.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool UpdateProject(Project project)
+        {
+            bool result = false;
+
+            try
+            {
+                result = this.factory.UpdateProject(project);
+                LogHelper.GetLogger().Info("UpdateProject method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("UpdateProject method failed. " + e.ToString());
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// The update user.
+        /// </summary>
+        /// <param name="user">
+        /// The user.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool UpdateUser(User user)
+        {
+            bool result = false;
+
+            try
+            {
+                result = this.factory.UpdateUser(user);
+                LogHelper.GetLogger().Info("UpdateUser method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("UpdateUser method failed. ", e);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// The update user story.
+        /// </summary>
+        /// <param name="userStory">
+        /// The user story.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool UpdateUserStory(UserStory userStory)
+        {
+            bool result = false;
+
+            try
+            {
+                result = this.factory.UpdateUserStory(userStory);
+
+                LogHelper.GetLogger().Info("UpdateUserStory method succeeded.");
+            }
+            catch (Exception e)
+            {
+                // TODO log
+                var r = e;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// The user register.
+        /// </summary>
+        /// <param name="user">
+        /// The user.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        /// <exception cref="NotImplementedException">
+        /// This is Sparta.
+        /// </exception>
+        public bool UserRegister(User user)
+        {
+            throw new NotImplementedException();
         }
     }
 }
