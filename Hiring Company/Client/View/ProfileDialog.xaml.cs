@@ -17,12 +17,14 @@ using Common;
 
 namespace Client.View
 {
+
 	/// <summary>
 	/// Interaction logic for ProfileDialog.xaml
 	/// </summary>
 	public partial class ProfileDialog : Window
 	{
 		public User User { get; set; }
+
 
 		private HiringClientProxy proxy = ((App)App.Current).Proxy;
 
