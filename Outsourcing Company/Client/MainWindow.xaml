@@ -175,6 +175,22 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
+                        <GridViewColumn Width="120">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="company_btn4" Command="{Binding ElementName=viewModel, Path=AcceptProjectRequestCommand}" CommandParameter="{Binding ElementName=company_btn4,Path=DataContext}">Accept Project
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="120">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="company_btn5" Command="{Binding ElementName=viewModel, Path=RejectProjectRequestCommand}" CommandParameter="{Binding ElementName=company_btn5,Path=DataContext}">Reject Project
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
                 <ListView.GroupStyle>

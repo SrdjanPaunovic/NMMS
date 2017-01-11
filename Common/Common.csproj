@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\MultiParamConverter.cs" />
+    <Compile Include="Converters\ProjectNameConverter.cs" />
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\Enums.cs" />
     <Compile Include="Entities\OcProject.cs" />
