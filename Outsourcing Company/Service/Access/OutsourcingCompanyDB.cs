@@ -30,9 +30,6 @@ namespace Service.Access
             }
         }
 
-
-
-
         public bool AddUser(OcUser user)
         {
             using (var context = new AccessDB())
@@ -238,10 +235,6 @@ namespace Service.Access
             return false;
         }
 
-
-
-
-
         public List<Company> GetAllCompanies()
         {
             using (AccessDB context = new AccessDB())
@@ -254,7 +247,23 @@ namespace Service.Access
             }
         }
 
+        public List<Team> GetAllTeams()
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                List<Team> teams = context.Teams.Include("TeamLead").ToList();
+                foreach (var team in teams)
+                {
+                    if (team.TeamLead != null)
+                    {
+                        team.TeamLead.Team = null;
+                    }
+                }
+                LogHelper.GetLogger().Info("GetAllTeams method succeeded. Returned list of all teams.");
 
+                return teams;
+            }
+        }
 
         public List<OcUser> LoginUsersOverview()
         {

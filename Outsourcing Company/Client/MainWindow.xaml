@@ -23,6 +23,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
@@ -40,6 +41,7 @@
             <Button Margin="10,2" Grid.Column="0" Command="{Binding ShowEmployeesCommand}">Employees</Button>
             <Button Margin="10,2" Grid.Column="1" Command="{Binding ShowCompaniesCommand}">Companies</Button>
             <Button Margin="10,2" Grid.Column="2" Command="{Binding ShowProjectsCommand}">Projects</Button>
+            <Button Margin="10,2" Grid.Column="3" Command="{Binding ShowTeamsCommand}">Teams</Button>
             <TextBlock Margin="10,2" Grid.Column="4" VerticalAlignment="Center">
                 <Hyperlink Command="{Binding ShowProfileCommand}"> 
                     <TextBlock Text="{Binding LoggedUsername}"></TextBlock>
@@ -205,19 +207,31 @@
             </ListView>
         </Grid>
 
-        <!-- New project -->
+        <!-- Teams -->
         <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"></Setter>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding CurrentState}" Value="NEW_PROJECT">
+                        <DataTrigger Binding="{Binding CurrentState}" Value="TEAMS">
                             <Setter Property="Visibility" Value="Visible"></Setter>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <userControls:CreateProjectView></userControls:CreateProjectView>
+            <Button HorizontalAlignment="Right" Command="{Binding DisplayTeamsCommand}">Display teams</Button>
+            <ListView Name="teams" Grid.Row="1" ItemsSource="{Binding Teams}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Team lead" Width="120" DisplayMemberBinding="{Binding TeamLead.Name}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
 
     </Grid>

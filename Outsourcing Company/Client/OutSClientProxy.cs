@@ -24,13 +24,7 @@ namespace Client
 		{
 			factory = this.CreateChannel();
 			LogHelper.GetLogger().Info("Outsourcing company client started comunication with service.");
-
 		}
-
-
-
-
-
 
         public bool AddUser(OcUser user)
         {
@@ -221,6 +215,23 @@ namespace Client
 			}
 			return result;
 		}
+
+        public List<Team> GetAllTeams()
+        {
+            List<Team> result = null;
+
+            try
+            {
+                result = factory.GetAllTeams();
+                LogHelper.GetLogger().Info("GetAllTeams method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("GetAllTeams method failed. " + e.ToString());
+
+            }
+            return result;
+        }
 
 		public OcUser GetUser(string username)
 		{

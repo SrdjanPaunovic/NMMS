@@ -9,13 +9,16 @@ using System.Runtime.Serialization;
 
 namespace Common.Entities
 {
-     [DataContract]
+    [DataContract]
     public class Team
     {
         [DataMember]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [DataMember]
+        public string Name { get; set; }
 
         [DataMember]
         public List<OcUser> Developers { get; set; }
@@ -25,8 +28,5 @@ namespace Common.Entities
 
         [DataMember]
         public List<OcProject> Projects { get; set; }
-
-
-
     }
 }
