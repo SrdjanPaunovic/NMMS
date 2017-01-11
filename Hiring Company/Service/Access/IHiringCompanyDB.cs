@@ -25,6 +25,8 @@ namespace Service.Access
         List<Project> GetAllProjects();
         bool UpdateProject(Project project);
 
+		bool ModifyCompanyToPartner(Company company);
+		bool RemoveCompany(Company company);
 
         bool RequestPartnership(int id);
 

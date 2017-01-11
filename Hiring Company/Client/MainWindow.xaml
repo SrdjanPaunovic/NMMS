@@ -6,11 +6,18 @@
         xmlns:local="clr-namespace:Client"
         xmlns:userControls="clr-namespace:Common.UserControls;assembly=Common"
         xmlns:viewModel ="clr-namespace:Client.ViewModel"
+        xmlns:converterts="clr-namespace:Common.Converters;assembly=Common"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="600">
     <Window.DataContext>
         <viewModel:MainWindowViewModel x:Name="viewModel" />
     </Window.DataContext>
+    <Window.Resources>
+        <converterts:MultiParamConverter x:Key="multiParamConverter"/>
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -88,10 +95,58 @@
             <!-- call fetchCompanies -->
             <Button Grid.Row="0" HorizontalAlignment="Right" Margin="5" Command="{Binding DisplayCompaniesCommand}">Display companies</Button>
             <TextBlock Margin="2" Grid.Row="1" HorizontalAlignment="Left" Text="Partner companies"/>
-            <ListView Name="partnerCompanies" Grid.Row="2" ItemsSource="{Binding PartnerCompanies}">
+            <ListView Name="partnerCompanies" Grid.Row="2" ItemsSource="{Binding PartnerCompanies}" >
                 <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
+                    <GridView x:Name="item">
+                        <GridViewColumn Header="Name" Width="Auto" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Projects" Width="250" >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ComboBox Grid.Column="0" x:Name="CB_Projects" 
+                                                  ItemsSource="{Binding ElementName=viewModel,Path=Projects}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <Grid Grid.Column="1">
+                                            <Grid.Style>
+                                                <Style TargetType="Grid">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ElementName=CB_Projects,Path=SelectedItem}" Value="{x:Null}">
+                                                            <Setter Property="IsEnabled" Value="False"></Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
+                                        <Button Name="company_btn3"  Content="Send project"
+                                                Command="{Binding ElementName=viewModel, Path=SendProjectRequestCommand}">
+                                            <Button.CommandParameter>
+                                                <MultiBinding Converter="{StaticResource multiParamConverter}">
+                                                    <Binding Path="DataContext" ElementName="company_btn3"/>
+                                                    <Binding Path="SelectedItem" ElementName="CB_Projects"/>
+                                                </MultiBinding>
+                                            </Button.CommandParameter>
+                                        </Button>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="120">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
 
