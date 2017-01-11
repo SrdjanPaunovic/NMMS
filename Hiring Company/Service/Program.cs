@@ -75,7 +75,7 @@ namespace HiringCompanyService
 			User user = new User("admin", "admin", Role.CEO);
 			user.Name = "savo";
 			user.Surname = "oroz";
-            //HiringCompanyDB.Instance.AddUser(user);
+            HiringCompanyDB.Instance.AddUser(user);
 
 			Company c1 = new Company("C1");
 			Company c2 = new Company();

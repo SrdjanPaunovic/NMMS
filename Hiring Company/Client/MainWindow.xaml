@@ -127,15 +127,15 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </Grid.Style>
-                                        <Button Name="company_btn3"  Content="Send project"
+                                            <Button Name="company_btn3"  Content="Send project"
                                                 Command="{Binding ElementName=viewModel, Path=SendProjectRequestCommand}">
-                                            <Button.CommandParameter>
-                                                <MultiBinding Converter="{StaticResource multiParamConverter}">
-                                                    <Binding Path="DataContext" ElementName="company_btn3"/>
-                                                    <Binding Path="SelectedItem" ElementName="CB_Projects"/>
-                                                </MultiBinding>
-                                            </Button.CommandParameter>
-                                        </Button>
+                                                <Button.CommandParameter>
+                                                    <MultiBinding Converter="{StaticResource multiParamConverter}">
+                                                        <Binding Path="DataContext" ElementName="company_btn3"/>
+                                                        <Binding Path="SelectedItem" ElementName="CB_Projects"/>
+                                                    </MultiBinding>
+                                                </Button.CommandParameter>
+                                            </Button>
                                         </Grid>
                                     </Grid>
                                 </DataTemplate>
@@ -255,77 +255,71 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <!--This is the hidden helper Grid which does the resizing -->
-            <Grid Visibility="Hidden">
+
+            <Grid Grid.Row="0" Margin="5">
                 <Grid.ColumnDefinitions>
-                    <!--Width is bound to width of the first GridViewColumn -->
-                    <ColumnDefinition Width="{Binding ElementName=col1, Path=ActualWidth}"/>
-                    <ColumnDefinition Width="{Binding ElementName=col2, Path=ActualWidth}"/>
-                    <ColumnDefinition Width="{Binding ElementName=col3, Path=ActualWidth}"/>
-                    <!--Width is set to "Fill"-->
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
-                    <!--Correction Width-->
-                    <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
-                <!--This is the hidden helper Field which is used to bind to, using the "Fill" column of the helper grid-->
-                <Grid Grid.Column="3" x:Name="helperField"/>
+                <Button Command="{Binding ElementName=viewModel,Path=AddUserCommand}">New user</Button>
             </Grid>
-            
-            <ListView Grid.Row="1" Name="Employees_listView" ItemsSource="{Binding AllEmployees}" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="" x:Name="col1">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center" Width="10" Height="10" >
-                                            <Ellipse.Style>
-                                                <Style TargetType="Ellipse">
-                                                    <Setter Property="Fill" Value="LightGray"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsAuthenticated}" Value="True">
-                                                            <Setter Property="Fill" Value="#FF00FF51"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Ellipse.Style>
-                                        </Ellipse>
-                                    </Grid>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Name" x:Name="col2" DisplayMemberBinding="{Binding Name}" />
-                        <GridViewColumn Header="Username" x:Name="col3" DisplayMemberBinding="{Binding Username}" />
-                        <GridViewColumn Header="" Width="{Binding ElementName=helperField, Path=ActualWidth}"> <!--Empty Column-->
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Actions">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid VerticalAlignment="Center" Name="grid" >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <userControls:ImageButton Grid.Column="0" NormalImage="{Binding ElementName=viewModel,Path=EditIcon}"
+            <DataGrid Grid.Row="1" 
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      AutoGenerateColumns="False" 
+                      GridLinesVisibility ="Horizontal"
+                      HorizontalContentAlignment="Center"
+                      HorizontalGridLinesBrush="LightGray"
+                      Name="Employees_listView" ItemsSource="{Binding AllEmployees}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn  Header="" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center" Width="10" Height="10" >
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="LightGray"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsAuthenticated}" Value="True">
+                                                        <Setter Property="Fill" Value="#FF00FF51"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Username" Binding="{Binding Username}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Role" Binding="{Binding Role}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Mail address" Binding="{Binding MailAddress}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Team" Binding="{Binding Team}" IsReadOnly="True"/>
+                    <DataGridTemplateColumn Header="Actions">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid VerticalAlignment="Center" Name="grid" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <userControls:ImageButton Grid.Column="0" NormalImage="{Binding ElementName=viewModel,Path=EditIcon}"
                                                                   Command="{Binding ElementName=viewModel,Path=EditUserProfileCommand}"
                                                                   CommandParameter="{Binding ElementName=grid,Path=DataContext}"
                                                                   Width="24" Height="24"/>
-                                        <userControls:ImageButton Grid.Column="1" NormalImage="{Binding ElementName=viewModel,Path=RemoveIcon}"
+                                    <userControls:ImageButton Grid.Column="1" NormalImage="{Binding ElementName=viewModel,Path=RemoveIcon}"
                                                                   Command="{Binding ElementName=viewModel,Path=DeleteUserCommand}"
                                                                   CommandParameter="{Binding ElementName=grid,Path=DataContext}"
                                                                   Width="24" Height="24"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
 
 

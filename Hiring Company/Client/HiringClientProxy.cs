@@ -161,13 +161,14 @@ namespace Client
             try
             {
                 result = this.factory.GetProjectFromUserStory(userStory);
-            }
-            catch (Exception e)
+				LogHelper.GetLogger().Info("GetProjectFromUserStory method succeeded.");
+			}
+			catch (Exception e)
             {
-                // TODO log
-            }
+				LogHelper.GetLogger().Error("GetProjectFromUserStory method failed. ", e);
+			}
 
-            return result;
+			return result;
         }
 
         /// <summary>
@@ -186,10 +187,11 @@ namespace Client
             try
             {
                 result = this.factory.GetTasksFromUserStory(userStory);
-            }
-            catch (Exception e)
+				LogHelper.GetLogger().Info("GetTasksFromUserStory method succeeded.");
+			}
+			catch (Exception e)
             {
-                // TODO log
+                LogHelper.GetLogger().Error("GetTasksFromUserStory method failed. ", e);
             }
 
             return result;
@@ -311,8 +313,7 @@ namespace Client
             }
             catch (Exception e)
             {
-                // TODO log
-                LogHelper.GetLogger().Error(" Logout method failed.  " + e.ToString());
+                LogHelper.GetLogger().Error(" Logout method failed.  ", e);
             }
 
             return result;
@@ -336,13 +337,14 @@ namespace Client
             try
             {
                 result = this.factory.SendProject(company, project);
-            }
-            catch (Exception)
+                LogHelper.GetLogger().Info("SendProject method succeeded.");
+			}
+			catch (Exception e)
             {
-                throw;
-            }
+				LogHelper.GetLogger().Error("GetTasksFromUserStory method failed. ", e);
+			}
 
-            return result;
+			return result;
         }
 
         /// <summary>
@@ -365,7 +367,7 @@ namespace Client
             }
             catch (Exception e)
             {
-                LogHelper.GetLogger().Error("SendRequest method failed. " + e.ToString());
+                LogHelper.GetLogger().Error("SendRequest method failed. ", e);
             }
 
             return result;
@@ -444,11 +446,10 @@ namespace Client
             }
             catch (Exception e)
             {
-                // TODO log
-                var r = e;
-            }
+				LogHelper.GetLogger().Error("UpdateUserStory method failed. ", e);
+			}
 
-            return result;
+			return result;
         }
 
         /// <summary>
@@ -509,5 +510,22 @@ namespace Client
 
             return result;
         }
-    }
+
+		public bool AddUser(User user)
+		{
+			bool result = false;
+
+			try
+			{
+				result = this.factory.AddUser(user);
+				LogHelper.GetLogger().Info("UpdateUser method succeeded.");
+			}
+			catch (Exception e)
+			{
+				LogHelper.GetLogger().Error("UpdateUser method failed. ", e);
+			}
+
+			return result;
+		}
+	}
 }

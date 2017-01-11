@@ -47,8 +47,31 @@ namespace Common.UserControls
         {
             if (SaveClicked != null)
             {
-                SaveClicked(sender, e);
-            }
+				if(passBox.Password == confirmPassBox.Password)
+				{
+					//if something typed in Passwords fields
+					if(passBox.Password.Trim() != String.Empty)
+					{
+						User.Password = passBox.Password;
+					}
+
+					if(User.Password!= String.Empty)
+					{
+						SaveClicked(sender, e);
+					}else
+					{
+						//if noting typed in Password fields and User have not set Password Property
+						passBox.Background = Brushes.Red;
+						confirmPassBox.Background = Brushes.Red;
+					}
+				}
+				else
+				{
+					//Password does not match
+					confirmPassBox.Background = Brushes.Red;
+					passBox.Background = Brushes.White;
+				}
+			}
         }
 
         private void Cancel_btn_Click(object sender, RoutedEventArgs e)

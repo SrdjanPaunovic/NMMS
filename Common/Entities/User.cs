@@ -66,5 +66,18 @@ namespace Common.Entities
             Password=new_password;
             Password_changed =DateTime.Now;
         }
+
+		public void UpdateProperties(User user)
+		{
+			this.Name = user.Name;
+			this.Role = user.Role;
+			this.Password = user.Password;
+			this.StartTime = user.StartTime;
+			this.EndTime = user.EndTime;
+			this.IsAuthenticated = user.IsAuthenticated;
+			this.Surname = user.Surname;
+			this.Username = user.Username;
+			this.Password_changed = user.Password_changed;
+		}
     }
 }
