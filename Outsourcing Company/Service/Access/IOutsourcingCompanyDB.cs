@@ -27,6 +27,7 @@ namespace Service.Access
 
         OcUser GetUser(string username);
         List<OcUser> GetAllUsers();
+        List<OcUser> GetAllUsersWithoutTeam();
 
         bool UpdateUser(OcUser user);
 

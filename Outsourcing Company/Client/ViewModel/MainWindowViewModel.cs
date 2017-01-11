@@ -25,8 +25,6 @@ namespace Client.ViewModel
             TEAMS
         }
 
-
-
         #region Fields
         private string loggedUsername = "";
         private ObservableCollection<Company> partnerCompanies = new ObservableCollection<Company>();

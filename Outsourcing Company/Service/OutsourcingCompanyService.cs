@@ -180,5 +180,12 @@ namespace Service
             LogHelper.GetLogger().Info("Call GetAllUsers method.");
             return OutsourcingCompanyDB.Instance.GetAllUsers();
         }
+
+        public List<OcUser> GetAllUsersWithoutTeam()
+        {
+            LogHelper.GetLogger().Info("Call GetAllUsersWithoutTeam method.");
+            return OutsourcingCompanyDB.Instance.GetAllUsersWithoutTeam();
+        }
+
     }
 }

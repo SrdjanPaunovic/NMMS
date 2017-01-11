@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace Common.Entities
 {
-	[DataContract]
-	public class OcUser : User
-	{
-		[DataMember]
-		public Team Team { get; set; }
-		public OcUser()
-		{
+    [DataContract]
+    public class OcUser : User
+    {
+        [DataMember]
+        public Team Team { get; set; }
+        public OcUser()
+        {
 
-		}
-		public OcUser(string username, string password, Role role)
-			: base(username, password, role)
-		{
+        }
+        public OcUser(string username, string password, Role role)
+            : base(username, password, role)
+        {
 
-		}
+        }
 
-	}
+    }
 }

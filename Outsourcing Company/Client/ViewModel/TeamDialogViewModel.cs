@@ -2,6 +2,7 @@
 using Common.Entities;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Client.ViewModel
 {
     public class TeamDialogViewModel
     {
-        public TeamDialogViewModel(Team team = null)
+        public TeamDialogViewModel(Team t = null)
         {
             if (team == null)
             {
@@ -20,30 +21,53 @@ namespace Client.ViewModel
             }
             else
             {
-                Team = team;
+                Team = t;
+                TeamLead = t.TeamLead;
             }
+
+            if (team.Developers == null)
+            {
+                teamDevelopers = new ObservableCollection<OcUser>();
+            }
+            else
+            {
+                foreach (var developer in team.Developers)
+                {
+                    teamDevelopers.Add(developer);
+                }
+            }
+
             using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
             {
-                List<OcUser> users = proxy.GetAllUsers();
+                List<OcUser> users = proxy.GetAllUsersWithoutTeam();
                 foreach (OcUser user in users)
                 {
                     if (user.Role == Role.developer && user.Team == null)
                     {
                         Developers.Add(user);
                     }
+                    if (user.Role == Role.TL && user.Team == null)
+                    {
+                        TeamLeads.Add(user);
+                    }
                 }
+
+
             }
         }
 
         #region fields
         private Team team;
-        private List<OcUser> developers = new List<OcUser>();
+        private OcUser teamLead;
+        private ObservableCollection<OcUser> developers = new ObservableCollection<OcUser>();
+        private ObservableCollection<OcUser> teamLeads = new ObservableCollection<OcUser>();
+        private ObservableCollection<OcUser> teamDevelopers = new ObservableCollection<OcUser>();
         private ICommand closeCommand;
         private ICommand saveCommand;
         #endregion
 
         #region properties
-        public List<OcUser> Developers
+        public ObservableCollection<OcUser> Developers
         {
             get
             {
@@ -52,6 +76,42 @@ namespace Client.ViewModel
             set
             {
                 developers = value;
+            }
+        }
+
+        public ObservableCollection<OcUser> TeamDevelopers
+        {
+            get
+            {
+                return teamDevelopers;
+            }
+            set
+            {
+                teamDevelopers = value;
+            }
+        }
+
+        public ObservableCollection<OcUser> TeamLeads
+        {
+            get
+            {
+                return teamLeads;
+            }
+            set
+            {
+                teamLeads = value;
+            }
+        }
+
+        public OcUser TeamLead
+        {
+            get
+            {
+                return teamLead;
+            }
+            set
+            {
+                teamLead = value;
             }
         }
 
@@ -92,7 +152,19 @@ namespace Client.ViewModel
 
         private void Save(object param)
         {
-            //TODO save team
+            using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
+            {
+                if (Team.Developers == null)
+                {
+                    Team.Developers = new List<OcUser>();
+                }
+                foreach (var developer in teamDevelopers)
+                {
+                    Team.Developers.Add(developer);
+                }
+                Team.TeamLead = TeamLead;
+                bool success = proxy.AddTeam(Team);
+            }
             (param as Window).Close();
         }
         #endregion

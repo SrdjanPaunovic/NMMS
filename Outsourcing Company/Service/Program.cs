@@ -50,37 +50,57 @@ namespace Service
             companyName = Console.ReadLine();
 
             #region test
-            OcUser user1 = new OcUser("admin1", "admin1", Role.developer);
-            user1.Name = "savo1";
-            user1.Surname = "oroz1";
+            //OcUser user1 = new OcUser("admin1", "admin1", Role.developer);
+            //user1.Name = "savo1";
+            //user1.Surname = "oroz1";
 
-            Project project = new Project();
+            //Project project = new Project();
 
 
             //  user.Project = project;
             //  user1.Project = project;
 
 
-            OutsourcingCompanyDB.Instance.AddUser(user1);
+            //OutsourcingCompanyDB.Instance.AddUser(user1);
             //OutsourcingCompanyDB.Instance.AddProject(project);
 
             //  HirinigCompanyDB.Instance.AddCompany(company);
-            OcUser user = new OcUser("admin", "admin", Role.CEO);
-            user.Name = "savo";
-            user.Surname = "oroz";
-            OutsourcingCompanyDB.Instance.AddUser(user);
+            //OcUser user = new OcUser("admin", "admin", Role.CEO);
+            //user.Name = "savo";
+            //user.Surname = "oroz";
+            //OutsourcingCompanyDB.Instance.AddUser(user);
 
             /*Console.WriteLine("Enter ip adress of hiring company");
             string ipAdress = Console.ReadLine();*/
 
-            Team t1 = new Team();
-            t1.Name = "SaaS";
+            //Team t1 = new Team();
+            //t1.Name = "SaaS";
             //OutsourcingCompanyDB.Instance.AddTeam(t1);
 
-            Team t2 = new Team();
-            t2.Name = "Network Viewer";
-            t2.TeamLead = user1;
-            OutsourcingCompanyDB.Instance.AddTeam(t2);
+            //Team t2 = new Team();
+            //t2.Name = "Network Viewer";
+            //t2.TeamLead = user1;
+            //OutsourcingCompanyDB.Instance.AddTeam(t2);
+
+            OcUser h = new OcUser("teamlead", "teamlead", Role.TL);
+            h.Name = "tl1";
+            h.Surname = "tl1";
+            OutsourcingCompanyDB.Instance.AddUser(h);
+
+            OcUser d1 = new OcUser("d1", "dev", Role.developer);
+            d1.Name = "d1";
+            d1.Surname = "d1";
+            OutsourcingCompanyDB.Instance.AddUser(d1);
+
+            OcUser d2 = new OcUser("d2", "dev", Role.developer);
+            d2.Name = "d2";
+            d2.Surname = "d2";
+            OutsourcingCompanyDB.Instance.AddUser(d2);
+
+            OcUser d3 = new OcUser("d3", "dev", Role.developer);
+            d3.Name = "d3";
+            d3.Surname = "d3";
+            OutsourcingCompanyDB.Instance.AddUser(d3);
 
             #endregion
 

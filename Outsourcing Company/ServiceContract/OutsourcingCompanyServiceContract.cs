@@ -46,6 +46,9 @@ namespace ServiceContract
         [OperationContract]
         List<OcUser> GetAllUsers();
 
+        [OperationContract]
+        List<OcUser> GetAllUsersWithoutTeam();
+
 		[OperationContract]
 		OcUser GetUser(string username);
 

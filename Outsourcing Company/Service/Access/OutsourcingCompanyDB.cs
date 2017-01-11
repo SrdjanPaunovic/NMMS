@@ -138,12 +138,32 @@ namespace Service.Access
         {
             using (var context = new AccessDB())
             {
+                if (team.Developers != null)
+                {
+                    for (int i = 0; i < team.Developers.Count; i++)
+                    {
+                        var developer = team.Developers[i];
+                        var d = context.Users.FirstOrDefault((x) => x.Id == developer.Id);
+                        team.Developers[i] = d;
+                    }
+                }
+
+                //if (team.Developers == null)
+                //{
+                //	team.Developers = new List<OcUser>();
+                //}
+                //foreach (var developer in team.Developers)
+                //{
+                //	var dev = context.Users.FirstOrDefault((x) => x.Id == developer.Id);
+                //	dev.Team = team;
+                //	context.Entry(dev).State = System.Data.Entity.EntityState.Modified;
+                //	context.SaveChanges();
+                //}
                 context.Teams.Add(team);
                 int count = context.SaveChanges();
                 if (count > 0)
                 {
                     LogHelper.GetLogger().Info(" AddTeam method succeeded. Returned true.");
-
                     return true;
                 }
                 else
@@ -235,6 +255,17 @@ namespace Service.Access
             return false;
         }
 
+        public List<OcUser> GetAllUsersWithoutTeam()
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                List<OcUser> users = context.Users.SqlQuery("SELECT * FROM dbo.Users WHERE Team_Id IS NULL").ToList();
+                LogHelper.GetLogger().Info("GetAllUsers method succeeded. Returned list of all users.");
+
+                return users;
+            }
+        }
+
         public List<OcUser> GetAllUsers()
         {
             using (AccessDB context = new AccessDB())
@@ -269,7 +300,16 @@ namespace Service.Access
                     {
                         team.TeamLead.Team = null;
                     }
+                    List<OcUser> users = context.Users.Include("Team").ToList();
+                    foreach (var developer in users)
+                    {
+                        if (developer.Team != null && developer.Team.Id == team.Id)
+                        {
+                            team.Developers.Add(developer);
+                        }
+                    }
                 }
+
                 LogHelper.GetLogger().Info("GetAllTeams method succeeded. Returned list of all teams.");
 
                 return teams;
