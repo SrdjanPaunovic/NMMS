@@ -42,4 +42,12 @@ namespace Common.Entities
 		[EnumMember]
 		Partner = 2
 	}
+
+    public enum WindowState
+    {
+        LOGIN,
+        EMPLOYEES,
+        COMPANIES,
+        PROJECTS
+    }
 }

@@ -8,7 +8,7 @@
         xmlns:viewModel ="clr-namespace:Client.ViewModel"
         xmlns:converterts="clr-namespace:Common.Converters;assembly=Common"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="600">
+        Title="MainWindow" Height="350" Width="600" Closing="Window_Closing">
     <Window.DataContext>
         <viewModel:MainWindowViewModel x:Name="viewModel" />
     </Window.DataContext>
@@ -239,20 +239,95 @@
             </ListView>
         </Grid>
 
-        <!-- New project -->
+        <!-- Employees -->
         <Grid Grid.Row="1">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"></Setter>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding CurrentState}" Value="NEW_PROJECT">
+                        <DataTrigger Binding="{Binding CurrentState}" Value="EMPLOYEES">
                             <Setter Property="Visibility" Value="Visible"></Setter>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <userControls:CreateProjectView></userControls:CreateProjectView>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--This is the hidden helper Grid which does the resizing -->
+            <Grid Visibility="Hidden">
+                <Grid.ColumnDefinitions>
+                    <!--Width is bound to width of the first GridViewColumn -->
+                    <ColumnDefinition Width="{Binding ElementName=col1, Path=ActualWidth}"/>
+                    <ColumnDefinition Width="{Binding ElementName=col2, Path=ActualWidth}"/>
+                    <ColumnDefinition Width="{Binding ElementName=col3, Path=ActualWidth}"/>
+                    <!--Width is set to "Fill"-->
+                    <ColumnDefinition Width="*"/>
+                    <!--Correction Width-->
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <!--This is the hidden helper Field which is used to bind to, using the "Fill" column of the helper grid-->
+                <Grid Grid.Column="3" x:Name="helperField"/>
+            </Grid>
+            
+            <ListView Grid.Row="1" Name="Employees_listView" ItemsSource="{Binding AllEmployees}" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="" x:Name="col1">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center" Width="10" Height="10" >
+                                            <Ellipse.Style>
+                                                <Style TargetType="Ellipse">
+                                                    <Setter Property="Fill" Value="LightGray"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsAuthenticated}" Value="True">
+                                                            <Setter Property="Fill" Value="#FF00FF51"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Ellipse.Style>
+                                        </Ellipse>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Name" x:Name="col2" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Username" x:Name="col3" DisplayMemberBinding="{Binding Username}" />
+                        <GridViewColumn Header="" Width="{Binding ElementName=helperField, Path=ActualWidth}"> <!--Empty Column-->
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Actions">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid VerticalAlignment="Center" Name="grid" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <userControls:ImageButton Grid.Column="0" NormalImage="{Binding ElementName=viewModel,Path=EditIcon}"
+                                                                  Command="{Binding ElementName=viewModel,Path=EditUserProfileCommand}"
+                                                                  CommandParameter="{Binding ElementName=grid,Path=DataContext}"
+                                                                  Width="24" Height="24"/>
+                                        <userControls:ImageButton Grid.Column="1" NormalImage="{Binding ElementName=viewModel,Path=RemoveIcon}"
+                                                                  Command="{Binding ElementName=viewModel,Path=DeleteUserCommand}"
+                                                                  CommandParameter="{Binding ElementName=grid,Path=DataContext}"
+                                                                  Width="24" Height="24"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
+
 
     </Grid>
 

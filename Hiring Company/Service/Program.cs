@@ -75,7 +75,7 @@ namespace HiringCompanyService
 			User user = new User("admin", "admin", Role.CEO);
 			user.Name = "savo";
 			user.Surname = "oroz";
-			HiringCompanyDB.Instance.AddUser(user);
+            //HiringCompanyDB.Instance.AddUser(user);
 
 			Company c1 = new Company("C1");
 			Company c2 = new Company();
@@ -94,6 +94,7 @@ namespace HiringCompanyService
 				new NetTcpBinding(),
 				new Uri("net.tcp://localhost:4000/IHiringContract"));
 			host.Open();
+            host.Faulted += host_Faulted;
 
 			Console.WriteLine("Insert compnany name");
 			companyName = Console.ReadLine();
@@ -114,6 +115,11 @@ namespace HiringCompanyService
 
 		}
 
+        static void host_Faulted(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
 		private static void Stop()
 		{
 			host.Close();
@@ -127,7 +133,7 @@ namespace HiringCompanyService
 			while (true)
 			{
 				Thread.Sleep(600000);
-				List<User> users = HiringCompanyDB.Instance.getAllUsers();
+				List<User> users = HiringCompanyDB.Instance.GetAllUsers();
 				using (MailHelper helper = new MailHelper(users))
 				{
 					helper.CheckWorkingTime();
@@ -145,7 +151,7 @@ namespace HiringCompanyService
 			{
 				var sleepTime = DateTime.Today.AddDays(1).AddHours(1).Subtract(DateTime.Now); // jednom dnevno
 				Thread.Sleep(sleepTime);
-				List<User> users = HiringCompanyDB.Instance.getAllUsers();
+				List<User> users = HiringCompanyDB.Instance.GetAllUsers();
 				using (MailHelper helper = new MailHelper(users))
 				{
 					helper.CheckPassword();

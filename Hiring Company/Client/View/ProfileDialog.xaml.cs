@@ -23,6 +23,7 @@ namespace Client.View
     public partial class ProfileDialog : Window
     {
         public User User { get; set; }
+
         public ProfileDialog(string LoggedUsername)
         {
 
@@ -37,7 +38,6 @@ namespace Client.View
 
                 }
             }
-
             InitializeComponent();
             DataContext = this;
 			LogHelper.GetLogger().Info("Profile Dialog initialized.");
@@ -53,7 +53,7 @@ namespace Client.View
                 if (success)
                 {
 					LogHelper.GetLogger().Info("Profile Dialog closed.");
-
+                    this.DialogResult = true;
                     this.Close();
                 }
             }

@@ -15,8 +15,10 @@ namespace Service.Access
         bool LogOut(string username);
         bool UserRegister(User user);
         bool UpdateUser(User user);
+        bool RemoveUser(User user);
         User GetUser(string username);
         List<User> LoginUsersOverview();
+        List<User> GetAllUsers();
 
         bool AddCompany(Company company);
         List<Company> GetAllCompanies();

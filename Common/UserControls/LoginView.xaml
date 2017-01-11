@@ -20,14 +20,14 @@
             <TextBox Name="Username_TB" Margin="5,0" Text="{Binding Username}" TextChanged="Username_TB_TextChanged"/>
         </GroupBox>
         <GroupBox Grid.Row="1" Header="Password" BorderThickness="2" Margin="2">
-            <PasswordBox Name="Password_TB" Margin="5,0" PasswordChar="♥" />
+            <PasswordBox Name="Password_TB" Margin="5,0" PasswordChar="♥" LostKeyboardFocus="Password_TB_LostKeyboardFocus" />
             <!--<TextBox Name="Password_TB" Margin="5,0" />-->
         </GroupBox>
         <Button Grid.Row="2" Content="Log In" Margin="2,10,2,2" Command="{Binding LoginCommand}">
             <Button.CommandParameter>
                 <MultiBinding Converter="{StaticResource multiParamConverter}">
                     <Binding Path="Text" ElementName="Username_TB"/>
-                    <Binding Path="Password" ElementName="Password_TB"/>
+                    <Binding Path="Tag" ElementName="Password_TB"/>
                 </MultiBinding>
             </Button.CommandParameter>
         </Button>
