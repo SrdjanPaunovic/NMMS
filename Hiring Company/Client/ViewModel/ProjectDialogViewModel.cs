@@ -21,7 +21,7 @@ namespace Client.ViewModel
 		//TODO: INTGR change classes
 		private Project project;
 		private bool isEditing;
-
+		private HiringClientProxy proxy = ((App)App.Current).Proxy;
 		#endregion Fields
 
 		public ProjectDialogViewModel()
@@ -37,12 +37,8 @@ namespace Client.ViewModel
 		{
 			Project = project;
 
-			using (HiringClientProxy proxy = ((App)App.Current).Proxy)
-			{
-				List<UserStory> userStories = proxy.GetUserStoryFromProject(project);
-
-				Project.UserStories = new ObservableCollection<UserStory>(userStories);
-			}
+			List<UserStory> userStories = proxy.GetUserStoryFromProject(project);
+			Project.UserStories = new ObservableCollection<UserStory>(userStories);
 
 			isEditing = true;
 		}
@@ -119,7 +115,7 @@ namespace Client.ViewModel
 
 			var userControl = param as UserControl;
 			Window parentWindow = Window.GetWindow(userControl);
-			LogHelper.GetLogger().Info(parentWindow.Name+" closed.");
+			LogHelper.GetLogger().Info(parentWindow.Name + " closed.");
 
 			parentWindow.Close();
 		}
@@ -131,25 +127,24 @@ namespace Client.ViewModel
 			var userControl = param as UserControl;
 			Window parentWindow = Window.GetWindow(userControl);
 
-			using (HiringClientProxy proxy = ((App)App.Current).Proxy)
+			bool success = false;
+			if (isEditing)
 			{
-				bool success = false;
-				if (isEditing)
-				{
-					success = proxy.UpdateProject(Project);
-				}
-				else
-				{
-                    success = proxy.AddProject(Project);
-				}
+				success = proxy.UpdateProject(Project);
+			}
+			else
+			{
+				success = proxy.AddProject(Project);
+			}
 
-				if (success)
-				{
-					//TODO Logger
-					parentWindow.Close();
-					LogHelper.GetLogger().Info(parentWindow.Name + " closed.");
-
-				}
+			if (success)
+			{
+				parentWindow.Close();
+				LogHelper.GetLogger().Info(parentWindow.Name + " closed.");
+			}
+			else
+			{
+				LogHelper.GetLogger().Warn("AddProject failed.");
 			}
 		}
 
@@ -158,7 +153,7 @@ namespace Client.ViewModel
 			LogHelper.GetLogger().Info("AddStoryClick called.");
 
 			var name = param as string;
-			if(name == String.Empty)
+			if (name == String.Empty)
 			{
 				return;
 			}
@@ -176,10 +171,10 @@ namespace Client.ViewModel
 
 			var story = param as UserStory;
 
-            UserStoryViewDialog usDialog = new UserStoryViewDialog(story);
-            usDialog.ShowDialog();
-			LogHelper.GetLogger().Info(usDialog.Name+ "shown");
-			
+			UserStoryViewDialog usDialog = new UserStoryViewDialog(story);
+			usDialog.ShowDialog();
+			LogHelper.GetLogger().Info(usDialog.Name + "shown");
+
 		}
 
 		private void DeleteStoryClick(object param)
