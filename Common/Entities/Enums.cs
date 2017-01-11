@@ -11,13 +11,13 @@ namespace Common.Entities
 	public enum Role
 	{
 		[EnumMember]
-		CEO = 1,
+		CEO = 0,
 		[EnumMember]
-		developer = 2,
+		developer,
 		[EnumMember]
-		PO = 3,
+		PO,
 		[EnumMember]
-		SM = 5
+		SM
 	}
 
 	[DataContract(Name = "StoryState")]

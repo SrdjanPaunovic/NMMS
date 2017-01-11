@@ -26,6 +26,16 @@ namespace Client.View
 
 		private HiringClientProxy proxy = ((App)App.Current).Proxy;
 
+		public ProfileDialog()
+		{
+
+			User = new User();
+
+			InitializeComponent();
+			DataContext = this;
+			LogHelper.GetLogger().Info("Profile Dialog initialized.");
+		}
+
 		public ProfileDialog(string LoggedUsername)
 		{
 
@@ -44,8 +54,16 @@ namespace Client.View
 		private void UserInputView_SaveClicked(object sender, EventArgs e)
 		{
 			LogHelper.GetLogger().Info("Save click occurred.");
+			bool success = false;
 
-			bool success = proxy.UpdateUser(User);
+			if (User.Id == 0)   //Add if not exist(Create new User)
+			{
+				success = proxy.AddUser(User);
+			}
+			else
+			{
+				success = proxy.UpdateUser(User);
+			}
 
 			if (success)
 			{

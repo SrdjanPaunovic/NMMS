@@ -196,7 +196,15 @@ namespace HiringCompanyService
 
         public bool RemoveUser(User user)
         {
-            return HiringCompanyDB.Instance.RemoveUser(user);
+			LogHelper.GetLogger().Info("Call RemoveUser method.");
+
+			return HiringCompanyDB.Instance.RemoveUser(user);
         }
-    }
+
+		public bool AddUser(User user)
+		{
+            LogHelper.GetLogger().Info("Call AddUser method.");
+			return HiringCompanyDB.Instance.AddUser(user);
+		}
+	}
 }

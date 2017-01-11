@@ -24,9 +24,12 @@ namespace ServiceContract
 		User GetUser(string username);
 
 		[OperationContract]
+		bool AddUser(User user);
+
+		[OperationContract]
 		bool UpdateUser(User user);
 
-        [OperationContract]
+		[OperationContract]
         bool RemoveUser(User user);
 
 		[OperationContract]

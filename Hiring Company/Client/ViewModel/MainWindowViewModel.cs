@@ -64,9 +64,7 @@ namespace Client.ViewModel
 		private ICommand sendCompanyRequestCommand;
 		private ICommand editUserProfileCommand;
 		private ICommand deleteUserCommand;
-
-
-
+		private ICommand addUserCommand;
 		#endregion Fields
 
 		#region Properties
@@ -226,9 +224,13 @@ namespace Client.ViewModel
 			}
 		}
 
-
-
-
+		public ICommand AddUserCommand
+		{
+			get
+			{
+				return addUserCommand ?? (addUserCommand = new RelayCommand(param => this.AddUser(param)));
+			}
+		}
 
 		#endregion Properties
 
@@ -476,6 +478,21 @@ namespace Client.ViewModel
 				LogHelper.GetLogger().Info("DeleteUser failed");
 
 			}
+
+		}
+
+		private void AddUser(object param)
+		{
+
+			LogHelper.GetLogger().Info("AddUser called.");
+
+			ProfileDialog profileDialog = new ProfileDialog();
+			var res = profileDialog.ShowDialog();
+			if (res == true)
+			{
+				LogHelper.GetLogger().Info("User successfully added.");
+			}
+
 
 		}
 		#endregion Methods
