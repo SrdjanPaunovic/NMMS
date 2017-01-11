@@ -83,8 +83,7 @@ namespace Service.Access
 
 			}
 		}
-
-
+        
 		public bool LogIn(string username, string password)
 		{
 			using (AccessDB context = new AccessDB())
@@ -154,20 +153,6 @@ namespace Service.Access
 			}
 			LogHelper.GetLogger().Info(" UserRegister method returned false.");
 			return false;
-		}
-
-		public List<User> getAllUsers()
-		{
-			using (AccessDB context = new AccessDB())
-			{
-				List<User> users = new List<User>();
-				var result = context.Users;
-				users = result.ToList();
-				LogHelper.GetLogger().Info("GetAllUsers method succeeded.");
-
-				return users;
-
-			}
 		}
 
 		public List<User> LoginUsersOverview()
@@ -443,7 +428,6 @@ namespace Service.Access
 			}
 			return true;
 		}
-	
 
         public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
         {
@@ -466,8 +450,6 @@ namespace Service.Access
             }
         }
 
-
-
         public bool ModifyCompanyToPartner(Company company)
         {
             using (AccessDB context = new AccessDB())
@@ -483,6 +465,41 @@ namespace Service.Access
                 }
             }
             return false;
+        }
+
+        public List<User> GetAllUsers()
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                List<User> users = context.Users.ToList();
+
+                LogHelper.GetLogger().Info("GetAllUsers method succeeded. Returned list of users.");
+
+                return users;
+            }
+        }
+
+
+        public bool RemoveUser(User user)
+        {
+            using (AccessDB context = new AccessDB())
+			{
+				User us = context.Users.FirstOrDefault<User>((x) => x.Id == user.Id);
+
+				if (us != null)
+				{
+
+                    context.Entry(us).State = System.Data.Entity.EntityState.Deleted;
+					context.SaveChanges();
+					LogHelper.GetLogger().Info(" RemoveUser method succeeded. Returned true.");
+
+					return true;
+				}
+				LogHelper.GetLogger().Info("RemoveUser method returned false.");
+
+				return false;
+			}
+		
         }
     }
 }

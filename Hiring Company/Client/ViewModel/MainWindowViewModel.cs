@@ -18,20 +18,15 @@ namespace Client.ViewModel
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        public enum WindowState
-        {
-            LOGIN,
-            EMPLOYEES,
-            COMPANIES,
-            PROJECTS
-        }
+
 
         public MainWindowViewModel()
         {
-          string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
-          string path = System.IO.Path.GetDirectoryName(executable);
-          path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
-          EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
+            string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string path = System.IO.Path.GetDirectoryName(executable);
+            path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
+            EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
+            RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
         }
 
         #region Fields
@@ -39,8 +34,11 @@ namespace Client.ViewModel
         private ObservableCollection<Company> partnerCompanies = new ObservableCollection<Company>();
         private ObservableCollection<Company> nonPartnerCompanies = new ObservableCollection<Company>();
         private ObservableCollection<Project> projects = new ObservableCollection<Project>();
+        private ObservableCollection<User> allEmployees = new ObservableCollection<User>();
 
-        private WindowState currentState = WindowState.LOGIN;
+
+
+        private Common.Entities.WindowState currentState = Common.Entities.WindowState.LOGIN;
         private NetTcpBinding netTcpBinding = new NetTcpBinding();
         //commands
         private ICommand loginCommand;
@@ -54,14 +52,23 @@ namespace Client.ViewModel
         private ICommand showProjectsCommand;
         private ICommand displayCompaniesCommand;
         private ICommand sendCompanyRequestCommand;
+        private ICommand editUserProfileCommand;
+        private ICommand deleteUserCommand;
 
         #endregion Fields
 
         #region Properties
-        
+
         public BitmapImage EditIcon { get; set; }
-        
-        public WindowState CurrentState
+        public BitmapImage RemoveIcon { get; set; }
+
+        public ObservableCollection<User> AllEmployees
+        {
+            get { return allEmployees; }
+            set { allEmployees = value; }
+        }
+
+        public Common.Entities.WindowState CurrentState
         {
             get { return currentState; }
             set
@@ -191,6 +198,21 @@ namespace Client.ViewModel
             }
         }
 
+        public ICommand EditUserProfileCommand
+        {
+            get
+            {
+                return editUserProfileCommand ?? (editUserProfileCommand = new RelayCommand(param => this.EditUserProfile(param)));
+            }
+        }
+
+        public ICommand DeleteUserCommand
+        {
+            get
+            {
+                return deleteUserCommand ?? (deleteUserCommand = new RelayCommand(param => this.DeleteUser(param)));
+            }
+        }
 
         #endregion Properties
 
@@ -205,12 +227,16 @@ namespace Client.ViewModel
             {
                 LogHelper.GetLogger().Error("Command parameters has NULL value.");
 
-                throw new Exception("[LoginCommnad] Command parameters has NULL value");
+            }
 
+            if (parameters[0] == null || parameters[1] == null)
+            {
+                LogHelper.GetLogger().Error("Some of command parameters has NULL value.");
+                return;
             }
 
             string username = parameters[0].ToString();
-            string pass = parameters[0].ToString();
+            string pass = parameters[1].ToString();
 
             //using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, ((App)App.Current).HostAddress))
             using (HiringClientProxy proxy = ((App)App.Current).Proxy)
@@ -220,7 +246,7 @@ namespace Client.ViewModel
                 if (success)
                 {
                     LoggedUsername = username;
-                    CurrentState = WindowState.PROJECTS;
+                    CurrentState = Common.Entities.WindowState.PROJECTS;
                 }
             }
         }
@@ -231,28 +257,53 @@ namespace Client.ViewModel
             LogHelper.GetLogger().Info("ShowProfile called.");
 
             ProfileDialog profileDialog = new ProfileDialog(LoggedUsername);
-            profileDialog.ShowDialog();
+            var res = profileDialog.ShowDialog();
+            if (res == true)
+            {
+                LoggedUsername = profileDialog.User.Username;
+            }
         }
 
         private void ShowEmployees()
         {
             LogHelper.GetLogger().Info("ShowEmployees called.");
+            try
+            {
+                using (HiringClientProxy proxy = ((App)Application.Current).Proxy)
+                {
+                    AllEmployees.Clear();
 
-            CurrentState = WindowState.EMPLOYEES;
+                    List<User> result = proxy.GetAllUsers();
+
+                    foreach (var user in result)
+                    {
+                        AllEmployees.Add(user);
+                    }
+                }
+                LogHelper.GetLogger().Info("Get employees is done successfuly");
+            }
+            catch (Exception e)
+            {
+
+                LogHelper.GetLogger().Error("There is no employees", e);
+            }
+
+
+            CurrentState = Common.Entities.WindowState.EMPLOYEES;
         }
 
         private void ShowCompanies()
         {
             LogHelper.GetLogger().Info("ShowCompanies called.");
 
-            CurrentState = WindowState.COMPANIES;
+            CurrentState = Common.Entities.WindowState.COMPANIES;
         }
 
         private void ShowProjects()
         {
             LogHelper.GetLogger().Info("ShowProjects called.");
 
-            CurrentState = WindowState.PROJECTS;
+            CurrentState = Common.Entities.WindowState.PROJECTS;
         }
 
         private void LogOut(object param)
@@ -266,7 +317,7 @@ namespace Client.ViewModel
                 if (success)
                 {
                     LoggedUsername = "";
-                    CurrentState = WindowState.LOGIN;
+                    CurrentState = Common.Entities.WindowState.LOGIN;
                 }
                 else
                 {
@@ -368,6 +419,43 @@ namespace Client.ViewModel
             }
         }
 
+        private void EditUserProfile(object param)
+        {
+            LogHelper.GetLogger().Info("ShowProfile called.");
+
+            var user = param as User;
+            if (user == null)
+            {
+                LogHelper.GetLogger().Warn("ShowProfile params NULL.");
+            }
+            LogHelper.GetLogger().Info("ShowProfile params ok.");
+
+            ProfileDialog profileDialog = new ProfileDialog(user.Username);
+            var res = profileDialog.ShowDialog();
+            if (res == true)
+            {
+                user.Username = profileDialog.User.Username;
+            }
+        }
+
+        private void DeleteUser(object param)
+        {
+            LogHelper.GetLogger().Info("DeleteUser called.");
+            try
+            {
+                using (HiringClientProxy proxy = ((App)Application.Current).Proxy)
+                {
+                    bool success = false;
+
+                    //success = proxy.RemoveUser(user);
+                }
+                LogHelper.GetLogger().Info("DeleteUser is done successfuly");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("DeleteUser error", e);
+            }
+        }
         #endregion Methods
 
         #region PropertyChangedNotifier

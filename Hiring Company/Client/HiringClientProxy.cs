@@ -473,5 +473,41 @@ namespace Client
         {
             throw new NotImplementedException();
         }
+
+
+        public List<User> GetAllUsers()
+        {
+            List<User> result = null;
+
+            try
+            {
+                result = this.factory.GetAllUsers();
+                LogHelper.GetLogger().Info("GetAllUsers method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("GetAllUsers method failed.", e);
+            }
+
+            return result;
+        }
+
+
+        public bool RemoveUser(User user)
+        {
+            bool result = false;
+
+            try
+            {
+                result = this.factory.RemoveUser(user);
+                LogHelper.GetLogger().Info("UpdateUser method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("UpdateUser method failed. ", e);
+            }
+
+            return result;
+        }
     }
 }

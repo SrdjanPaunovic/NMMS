@@ -57,5 +57,11 @@ namespace Common.UserControls
 			if(Username.Trim() == "")
 				Password_TB.Password = "";
 		}
+
+        private void Password_TB_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            var Password_Tb = Password_TB;
+            Password_TB.Tag = Password_TB.Password;
+        }
 	}
 }
