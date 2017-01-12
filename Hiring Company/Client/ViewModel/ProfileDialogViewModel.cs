@@ -17,7 +17,7 @@ namespace Client.ViewModel
 
         public User User { get; set; }
 
-        private IHiringContract proxy = ((App)App.Current).Proxy;
+        public IHiringContract proxy = ((App)App.Current).Proxy;
         public ProfileDialogViewModel()
         {
 
