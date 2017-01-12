@@ -43,35 +43,69 @@ namespace Common.UserControls
             set { SetValue(UserProperty, value); }
         }
 
+        public static readonly DependencyProperty SaveCommandProperty =
+        DependencyProperty.Register(
+            "SaveCommand",
+            typeof(ICommand),
+            typeof(UserInputView),
+            new UIPropertyMetadata(null));
+
+        public ICommand SaveCommand
+        {
+            get { return (ICommand)GetValue(SaveCommandProperty); }
+            set { SetValue(SaveCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty CancelCommandProperty =
+        DependencyProperty.Register(
+            "CancelCommand",
+            typeof(ICommand),
+            typeof(UserInputView),
+            new UIPropertyMetadata(null));
+
+        public ICommand CancelCommand
+        {
+            get { return (ICommand)GetValue(CancelCommandProperty); }
+            set { SetValue(CancelCommandProperty, value); }
+        }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (SaveClicked != null)
-            {
-				if(passBox.Password == confirmPassBox.Password)
-				{
-					//if something typed in Passwords fields
-					if(passBox.Password.Trim() != String.Empty)
-					{
-						User.Password = passBox.Password;
-					}
 
-					if(User.Password!= String.Empty)
-					{
-						SaveClicked(sender, e);
-					}else
-					{
-						//if noting typed in Password fields and User have not set Password Property
-						passBox.Background = Brushes.Red;
-						confirmPassBox.Background = Brushes.Red;
-					}
-				}
-				else
-				{
-					//Password does not match
-					confirmPassBox.Background = Brushes.Red;
-					passBox.Background = Brushes.White;
-				}
-			}
+            if (passBox.Password == confirmPassBox.Password)
+            {
+                //if something typed in Passwords fields
+                if (passBox.Password.Trim() != String.Empty)
+                {
+                    User.Password = passBox.Password;
+                }
+
+                if (User.Password != String.Empty)
+                {
+                    if (SaveClicked != null)
+                    {
+                        SaveClicked(sender, e);
+                    }
+
+                    if (SaveCommand != null && SaveCommand.CanExecute(this))
+                    {
+                        SaveCommand.Execute(this);
+                    }
+
+                }
+                else
+                {
+                    //if noting typed in Password fields and User have not set Password Property
+                    passBox.Background = Brushes.Red;
+                    confirmPassBox.Background = Brushes.Red;
+                }
+            }
+            else
+            {
+                //Password does not match
+                confirmPassBox.Background = Brushes.Red;
+                passBox.Background = Brushes.White;
+            }
         }
 
         private void Cancel_btn_Click(object sender, RoutedEventArgs e)
@@ -79,7 +113,11 @@ namespace Common.UserControls
             if (CancelClicked != null)
             {
                 CancelClicked(sender, e);
+            }
 
+            if (CancelCommand != null && CancelCommand.CanExecute(this))
+            {
+                CancelCommand.Execute(this);
             }
         }
     }

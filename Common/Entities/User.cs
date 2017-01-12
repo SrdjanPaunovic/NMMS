@@ -78,6 +78,7 @@ namespace Common.Entities
 			this.Surname = user.Surname;
 			this.Username = user.Username;
 			this.Password_changed = user.Password_changed;
+            this.MailAddress = user.MailAddress;
 		}
     }
 }

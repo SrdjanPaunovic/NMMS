@@ -275,7 +275,10 @@ namespace Client.ViewModel
 			var res = profileDialog.ShowDialog();
 			if (res == true)
 			{
-				LoggedUsername = profileDialog.User.Username;
+                if (profileDialog.Tag != null)
+                {
+                    LoggedUsername = profileDialog.Tag.ToString();
+                }
 			}
 		}
 
@@ -448,7 +451,10 @@ namespace Client.ViewModel
 			var res = profileDialog.ShowDialog();
 			if (res == true)
 			{
-				user.Username = profileDialog.User.Username;
+                if (profileDialog.Tag != null)
+                {
+                    LoggedUsername = profileDialog.Tag.ToString();
+                }
 			}
 		}
 

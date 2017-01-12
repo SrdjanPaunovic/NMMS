@@ -52,6 +52,9 @@
                 <GroupBox Grid.Column="0" Grid.Row="0" Header="Username" BorderThickness="0" VerticalContentAlignment="Center">
                     <TextBox VerticalAlignment="Center" Text="{Binding User.Username}"></TextBox>
                 </GroupBox>
+                <GroupBox Grid.Column="1" Grid.Row="0" Header="Email address" BorderThickness="0" VerticalContentAlignment="Center">
+                    <TextBox VerticalAlignment="Center" Text="{Binding User.MailAddress}"></TextBox>
+                </GroupBox>
                 <GroupBox Grid.Column="0" Grid.Row="1" Header="Password" BorderThickness="0"  VerticalContentAlignment="Center">
                     <PasswordBox Name="passBox" VerticalAlignment="Center"></PasswordBox>
                 </GroupBox>

@@ -114,6 +114,7 @@
     </ApplicationDefinition>
     <Compile Include="HiringClientProxy.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\ProfileDialogViewModel.cs" />
     <Compile Include="ViewModel\ProjectDialogViewModel.cs" />
     <Compile Include="ViewModel\UserStoryViewModel.cs" />
     <Compile Include="View\ProfileDialog.xaml.cs">

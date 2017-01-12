@@ -116,7 +116,6 @@ namespace Client.ViewModel
 			var userControl = param as UserControl;
 			Window parentWindow = Window.GetWindow(userControl);
 			LogHelper.GetLogger().Info(parentWindow.Name + " closed.");
-
 			parentWindow.Close();
 		}
 
