@@ -22,36 +22,104 @@ namespace HiringServiceTest
 			serviceUnderTest = new HiringService();
 			HiringCompanyDB.Instance = Substitute.For<IHiringCompanyDB>();
 
-			HiringCompanyDB.Instance.LogIn("admin","admin").Returns(true);
-			HiringCompanyDB.Instance.LogIn("admin","ad").Returns(false);
-			HiringCompanyDB.Instance.LogOut("admin").Returns(true);
-			HiringCompanyDB.Instance.LogOut("pero").Returns(false);
-			HiringCompanyDB.Instance.UserRegister(new User() { Username = "pero" }).Returns(true);
-			HiringCompanyDB.Instance.UserRegister(new User() { Username = "jovisa" }).Returns(false);
-			HiringCompanyDB.Instance.GetUser("pero").Returns(new User() { Name = "Pero" });
-			HiringCompanyDB.Instance.AddUser(new User() { Name = "Voja", Surname = "Seselj" }).Returns(true);
-			HiringCompanyDB.Instance.AddUser(new User() { Name = "Toma", Surname = "Diploma" }).Returns(false);
-			HiringCompanyDB.Instance.UpdateUser(new User() { Name = "Mika" }).Returns(true);
-			HiringCompanyDB.Instance.UpdateUser(new User() { Name = "Pera" }).Returns(false);
 
-			HiringCompanyDB.Instance.RemoveUser(new User() { Name = "Mika" }).Returns(true);
-			HiringCompanyDB.Instance.RemoveUser(new User() { Name = "Pera" }).Returns(false);
+            HiringCompanyDB.Instance.LogIn("admin", "admin").Returns(true);
+            HiringCompanyDB.Instance.LogIn("admin", "ad").Returns(false);
+            HiringCompanyDB.Instance.LogOut("admin").Returns(true);
+            HiringCompanyDB.Instance.LogOut("pero").Returns(false);
+            HiringCompanyDB.Instance.GetUser("pero").Returns(new User() { Name = "Pero" });
+            HiringCompanyDB.Instance.AddUser(Arg.Is<User>(x => x.Name == "Voja" && x.Surname == "Seselj")).Returns(true);
+            HiringCompanyDB.Instance.AddUser(Arg.Is<User>(x => x.Name != "Voja" && x.Surname == "Seselj")).Returns(false);
+            HiringCompanyDB.Instance.UpdateUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
+            HiringCompanyDB.Instance.UpdateUser(Arg.Is<User>(x => x.Name != "Mika")).Returns(false);
+            HiringCompanyDB.Instance.LogIn("admin", "admin").Returns(true);
+            HiringCompanyDB.Instance.LogIn("admin", "ad").Returns(false);
+            HiringCompanyDB.Instance.LogOut("admin").Returns(true);
+            HiringCompanyDB.Instance.LogOut("pero").Returns(false);
+            HiringCompanyDB.Instance.UserRegister(Arg.Is<User>(x => x.Username == "pero")).Returns(true);
+            HiringCompanyDB.Instance.UserRegister(Arg.Is<User>(x => x.Username != "pero")).Returns(false);
+            HiringCompanyDB.Instance.GetUser("pero").Returns(new User() { Name = "Pero" });
+            HiringCompanyDB.Instance.AddUser(Arg.Is<User>(x => x.Name == "Voja" && x.Surname == "Seselj")).Returns(true);
+            HiringCompanyDB.Instance.AddUser(Arg.Is<User>(x => x.Name != "Voja" && x.Surname == "Seselj")).Returns(false);
+            HiringCompanyDB.Instance.UpdateUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
+            HiringCompanyDB.Instance.UpdateUser(Arg.Is<User>(x => x.Name != "Mika")).Returns(false);
+            HiringCompanyDB.Instance.RemoveUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
+            HiringCompanyDB.Instance.RemoveUser(Arg.Is<User>(x => x.Name != "Mika")).Returns(false);
+            HiringCompanyDB.Instance.AddProject(Arg.Is<Project>(x => x.Name == "GeRuDok")).Returns(true);
+            HiringCompanyDB.Instance.AddProject(Arg.Is<Project>(x => x.Name != "GeRuDok" && x.Name!="Excp")).Returns(false);
+            HiringCompanyDB.Instance.AddProject(Arg.Is<Project>(p => p.Name == "Excp")).Returns((x) => { throw new Exception(); });
+            HiringCompanyDB.Instance.UpdateProject(Arg.Is<Project>(x => x.Name == "NMMS")).Returns(true);
+            HiringCompanyDB.Instance.UpdateProject(Arg.Is<Project>(x => x.Name != "NMMS")).Returns(false);
+            HiringCompanyDB.Instance.GetAllUsers().Returns(new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } });
+            HiringCompanyDB.Instance.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } });
+            HiringCompanyDB.Instance.LoginUsersOverview().Returns(new List<User>() { new User() { Name = "Seselj" }, new User() { Name = "Slobo" } });
+            
+            HiringCompanyDB.Instance.GetTasksFromUserStory(Arg.Is<UserStory>(x=>x.Name=="us1")).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } });
 
-			HiringCompanyDB.Instance.AddProject(new Project() { Name = "GeRuDok" }).Returns(true);
-			HiringCompanyDB.Instance.AddProject(new Project() { Name = "Abb" }).Returns(false);
+            HiringCompanyDB.Instance.GetProjectFromUserStory(Arg.Is<UserStory>(x => x.Name == "us1")).Returns(new Project() { Name = "NMMS" });
+
+            HiringCompanyDB.Instance.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" }, new Company() { Name = "dms" } });
+            HiringCompanyDB.Instance.GetUserStoryFromProject(Arg.Is<Project>(x => x.Name == "NMMS")).Returns(new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2" } });
+            HiringCompanyDB.Instance.UpdateUserStory(Arg.Is<UserStory>(x => x.Name == "us")).Returns(true);
+            HiringCompanyDB.Instance.UpdateUserStory(Arg.Is<UserStory>(x => x.Name != "us")).Returns(false);           
+
+			HiringCompanyDB.Instance.ModifyCompanyToPartner(Arg.Is<Company>(x=>x.Name=="DMS")).Returns(true);
+            HiringCompanyDB.Instance.ModifyCompanyToPartner(Arg.Is<Company>(x => x.Name != "DMS")).Returns(false);
 
 
-			HiringCompanyDB.Instance.UpdateProject(new Project(){Name="NMMS"}).Returns(true);
-			HiringCompanyDB.Instance.UpdateProject(new Project() { Name = "GMS" }).Returns(false);
 
-			HiringCompanyDB.Instance.GetAllUsers().Returns(new List<User>(){new User(){Name="Voja"}});
-			HiringCompanyDB.Instance.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "NMMS" } });
-			HiringCompanyDB.Instance.LoginUsersOverview().Returns(new List<User>() { new User() { Name = "Seselj" } });
-			HiringCompanyDB.Instance.GetTasksFromUserStory(new UserStory() { Name = "us1" }).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() });
-			HiringCompanyDB.Instance.GetProjectFromUserStory(new UserStory() { Name = "us1" }).Returns(new Project() { Name = "NMMS" });
 			
 		}
 
+		[Test]
+		public void ModifyCompanyToPartnerTestOk()
+		{
+			Company company = new Company() { Name = "DMS" };
+			bool result = serviceUnderTest.ModifyCompany(company);
+			Assert.IsTrue(result);
+
+		}
+		[Test]
+		public void ModifyCompanyToPartnerTestFault()
+		{
+			Company company = new Company() { Name = "NIS" };
+			bool result = serviceUnderTest.ModifyCompany(company);
+			Assert.IsFalse (result);
+
+		}
+
+		[Test]
+		public void UpdateUserStoryFault()
+		{
+			UserStory userStory = new UserStory() { Name = "us1" };
+			bool result = serviceUnderTest.UpdateUserStory(userStory);
+			Assert.IsFalse(result);
+
+		}
+
+		[Test]
+		public void UpdateUserStoryOk()
+		{
+			UserStory userStory = new UserStory() { Name = "us" };
+			bool result = serviceUnderTest.UpdateUserStory(userStory);
+			Assert.IsTrue(result);
+
+		}
+		[Test]
+		public void GetUserStoryFromProjectTest()
+		{
+            Project project = new Project() { Name = "NMMS" };
+            List<UserStory> actualUserStories = new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2" } };
+            List<UserStory> expected = serviceUnderTest.GetUserStoryFromProject(project);
+            Assert.AreEqual(expected[0].Name, actualUserStories[0].Name);
+		}
+		[Test]
+		public void GetAllCompaniesTest()
+		{
+            List<Company> actualCompanies = new List<Company>() { new Company() { Name = "Nis" }, new Company() { Name = "dms" } };
+			List<Company> companies = serviceUnderTest.GetAllCompanies();
+            Assert.AreEqual(companies[0].Name, actualCompanies[0].Name);
+		}
 		[Test]
 		public void LogInTestOk()
 		{
@@ -129,7 +197,7 @@ namespace HiringServiceTest
 		{
 			User user = new User() { Name = "Pera" };
 			bool result = serviceUnderTest.UpdateUser(user);
-			Assert.IsTrue(result);
+			Assert.IsFalse(result);
 
 		}
 
@@ -184,42 +252,47 @@ namespace HiringServiceTest
 		[Test]
 		public void GetAllUsersTest()
 		{
-			List<User> expectedList=new List<User>(){new User(){Name="Voja"}};
-			List<User> list = serviceUnderTest.GetAllUsers();
-			Assert.AreEqual(list,expectedList);
+            List<User> actual = new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } };
+			List<User> expected = serviceUnderTest.GetAllUsers();
+			CollectionAssert.AreEqual(expected[0].Name,actual[0].Name);
 		}
 
 		[Test]
 		public void GetAllProjectsTest()
 		{
-			List<Project> expectedList = new List<Project>() { new Project() { Name = "NMMS" } };
+            List<Project> actualList = new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } };
 			List<Project> list = serviceUnderTest.GetAllProjects();
-			Assert.AreEqual(list, expectedList);
+            Assert.AreEqual(list[0].Name, actualList[0].Name);
 		}
 
+        /*
+         * Nije jos implementirana metoda
+         * 
 		[Test]
 		public void LoginUseraOverviewTest()
 		{
-			List<User> expectedList = new List<User>() { new User() { Name = "Seselj" } };
+            List<User> expectedList = new List<User>() { new User() { Name = "Seselj" }, new User() { Name = "Slobo" } };
 			List<User> list = serviceUnderTest.LoginUsersOverview();
 			Assert.AreEqual(list, expectedList);
 		}
+         * ***/
 		[Test]
 		public void GetTesksFromUserStoryTest()
 		{
 			UserStory us = new UserStory() { Name = "us1" };
-			List<Common.Entities.Task> expectedList=new List<Common.Entities.Task>() { new Common.Entities.Task() };
+            List<Common.Entities.Task> actualList = new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } };
 			var list = serviceUnderTest.GetTasksFromUserStory(us);
-			Assert.AreEqual(list, expectedList);
+            Assert.AreEqual(list[0].Name, actualList[0].Name);
+
 		}
 
 		[Test]
 		public void GetProjectFromUserStoryTest()
 		{
 			UserStory us = new UserStory() { Name = "us1" };
-			Project expectedProject = new Project() { Name = "NMMS" };
-			Project project = serviceUnderTest.GetProjectFromUserStory(us);
-			Assert.AreEqual(project, expectedProject);
+			Project actualProject = new Project() { Name = "NMMS" };
+			Project expected = serviceUnderTest.GetProjectFromUserStory(us);
+			Assert.AreEqual(expected.Name, actualProject.Name);
 		}
 
 		

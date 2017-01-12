@@ -25,7 +25,7 @@ namespace Client
         /// <summary>
         /// The factory.
         /// </summary>
-        private IHiringContract factory;
+        public  IHiringContract factory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HiringClientProxy"/> class.
@@ -42,6 +42,8 @@ namespace Client
             this.factory = this.CreateChannel();
             LogHelper.GetLogger().Info("Hiring company client started comunication with service.");
         }
+
+		public HiringClientProxy() { }
 
         /// <summary>
         /// The add project.
