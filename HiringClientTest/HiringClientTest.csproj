@@ -48,6 +48,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\packages\NSubstitute.1.10.0.0\lib\net45\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
@@ -75,6 +78,10 @@
     <ProjectReference Include="..\Hiring Company\Client\HiringClient.csproj">
       <Project>{3e84e861-6ca7-4da8-ad27-6bac51782fbd}</Project>
       <Name>HiringClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hiring Company\ServiceContract\HiringServiceContract.csproj">
+      <Project>{42adaa43-a6cb-45d2-a5dd-6495b3a3ccac}</Project>
+      <Name>HiringServiceContract</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -89,7 +89,7 @@ namespace HiringCompanyService
 			//HiringCompanyDB.Instance.AddCompany(c3);
 
 
-			host = new ServiceHost(typeof(HiringCompanyService));
+			host = new ServiceHost(typeof(HiringService));
 			host.AddServiceEndpoint(typeof(IHiringContract),
 				new NetTcpBinding(),
 				new Uri("net.tcp://localhost:4000/IHiringContract"));
