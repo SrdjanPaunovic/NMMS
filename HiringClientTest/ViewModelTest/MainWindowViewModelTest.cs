@@ -8,7 +8,8 @@ using Client.ViewModel;
 using Common;
 using System.Collections.ObjectModel;
 using Common.Entities;
-using Common.Entities;
+using NSubstitute;
+using ServiceContract;
 
 namespace HiringClientTest.ViewModelTest
 {
@@ -20,7 +21,11 @@ namespace HiringClientTest.ViewModelTest
 		[OneTimeSetUp]
 		public void SetupTest()
 		{
-			clientViewModelUnderTest = new MainWindowViewModel();
+			clientViewModelUnderTest = new MainWindowViewModel("test");
+			clientViewModelUnderTest.proxy = Substitute.For<IHiringContract>();
+
+
+			//clientViewModelUnderTest.proxy.
 
 		}
 		[Test]
@@ -142,7 +147,7 @@ namespace HiringClientTest.ViewModelTest
 		[Test]
 		public void WindowStateTest()
 		{
-			MainWindowViewModel.WindowState state = MainWindowViewModel.WindowState.LOGIN;
+		WindowState state = WindowState.LOGIN;
 			clientViewModelUnderTest.CurrentState = state;
 			Assert.AreEqual(state, clientViewModelUnderTest.CurrentState);
 		}
@@ -151,7 +156,7 @@ namespace HiringClientTest.ViewModelTest
 		public void ShowCompaniesTest()
 		{
 			clientViewModelUnderTest.ShowCompaniesCommand.Execute(new Object());
-			Assert.AreEqual(MainWindowViewModel.WindowState.COMPANIES, clientViewModelUnderTest.CurrentState);
+			Assert.AreEqual(WindowState.COMPANIES, clientViewModelUnderTest.CurrentState);
 
 		}
 
@@ -159,10 +164,10 @@ namespace HiringClientTest.ViewModelTest
 		public void ShowProjectsTest()
 		{
 			clientViewModelUnderTest.ShowProjectsCommand.Execute(new Object());
-			Assert.AreEqual(MainWindowViewModel.WindowState.PROJECTS, clientViewModelUnderTest.CurrentState);
+			Assert.AreEqual(WindowState.PROJECTS, clientViewModelUnderTest.CurrentState);
 
 		}
-
+		/*
 		[Test]
 		public void LoginClickTest()
 		{
@@ -170,7 +175,7 @@ namespace HiringClientTest.ViewModelTest
 			clientViewModelUnderTest.LoginCommand.Execute(array);
 
 		}
-
+		*/
 		[Test]
 		public void ShowProfileTest()
 		{

@@ -12,20 +12,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Common.Entities;
+using ServiceContract;
 
 namespace Client.ViewModel
 {
 
 	public class MainWindowViewModel : INotifyPropertyChanged
 	{
-		public enum WindowState
-		{
-			LOGIN,
-			EMPLOYEES,
-			COMPANIES,
-			PROJECTS
-		}
 
+		public  IHiringContract proxy;
 
 		public MainWindowViewModel()
 		{
@@ -34,11 +30,15 @@ namespace Client.ViewModel
 			path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
 			EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
 			RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
+			proxy = ((App)App.Current).Proxy;
 		}
+		public MainWindowViewModel(string test)
+		{
 
+		}
 		#region Fields
 
-		private HiringClientProxy proxy = ((App)App.Current).Proxy;
+		
 
 		private string loggedUsername = "";
 		private ObservableCollection<Company> partnerCompanies = new ObservableCollection<Company>();
@@ -48,7 +48,7 @@ namespace Client.ViewModel
 
 
 
-		private Common.Entities.WindowState currentState = Common.Entities.WindowState.LOGIN;
+		private Common.Entities.WindowState currentState =Common.Entities.WindowState.LOGIN;
 		private NetTcpBinding netTcpBinding = new NetTcpBinding();
 		//commands
 		private ICommand loginCommand;

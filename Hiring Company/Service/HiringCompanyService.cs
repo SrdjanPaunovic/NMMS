@@ -11,7 +11,7 @@ using Common;
 
 namespace HiringCompanyService
 {
-    public class HiringCompanyService : IHiringContract
+    public class HiringService : IHiringContract
     {
 
 
@@ -80,11 +80,11 @@ namespace HiringCompanyService
 
             return HiringCompanyDB.Instance.GetAllProjects();
         }
-
+		
         public bool SendRequest(Company company)
         {
-            //TODO send real request
-            bool success = HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
+            //TODO ovo sam ja zamazo :D
+			bool success = true;//  HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
             if (success)
             {
                 try

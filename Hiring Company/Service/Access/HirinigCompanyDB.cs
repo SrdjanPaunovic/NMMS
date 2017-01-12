@@ -13,9 +13,9 @@ namespace Service.Access
 	public class HiringCompanyDB : IHiringCompanyDB
 	{
 
-		public static HiringCompanyDB hirinigCompanyDB;
+		public static IHiringCompanyDB hirinigCompanyDB;  
 
-		public static HiringCompanyDB Instance
+		public static IHiringCompanyDB Instance
 		{
 			get
 			{

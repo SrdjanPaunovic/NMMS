@@ -16,7 +16,9 @@ namespace Service.Access
         bool UserRegister(User user);
         bool UpdateUser(User user);
         bool RemoveUser(User user);
+		bool AddUserStory(UserStory userStory);
         User GetUser(string username);
+
         List<User> LoginUsersOverview();
         List<User> GetAllUsers();
 
