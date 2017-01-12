@@ -49,9 +49,66 @@ namespace HiringServiceTest
 			HiringCompanyDB.Instance.LoginUsersOverview().Returns(new List<User>() { new User() { Name = "Seselj" } });
 			HiringCompanyDB.Instance.GetTasksFromUserStory(new UserStory() { Name = "us1" }).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() });
 			HiringCompanyDB.Instance.GetProjectFromUserStory(new UserStory() { Name = "us1" }).Returns(new Project() { Name = "NMMS" });
+			HiringCompanyDB.Instance.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" } });
+			HiringCompanyDB.Instance.GetUserStoryFromProject(new Project() { Name = "NMMS" }).Returns(new List<UserStory>(){new UserStory(){Name="us1"}});
+			HiringCompanyDB.Instance.UpdateUserStory(new UserStory() { Name = "us" }).Returns(true);
+			HiringCompanyDB.Instance.UpdateUserStory(new UserStory() { Name = "us1" }).Returns(false);
+			HiringCompanyDB.Instance.ModifyCompanyToPartner(new Company() { Name = "DMS" }).Returns(true);
+			HiringCompanyDB.Instance.ModifyCompanyToPartner(new Company() { Name = "NIS" }).Returns(false);
+
+
 			
 		}
 
+		[Test]
+		public void ModifyCompanyToPartnerTestOk()
+		{
+			Company company = new Company() { Name = "DMS" };
+			bool result = serviceUnderTest.ModifyCompany(company);
+			Assert.IsTrue(result);
+
+		}
+		[Test]
+		public void ModifyCompanyToPartnerTestFault()
+		{
+			Company company = new Company() { Name = "NIS" };
+			bool result = serviceUnderTest.ModifyCompany(company);
+			Assert.IsFalse (result);
+
+		}
+
+		[Test]
+		public void UpdateUserStoryFault()
+		{
+			UserStory userStory = new UserStory() { Name = "us1" };
+			bool result = serviceUnderTest.UpdateUserStory(userStory);
+			Assert.IsFalse(result);
+
+		}
+
+		[Test]
+		public void UpdateUserStoryOk()
+		{
+			UserStory userStory = new UserStory() { Name = "us" };
+			bool result = serviceUnderTest.UpdateUserStory(userStory);
+			Assert.IsTrue(result);
+
+		}
+		[Test]
+		public void GetUserStoryFromProjectTest()
+		{
+			Project project=new Project() { Name = "NMMS" };
+			List<UserStory> expectedUserStories = new List<UserStory>() { new UserStory() { Name = "us1" } };
+			List<UserStory> list = serviceUnderTest.GetUserStoryFromProject(project);
+			Assert.AreEqual(expectedUserStories, list);
+		}
+		[Test]
+		public void GetAllCompaniesTest()
+		{
+			List<Company> expectedCompanies = new List<Company>() { new Company() { Name = "Nis" } };
+			List<Company> companies = serviceUnderTest.GetAllCompanies();
+			Assert.AreEqual(companies, expectedCompanies);
+		}
 		[Test]
 		public void LogInTestOk()
 		{
