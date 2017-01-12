@@ -293,7 +293,7 @@ namespace Service.Access
 		{
 			using (AccessDB context = new AccessDB())
 			{
-				Project proj = context.Projects.FirstOrDefault<Project>((x) => x.Id == project.Id);
+				Project proj = context.Projects.FirstOrDefault<Project>((x) => x.Name == project.Name);
 
 				if (proj != null)
 				{
@@ -317,6 +317,8 @@ namespace Service.Access
 							proj.UserStories.Add(us);
 						}
 					}
+					proj.IsAccepted = project.IsAccepted;
+					proj.DevelopCompany = project.DevelopCompany;
 					context.Entry(proj).State = System.Data.Entity.EntityState.Modified;
 					context.SaveChanges();
 					LogHelper.GetLogger().Info(" UpdateProject method succeeded. Returned true.");

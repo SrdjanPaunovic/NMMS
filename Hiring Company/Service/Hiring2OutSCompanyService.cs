@@ -54,7 +54,8 @@ namespace Service
 
 		public bool AnswerToProject(Company company, Project project)
 		{
-			return HiringCompanyDB.Instance.AddProject(project);   // odgovor na projekat
+
+			return HiringCompanyDB.Instance.UpdateProject(project);   // odgovor na projekat
 		}
 	}
 }

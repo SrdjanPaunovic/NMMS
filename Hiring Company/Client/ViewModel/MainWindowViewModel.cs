@@ -65,6 +65,9 @@ namespace Client.ViewModel
 		private ICommand editUserProfileCommand;
 		private ICommand deleteUserCommand;
 		private ICommand addUserCommand;
+		private ICommand sendProjectRequestCommand;
+
+		
 		#endregion Fields
 
 		#region Properties
@@ -231,6 +234,17 @@ namespace Client.ViewModel
 				return addUserCommand ?? (addUserCommand = new RelayCommand(param => this.AddUser(param)));
 			}
 		}
+
+		public ICommand SendProjectRequestCommand
+		{
+			get
+			{
+				return sendProjectRequestCommand ?? (sendProjectRequestCommand = new RelayCommand(param=>this.SendProjectRequest(param)));
+			}
+
+		}
+
+		
 
 		#endregion Properties
 
@@ -501,6 +515,30 @@ namespace Client.ViewModel
 
 
 		}
+		private void SendProjectRequest(object param)
+		{
+			LogHelper.GetLogger().Info("SendProjectRequest called.");
+
+			if (param == null)
+			{
+				LogHelper.GetLogger().Warn("SendProjectRequest Command parameters has NULL value.");
+				return;
+			}
+			object[] parameters = param as object[];
+			Company company = parameters[0] as Company;
+			Project project = parameters[1] as Project;
+ 
+			if (company == null || project == null)
+			{
+				LogHelper.GetLogger().Warn("SendCompanyRequest Command parameter has Wrong type value.");
+				return;
+			}
+
+			bool success = proxy.SendProject(company, project);
+			FetchCompanies();
+			
+		}
+
 		#endregion Methods
 
 		#region PropertyChangedNotifier

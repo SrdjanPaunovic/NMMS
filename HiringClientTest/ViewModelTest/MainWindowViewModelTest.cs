@@ -78,7 +78,7 @@ namespace HiringClientTest.ViewModelTest
 
 		}
 
-		
+
 
 		[Test]
 		public void DisplayCompaniesCommandTest()
@@ -96,7 +96,7 @@ namespace HiringClientTest.ViewModelTest
 		public void ShowProjectsCommandTest()
 		{
 			Assert.IsNotNull(clientViewModelUnderTest.ShowProjectsCommand);
-			
+
 		}
 
 		[Test]
@@ -119,7 +119,7 @@ namespace HiringClientTest.ViewModelTest
 		[Test]
 		public void CurrentStateTest()
 		{
-		
+
 		}
 		[Test]
 		public void PartnerCompaniesTest()
@@ -147,7 +147,7 @@ namespace HiringClientTest.ViewModelTest
 		[Test]
 		public void WindowStateTest()
 		{
-		WindowState state = WindowState.LOGIN;
+			WindowState state = WindowState.LOGIN;
 			clientViewModelUnderTest.CurrentState = state;
 			Assert.AreEqual(state, clientViewModelUnderTest.CurrentState);
 		}
