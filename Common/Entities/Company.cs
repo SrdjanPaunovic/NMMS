@@ -27,7 +27,6 @@ namespace Common.Entities
         {
             this.name = name;
             this.state = Common.Entities.State.CompanyState.NoPartner;
-
         }
 
         [Key]

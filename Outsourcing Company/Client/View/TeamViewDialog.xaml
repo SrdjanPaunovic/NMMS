@@ -1,0 +1,65 @@
+﻿<Window x:Class="Client.View.TeamViewDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Team dialog" Height="600" Width="400"
+        Name="TeamDialogWindow">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0" Header="Name" BorderThickness="2" Margin="5">
+                <TextBox VerticalAlignment="Center" Text="{Binding Team.Name}"></TextBox>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Header="Team Lead" BorderThickness="2" Margin="5">
+                <ComboBox VerticalAlignment="Center" ItemsSource="{Binding TeamLeads}" 
+                          SelectedItem="{Binding TeamLead}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </GroupBox>
+        </Grid>
+		<GroupBox Grid.Row="1" Header="Developers" BorderThickness="2" Margin="5">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
+					<ComboBox Name="developerChooser" ItemsSource="{Binding Developers}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Path=Name}"/>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+					<Button Click="Button_Click">Add developer</Button>
+				</StackPanel>
+				<ListView Grid.Row="1" ItemsSource="{Binding TeamDevelopers}">
+					<ListView.View>
+						<GridView>
+							<GridViewColumn DisplayMemberBinding="{Binding Name}" />
+						</GridView>
+					</ListView.View>
+				</ListView>
+			</Grid>
+		</GroupBox>
+		<Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Margin="2,2" Grid.Column="0" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=TeamDialogWindow}">Save</Button>
+            <Button Margin="2,2" Grid.Column="1" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=TeamDialogWindow}">Cancel</Button>
+        </Grid>
+    </Grid>
+</Window>

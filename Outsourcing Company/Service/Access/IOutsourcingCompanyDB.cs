@@ -9,8 +9,8 @@ using Common.Entities;
 
 namespace Service.Access
 {
-	public interface IOutsourcingCompanyDB
-	{
+    public interface IOutsourcingCompanyDB
+    {
         bool AddUser(OcUser user);
         bool AddCompany(Company company);
         bool AddProject(OcProject project);
@@ -25,13 +25,16 @@ namespace Service.Access
         List<OcUser> LoginUsersOverview();
         List<Company> GetAllCompanies();
 
-		OcUser GetUser(string username);
+        OcUser GetUser(string username);
+        List<OcUser> GetAllUsers();
+        List<OcUser> GetAllUsersWithoutTeam();
 
-		bool UpdateUser(OcUser user);
+        bool UpdateUser(OcUser user);
 
-		List<OcProject> GetAllProjects();
+        List<OcProject> GetAllProjects();
+        List<Team> GetAllTeams();
 
-		bool ModyfyUserStory(UserStory userStory);
+        bool ModyfyUserStory(UserStory userStory);
 
         bool ModifyCompanyToPartner(Company company);
         bool ChangeCompanyState(Company company, State.CompanyState state);

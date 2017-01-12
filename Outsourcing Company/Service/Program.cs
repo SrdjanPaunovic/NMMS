@@ -49,32 +49,62 @@ namespace Service
             Console.WriteLine("Enter company name:");
             companyName = Console.ReadLine();
 
-			#region test
-			OcUser user1 = new OcUser("admin1", "admin1", Role.developer);
-			user1.Name = "savo1";
-			user1.Surname = "oroz1";
+            #region test
+            //OcUser user1 = new OcUser("admin1", "admin1", Role.developer);
+            //user1.Name = "savo1";
+            //user1.Surname = "oroz1";
 
-			Project project = new Project();
-
-
-			//  user.Project = project;
-			//  user1.Project = project;
+            //Project project = new Project();
 
 
-			OutsourcingCompanyDB.Instance.AddUser(user1);
-			//OutsourcingCompanyDB.Instance.AddProject(project);
+            //  user.Project = project;
+            //  user1.Project = project;
 
-			//  HirinigCompanyDB.Instance.AddCompany(company);
-			OcUser user = new OcUser("admin", "admin", Role.CEO);
-			user.Name = "savo";
-			user.Surname = "oroz";
-			OutsourcingCompanyDB.Instance.AddUser(user);
 
-			/*Console.WriteLine("Enter ip adress of hiring company");
-			string ipAdress = Console.ReadLine();*/
-			#endregion
+            //OutsourcingCompanyDB.Instance.AddUser(user1);
+            //OutsourcingCompanyDB.Instance.AddProject(project);
 
-			myOutSourceCompany = new Company(companyName);
+            //  HirinigCompanyDB.Instance.AddCompany(company);
+            //OcUser user = new OcUser("admin", "admin", Role.CEO);
+            //user.Name = "savo";
+            //user.Surname = "oroz";
+            //OutsourcingCompanyDB.Instance.AddUser(user);
+
+            /*Console.WriteLine("Enter ip adress of hiring company");
+            string ipAdress = Console.ReadLine();*/
+
+            //Team t1 = new Team();
+            //t1.Name = "SaaS";
+            //OutsourcingCompanyDB.Instance.AddTeam(t1);
+
+            //Team t2 = new Team();
+            //t2.Name = "Network Viewer";
+            //t2.TeamLead = user1;
+            //OutsourcingCompanyDB.Instance.AddTeam(t2);
+
+            OcUser h = new OcUser("teamlead", "teamlead", Role.TL);
+            h.Name = "tl1";
+            h.Surname = "tl1";
+            OutsourcingCompanyDB.Instance.AddUser(h);
+
+            OcUser d1 = new OcUser("d1", "dev", Role.developer);
+            d1.Name = "d1";
+            d1.Surname = "d1";
+            OutsourcingCompanyDB.Instance.AddUser(d1);
+
+            OcUser d2 = new OcUser("d2", "dev", Role.developer);
+            d2.Name = "d2";
+            d2.Surname = "d2";
+            OutsourcingCompanyDB.Instance.AddUser(d2);
+
+            OcUser d3 = new OcUser("d3", "dev", Role.developer);
+            d3.Name = "d3";
+            d3.Surname = "d3";
+            OutsourcingCompanyDB.Instance.AddUser(d3);
+
+            #endregion
+
+            myOutSourceCompany = new Company(companyName);
             Console.WriteLine("WCFService service is started.");
             Console.WriteLine("Press <enter> to stop service...");
 
@@ -82,15 +112,19 @@ namespace Service
             factory = new DuplexChannelFactory<IHiring2OutSourceContract>(instanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(baseAddress));
             IHiring2OutSourceContract proxy = factory.CreateChannel();
 
-            proxy.Introduce(new Company(companyName));
+            try
+            {
+                proxy.Introduce(new Company(companyName));
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("Couldn't introduce to hiring company.");
+            }
 
             Console.ReadLine();
-			proxy.CloseCompany(myOutSourceCompany);
+            proxy.CloseCompany(myOutSourceCompany);
 
-
-
-
-            host.Close();
+			host.Close();
         }
 
     }

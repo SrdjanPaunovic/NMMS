@@ -17,7 +17,11 @@ namespace Common.Entities
 		[EnumMember]
 		PO,
 		[EnumMember]
-		SM
+		SM,
+        [EnumMember]
+        TL,
+        [EnumMember]
+        HR
 	}
 
 	[DataContract(Name = "StoryState")]

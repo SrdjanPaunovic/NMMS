@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 
 namespace Common.Entities
 {
-     [DataContract]
+    [DataContract]
     public class Team
     {
         [DataMember]
@@ -18,15 +18,32 @@ namespace Common.Entities
         public int Id { get; set; }
 
         [DataMember]
-        public List<OcUser> Developers { get; set; }
+        public string Name { get; set; }
 
         [DataMember]
-        public OcUser TeamLead { get; set; }
+        public List<OcUser> Developers { get; set; }
+
+        public OcUser TeamLead
+        {
+            get
+            {
+                return Developers.FirstOrDefault(x => x.Role == Role.TL);
+            }
+            set
+            {
+                if (value.Role == Role.TL)
+                {
+                    var currentTL = Developers.FirstOrDefault(x => x.Role == Role.TL);
+                    if (currentTL != null)
+                    {
+                        Developers.Remove(currentTL);
+                    }
+                    Developers.Add(value);
+                }
+            }
+        }
 
         [DataMember]
         public List<OcProject> Projects { get; set; }
-
-
-
     }
 }
