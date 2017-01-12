@@ -70,7 +70,7 @@ namespace HiringCompanyService
         public bool AddProject(Project project)
         {
             LogHelper.GetLogger().Info("Call AddProject method.");
-
+			project.HiringCompany = Program.myHiringCompany.Name;
             return HiringCompanyDB.Instance.AddProject(project);
         }
 

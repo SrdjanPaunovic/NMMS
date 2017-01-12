@@ -20,6 +20,7 @@ namespace Common.Entities
 			StartTime = DateTime.Now;
 			EndTime = DateTime.Now;
 			IsAproved = false;
+			IsAccepted = false;
 		}
 		public Project(Project proj)
 		{
@@ -28,8 +29,23 @@ namespace Common.Entities
 			this.StartTime = proj.StartTime;
 			this.EndTime = proj.EndTime;
 			this.IsAproved = proj.IsAproved;
-			this.UserStories = this.UserStories;
-			
+			this.UserStories = proj.UserStories;
+			this.IsAccepted = proj.IsAccepted;
+			this.DevelopCompany = proj.DevelopCompany;
+			this.HiringCompany = proj.HiringCompany;
+
+		}
+		public Project(OcProject proj)
+		{
+			this.Name = proj.Name;
+			this.Description = proj.Description;
+			this.StartTime = proj.StartTime;
+			this.EndTime = proj.EndTime;
+			this.IsAproved = proj.IsAproved;
+			this.UserStories = proj.UserStories;
+			this.IsAccepted = proj.IsAccepted;
+			this.DevelopCompany = proj.DevelopCompany;
+			this.HiringCompany = proj.HiringCompany;
 		}
 
 
@@ -61,6 +77,12 @@ namespace Common.Entities
 
 		[DataMember]
 		public bool IsAproved { get; set; }
+
+		[DataMember]
+		public bool IsAccepted { get; set; }
+
+		[DataMember]
+		public string HiringCompany { get; set; }
 
 		public void UpdateProperties(Project project)
 		{

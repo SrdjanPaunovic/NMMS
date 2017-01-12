@@ -50,6 +50,8 @@ namespace Client.ViewModel
         private ICommand rejectCompanyRequestCommand;
         private ICommand displayTeamsCommand;
         private ICommand newTeamCommand;
+		private ICommand acceptProjectRequestCommand;
+		private ICommand rejectProjectRequestCommand;
 
         #endregion Fields
 
@@ -216,6 +218,7 @@ namespace Client.ViewModel
 
         }
 
+
         public ICommand NewTeamCommand
         {
             get
@@ -223,6 +226,24 @@ namespace Client.ViewModel
                 return newTeamCommand ?? (newTeamCommand = new RelayCommand((param) => this.NewTeam()));
             }
         }
+
+		public ICommand AcceptProjectRequestCommand
+		{
+			get
+			{
+				return acceptProjectRequestCommand ?? (acceptCompanyRequest = new RelayCommand((param) => this.AcceptProjectRequest(param)));
+			}
+
+		}
+
+		public ICommand RejectProjectRequestCommand
+		{
+			get
+			{
+				return rejectProjectRequestCommand ?? (rejectCompanyRequestCommand = new RelayCommand((param) => this.RejectProjectRequest(param)));
+			}
+
+		}
         #endregion Properties
 
         #region Methods
@@ -429,6 +450,50 @@ namespace Client.ViewModel
             TeamViewDialog teamDialog = new TeamViewDialog();
             teamDialog.ShowDialog();
         }
+
+				private void AcceptProjectRequest(object param)
+		{
+			LogHelper.GetLogger().Info("AcceptProjectRequest called.");
+
+			if (param == null)
+			{
+				throw new Exception("[AcceptProjectRequestCommnad] Command parameters has NULL value");
+			}
+			//Company company = param as Company;
+			OcProject OcProject = param as OcProject;
+			Project project = new Project(OcProject);
+			
+			using (OutSClientProxy proxy = ((App)App.Current).Proxy)
+			{
+				Company company = new Company(project.HiringCompany);
+				project.IsAccepted = true;
+				bool success = proxy.AnswerToProject(company, project);
+			//	proxy.ModifyCompany(company);
+				FetchCompanies();
+			}
+
+		}
+
+
+		private void RejectProjectRequest(object param)
+		{
+			LogHelper.GetLogger().Info("RejectProjectRequest called.");
+
+			if (param == null)
+			{
+				throw new Exception("[RejectProjectRequestCommnad] Command parameters has NULL value");
+			}
+			//Company company = param as Company;
+			OcProject OcProject = param as OcProject;
+			Project project = new Project(OcProject);
+			using (OutSClientProxy proxy = ((App)App.Current).Proxy)
+			{
+				project.IsAccepted = false;
+				bool success = proxy.AnswerToProject(new Company(), project);
+				//	proxy.ModifyCompany(company);
+				FetchCompanies();
+			}
+		}
         #endregion Methods
 
         #region PropertyChangedNotifier
