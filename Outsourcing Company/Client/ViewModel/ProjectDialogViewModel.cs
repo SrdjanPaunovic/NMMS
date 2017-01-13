@@ -1,5 +1,7 @@
-﻿using Common;
+﻿using Client.View;
+using Common;
 using Common.Entities;
+using ServiceContract;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,186 +15,186 @@ using System.Windows.Input;
 
 namespace Client.ViewModel
 {
-	public class ProjectDialogViewModel : INotifyPropertyChanged
-	{
+    public class ProjectDialogViewModel : INotifyPropertyChanged
+    {
+        public IOutsourcingContract proxy = ((App)App.Current).Proxy;
 
-		#region Fields
-		//TODO: INTGR change classes
-		private Project project;
-		private bool isEditing;
+        #region Fields
+        //TODO: INTGR change classes
+        private OcProject project;
+        private bool isEditing;
 
-		#endregion Fields
+        #endregion Fields
 
-		public ProjectDialogViewModel()
-		{
-			isEditing = false;
-			Project = new Project()
-			{
-				Name = "New Project"
-			};
-		}
+        public ProjectDialogViewModel()
+        {
+            isEditing = false;
+            Project = new OcProject()
+            {
+                Name = "New Project"
+            };
+        }
 
-		public ProjectDialogViewModel(Project project)
-		{
-			Project = project;
+        public ProjectDialogViewModel(OcProject project)
+        {
+            Project = project;
 
-			using (OutSClientProxy proxy = ((App)App.Current).Proxy)
-			{
-				//List<UserStory> userStories = proxy.GetUserStoryFromProject(project);
+            List<UserStory> userStories = proxy.GetUserStoryFromProject(project);
 
-				//Project.UserStories = new ObservableCollection<UserStory>(userStories);
-			}
+            Project.UserStories = new ObservableCollection<UserStory>(userStories);
 
-			isEditing = true;
-		}
+            isEditing = true;
+        }
 
-		#region Commands
-		private ICommand addStoryCommand;
-		private ICommand cancelCommand;
-		private ICommand saveCommand;
-		private ICommand editStoryCommand;
-		private ICommand deleteStoryCommand;
+        #region Commands
+        private ICommand addStoryCommand;
+        private ICommand cancelCommand;
+        private ICommand saveCommand;
+        private ICommand editStoryCommand;
+        private ICommand deleteStoryCommand;
 
-		public ICommand CancelCommand
-		{
-			get
-			{
-				return cancelCommand ?? (cancelCommand = new RelayCommand((param) => this.CancelClick(param)));
-			}
-		}
+        public ICommand CancelCommand
+        {
+            get
+            {
+                return cancelCommand ?? (cancelCommand = new RelayCommand((param) => this.CancelClick(param)));
+            }
+        }
 
-		public ICommand SaveCommand
-		{
-			get
-			{
-				return saveCommand ?? (saveCommand = new RelayCommand((param) => this.SaveClick(param)));
-			}
-		}
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return saveCommand ?? (saveCommand = new RelayCommand((param) => this.SaveClick(param)));
+            }
+        }
 
-		public ICommand AddStoryCommand
-		{
-			get
-			{
-				return addStoryCommand ?? (addStoryCommand = new RelayCommand((param) => this.AddStoryClick(param)));
-			}
-		}
+        public ICommand AddStoryCommand
+        {
+            get
+            {
+                return addStoryCommand ?? (addStoryCommand = new RelayCommand((param) => this.AddStoryClick(param)));
+            }
+        }
 
-		public ICommand EditStoryCommand
-		{
-			get
-			{
-				return editStoryCommand ?? (editStoryCommand = new RelayCommand((param) => this.EditStoryClick(param)));
-			}
-		}
+        public ICommand EditStoryCommand
+        {
+            get
+            {
+                return editStoryCommand ?? (editStoryCommand = new RelayCommand((param) => this.EditStoryClick(param)));
+            }
+        }
 
-		public ICommand DeleteStoryCommand
-		{
-			get
-			{
-				return deleteStoryCommand ?? (deleteStoryCommand = new RelayCommand((param) => this.DeleteStoryClick(param)));
-			}
-		}
-		#endregion Commands
+        public ICommand DeleteStoryCommand
+        {
+            get
+            {
+                return deleteStoryCommand ?? (deleteStoryCommand = new RelayCommand((param) => this.DeleteStoryClick(param)));
+            }
+        }
+        #endregion Commands
 
-		#region Properties
-		public Project Project
-		{
-			get
-			{
-				return project;
-			}
+        #region Properties
+        public OcProject Project
+        {
+            get
+            {
+                return project;
+            }
 
-			set
-			{
-				project = value;
-				OnPropertyChanged("Project");
-			}
-		}
-		#endregion Properties
+            set
+            {
+                project = value;
+                OnPropertyChanged("Project");
+            }
+        }
+        #endregion Properties
 
-		#region Methods
+        #region Methods
 
-		private void CancelClick(object param)
-		{
-			var userControl = param as UserControl;
-			Window parentWindow = Window.GetWindow(userControl);
-			parentWindow.Close();
-		}
+        private void CancelClick(object param)
+        {
+            var userControl = param as UserControl;
+            Window parentWindow = Window.GetWindow(userControl);
+            parentWindow.Close();
+        }
 
-		private void SaveClick(object param)
-		{
-			LogHelper.GetLogger().Info("Save click occurred.");
+        private void SaveClick(object param)
+        {
+            LogHelper.GetLogger().Info("Save click occurred.");
 
-			var userControl = param as UserControl;
-			Window parentWindow = Window.GetWindow(userControl);
+            var userControl = param as UserControl;
+            Window parentWindow = Window.GetWindow(userControl);
 
-			using (OutSClientProxy proxy = ((App)App.Current).Proxy)
-			{
-				bool success = false;
-				if (isEditing)
-				{
-					//TODO proxy.UpdateProject(Project);
-				}
-				else
-				{
-				//	proxy.AddProject(Project);
-				}
-				if (success)
-				{
-					//TODO Logger
-					parentWindow.Close();
-					LogHelper.GetLogger().Info(parentWindow.Name + " closed.");
+            bool success = false;
+            if (isEditing)
+            {
+                success = proxy.UpdateProject(Project);
+            }
+            else
+            {
+                success = proxy.AddProject(Project);
+            }
+            if (success)
+            {
+                parentWindow.Close();
+                LogHelper.GetLogger().Info(parentWindow.Name + " closed.");
+            }
+            else
+            {
+                LogHelper.GetLogger().Warn("AddProject failed.");
+            }
 
-				}
-			}
-		}
+        }
 
-		private void AddStoryClick(object param)
-		{
-			LogHelper.GetLogger().Info("AddStoryClick called.");
+        private void AddStoryClick(object param)
+        {
+            LogHelper.GetLogger().Info("AddStoryClick called.");
 
-			var name = param as string;
-			if (name == String.Empty)
-			{
-				return;
-			}
+            var name = param as string;
+            if (name == String.Empty)
+            {
+                return;
+            }
 
-			UserStory us = new UserStory
-			{
-				Name = name
-			};
-			Project.UserStories.Add(us);
-		}
+            UserStory us = new UserStory
+            {
+                Name = name
+            };
+            Project.UserStories.Add(us);
+        }
 
-		private void EditStoryClick(object param)
-		{
-			LogHelper.GetLogger().Info("EditStoryClick called.");
+        private void EditStoryClick(object param)
+        {
+            LogHelper.GetLogger().Info("EditStoryClick called.");
 
-			var story = param as UserStory;
+            var story = param as UserStory;
+            UserStoryViewDialog usDialog = new UserStoryViewDialog(story);
+            usDialog.ShowDialog();
+            LogHelper.GetLogger().Info(usDialog.Name + "shown");
 
+        }
 
-		}
+        private void DeleteStoryClick(object param)
+        {
+            LogHelper.GetLogger().Info("DeleteStoryClick called.");
 
-		private void DeleteStoryClick(object param)
-		{
-			LogHelper.GetLogger().Info("DeleteStoryClick called.");
+            var story = param as UserStory;
+            Project.UserStories.Remove(story);
 
-			var story = param as UserStory;
-			Project.UserStories.Remove(story);
+        }
+        #endregion Methods
 
-		}
-		#endregion Methods
+        #region PropertyChangedNotifier
+        protected virtual void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+        }
 
-		#region PropertyChangedNotifier
-		protected virtual void OnPropertyChanged(string name)
-		{
-			if (PropertyChanged != null)
-			{
-				PropertyChanged(this, new PropertyChangedEventArgs(name));
-			}
-		}
-
-		public event PropertyChangedEventHandler PropertyChanged;
-		#endregion
-	}
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+    }
 }

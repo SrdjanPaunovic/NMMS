@@ -32,22 +32,24 @@ namespace Service.Access
 
         public bool AddUser(OcUser user)
         {
-            using (var context = new AccessDB())
+            using (var db = new AccessDB())
             {
-                context.Users.Add(user);
-                int count = context.SaveChanges();
-                if (count > 0)
+                var uList = db.Users.ToList();
+                if (uList.Exists(x => x.Username == user.Username))
                 {
-                    LogHelper.GetLogger().Info(" AddUser method succeeded. Returned true.");
-
-                    return true;
-                }
-                else
-                {
-                    LogHelper.GetLogger().Info("AddUser method returned false.");
+                    LogHelper.GetLogger().Info("AddUser method returned false. User with username:" + user.Name + " already exists");
 
                     return false;
                 }
+                db.Users.Add(user);
+                int i = db.SaveChanges();
+                if (i > 0)
+                {
+                    LogHelper.GetLogger().Info(" AddUser method succeeded. Returned true.");
+                    return true;
+                }
+                LogHelper.GetLogger().Info("AddUser method returned false.");
+                return false;
 
             }
         }
@@ -70,6 +72,7 @@ namespace Service.Access
                 }
             }
         }
+
         public bool AddCompany(Company company)
         {
             using (var context = new AccessDB())
@@ -90,7 +93,6 @@ namespace Service.Access
                 }
             }
         }
-
 
         public bool AddUserStory(UserStory userStory)
         {
@@ -147,18 +149,6 @@ namespace Service.Access
                         team.Developers[i] = d;
                     }
                 }
-
-                //if (team.Developers == null)
-                //{
-                //	team.Developers = new List<OcUser>();
-                //}
-                //foreach (var developer in team.Developers)
-                //{
-                //	var dev = context.Users.FirstOrDefault((x) => x.Id == developer.Id);
-                //	dev.Team = team;
-                //	context.Entry(dev).State = System.Data.Entity.EntityState.Modified;
-                //	context.SaveChanges();
-                //}
                 context.Teams.Add(team);
                 int count = context.SaveChanges();
                 if (count > 0)
@@ -175,38 +165,6 @@ namespace Service.Access
             }
         }
 
-        public bool UserRegister(OcUser user)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-
-                var result = from users in context.Users select users;
-                List<OcUser> userList = result.ToList();
-                foreach (var registeredUser in userList)
-                {
-                    if (registeredUser.Username.Equals(user.Username))
-                    {
-                        LogHelper.GetLogger().Info(" UserRegister method returned false.");
-
-                        return false;
-                    }
-                }
-                if (OutsourcingCompanyDB.Instance.AddUser(user))
-                {
-                    LogHelper.GetLogger().Info("Call UserRegister method succeeded. Returned true.");
-
-                    return true;
-                }
-
-            }
-            LogHelper.GetLogger().Info(" UserRegister method returned false.");
-
-            return false;
-        }
-
-
-
-
         public bool LogIn(string username, string password)
         {
             using (AccessDB context = new AccessDB())
@@ -216,12 +174,14 @@ namespace Service.Access
                 if (user != null)
                 {
                     if (user.Password.Equals(password))
+                    {
                         user.IsAuthenticated = true;
-                    context.Entry(user).State = System.Data.Entity.EntityState.Modified;
-                    context.SaveChanges();
-                    LogHelper.GetLogger().Info("AddCompany method succeeded. Returned true.");
+                        context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                        context.SaveChanges();
+                        LogHelper.GetLogger().Info("AddCompany method succeeded. Returned true.");
 
-                    return true;
+                        return true;
+                    }
                 }
             }
             LogHelper.GetLogger().Info("AddCompany method returned false.");
@@ -316,29 +276,6 @@ namespace Service.Access
             }
         }
 
-        public List<OcUser> LoginUsersOverview()
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                List<OcUser> loginUsers = new List<OcUser>();
-                var result = from users in context.Users select users;
-                List<OcUser> userList = result.ToList();
-
-                foreach (var user in userList)
-                {
-                    if (user.IsAuthenticated)
-                    {
-                        loginUsers.Add(user);
-                    }
-
-                }
-                LogHelper.GetLogger().Info("LoginUsersOverview method succeeded. Returned list of users loged in.");
-
-                return loginUsers;
-            }
-        }
-
-
         public OcUser GetUser(string username)
         {
             using (AccessDB context = new AccessDB())
@@ -375,7 +312,7 @@ namespace Service.Access
                         List<OcUser> users = res.ToList<OcUser>();
                         if (users.Count == 0)
                         {
-                            ModifieUserProperties(us, user);
+                            us.UpdateProperties(user);
                             context.Entry(us).State = System.Data.Entity.EntityState.Modified;
                             context.SaveChanges();
                             LogHelper.GetLogger().Info(" UpdateUser method succeeded.");
@@ -391,7 +328,7 @@ namespace Service.Access
                     }
                     else
                     {
-                        ModifieUserProperties(us, user);
+                        us.UpdateProperties(user);
                         context.Entry(us).State = System.Data.Entity.EntityState.Modified;
                         context.SaveChanges();
                     }
@@ -403,20 +340,6 @@ namespace Service.Access
             LogHelper.GetLogger().Info(" UpdateUser method returned false.");
 
             return false;
-        }
-
-        private void ModifieUserProperties(OcUser original, OcUser user)
-        {
-            original.Name = user.Name;
-            original.Password = user.Password;
-            original.StartTime = user.StartTime;
-            original.EndTime = user.EndTime;
-            original.IsAuthenticated = user.IsAuthenticated;
-            original.Surname = user.Surname;
-            original.Username = user.Username;
-            original.Password_changed = user.Password_changed;
-            LogHelper.GetLogger().Info("ModifyUserProperties method succeeded.");
-
         }
 
         public List<OcProject> GetAllProjects()
@@ -447,7 +370,6 @@ namespace Service.Access
             return false;
         }
 
-
         public bool ModifyCompanyToPartner(Company company)
         {
             using (AccessDB context = new AccessDB())
@@ -464,7 +386,6 @@ namespace Service.Access
             }
             return false;
         }
-
 
         public bool ChangeCompanyState(Company company, State.CompanyState state)
         {
@@ -484,7 +405,6 @@ namespace Service.Access
 
         }
 
-
         public bool RemoveCompany(Company company)
         {
             using (AccessDB context = new AccessDB())
@@ -500,7 +420,6 @@ namespace Service.Access
             }
             return true;
         }
-
 
         public bool UpdateProject(OcProject project)
         {
@@ -544,7 +463,6 @@ namespace Service.Access
             }
         }
 
-
         public bool RemoveProject(OcProject project)
         {
             using (AccessDB context = new AccessDB())
@@ -559,6 +477,95 @@ namespace Service.Access
                 context.SaveChanges();
             }
             return true;
+        }
+
+        public bool RemoveUser(OcUser user)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                OcUser us = context.Users.FirstOrDefault<OcUser>((x) => x.Id == user.Id);
+
+                if (us != null)
+                {
+
+                    context.Entry(us).State = System.Data.Entity.EntityState.Deleted;
+                    context.SaveChanges();
+                    LogHelper.GetLogger().Info(" RemoveUser method succeeded. Returned true.");
+
+                    return true;
+                }
+                LogHelper.GetLogger().Info("RemoveUser method returned false.");
+
+                return false;
+            }
+        }
+
+
+        public List<UserStory> GetUserStoryFromProject(OcProject project)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
+                LogHelper.GetLogger().Info("GetUserStoryFromProject method succeeded. Returned list of user stories.");
+                return userStories;
+            }
+        }
+
+        public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
+
+                return tasks;
+            }
+        }
+
+        public OcProject GetProjectFromUserStory(UserStory userStory)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                UserStory us = context.UserStories.Include("Project").FirstOrDefault<UserStory>((x) => x.Id == userStory.Id);
+                OcProject proj = context.Entry(us).Reference("Project").CurrentValue as OcProject;
+                proj.UserStories = null; //because of circular reference
+                return proj;
+            }
+        }
+
+        public bool UpdateUserStory(UserStory userStory)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                UserStory us = context.UserStories.FirstOrDefault<UserStory>((x) => x.Id == userStory.Id);
+
+                if (us != null)
+                {
+                    us.UpdateProperties(userStory);
+                    List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
+                    foreach (var t in tasks)
+                    {
+                        if (userStory.Tasks.ToList().Exists((x) => x.Id == t.Id))
+                        {
+                            continue;
+                        }
+
+                        context.Entry(t).State = System.Data.Entity.EntityState.Deleted;
+                    }
+
+                    foreach (var t in userStory.Tasks)
+                    {
+                        if (t.Id == 0)
+                        {
+                            us.Tasks.Add(t);
+                        }
+                    }
+                    context.Entry(us).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                    return true;
+                }
+
+                return false;
+            }
         }
     }
 }

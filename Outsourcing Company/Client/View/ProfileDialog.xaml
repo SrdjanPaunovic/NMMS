@@ -5,6 +5,6 @@
         Title="ProfileDialog" Height="400" Width="400"
         Name="root">
     <Grid>
-        <userControls:UserInputView SaveClicked="UserInputView_SaveClicked" CancelClicked="UserInputView_CancelClicked" User="{Binding ElementName=root,Path=User}"></userControls:UserInputView>
+        <userControls:UserInputView x:Name="userInputControl" />
     </Grid>
 </Window>

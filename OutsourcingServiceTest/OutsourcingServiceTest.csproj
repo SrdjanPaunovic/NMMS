@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5FB6B0DA-0281-437E-A038-DC24FB43B639}</ProjectGuid>
+    <ProjectGuid>{2E2CC576-318F-4D84-A3CF-3958ED9911AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HiringServiceTest</RootNamespace>
-    <AssemblyName>HiringServiceTest</AssemblyName>
+    <RootNamespace>OutsourcingServiceTest</RootNamespace>
+    <AssemblyName>OutsourcingServiceTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -29,24 +29,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
@@ -66,15 +48,16 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NSubstitute">
+    <Reference Include="NSubstitute, Version=1.10.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <HintPath>..\packages\NSubstitute.1.10.0.0\lib\net45\NSubstitute.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework">
+    <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -82,9 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Hiring2OutSCompanyServiceTest.cs" />
-    <Compile Include="HiringCompanyServiceTest.cs" />
+    <Compile Include="OutsourcingServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,13 +73,13 @@
       <Project>{e330ffd1-f001-4d0d-8b8a-182caf5bdddf}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Hiring Company\ServiceContract\HiringServiceContract.csproj">
-      <Project>{42adaa43-a6cb-45d2-a5dd-6495b3a3ccac}</Project>
-      <Name>HiringServiceContract</Name>
+    <ProjectReference Include="..\Outsourcing Company\ServiceContract\OutsourcingServiceContract.csproj">
+      <Project>{9c248bf6-3e26-450c-84de-e46481bbd194}</Project>
+      <Name>OutsourcingServiceContract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Hiring Company\Service\HiringService.csproj">
-      <Project>{de353fa5-6d5c-4482-b26a-35d6fc5e423b}</Project>
-      <Name>HiringService</Name>
+    <ProjectReference Include="..\Outsourcing Company\Service\OutsourcingService.csproj">
+      <Project>{564b4e6c-951d-4692-98dd-a501a6c44716}</Project>
+      <Name>OutsourcingService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

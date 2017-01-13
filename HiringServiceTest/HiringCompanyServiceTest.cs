@@ -47,7 +47,6 @@ namespace HiringServiceTest
             HiringCompanyDB.Instance.RemoveUser(Arg.Is<User>(x => x.Name != "Mika")).Returns(false);
             HiringCompanyDB.Instance.AddProject(Arg.Is<Project>(x => x.Name == "GeRuDok")).Returns(true);
             HiringCompanyDB.Instance.AddProject(Arg.Is<Project>(x => x.Name != "GeRuDok" && x.Name!="Excp")).Returns(false);
-            HiringCompanyDB.Instance.AddProject(Arg.Is<Project>(p => p.Name == "Excp")).Returns((x) => { throw new Exception(); });
             HiringCompanyDB.Instance.UpdateProject(Arg.Is<Project>(x => x.Name == "NMMS")).Returns(true);
             HiringCompanyDB.Instance.UpdateProject(Arg.Is<Project>(x => x.Name != "NMMS")).Returns(false);
             HiringCompanyDB.Instance.GetAllUsers().Returns(new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } });

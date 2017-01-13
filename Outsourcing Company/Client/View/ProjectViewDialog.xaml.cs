@@ -38,7 +38,7 @@ namespace Client.View
 
 		}
 
-		public ProjectViewDialog(Project project)
+		public ProjectViewDialog(OcProject project)
 		{
 			DataContext = new ProjectDialogViewModel(project);
 			InitializeComponent();

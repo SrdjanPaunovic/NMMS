@@ -33,7 +33,9 @@ namespace HiringClientTest
 			clientUnderTest.factory.GetUser("pero").Returns(new User() { Name = "Pero" });
             clientUnderTest.factory.GetUser("ex").Returns(x => { throw new Exception(); });
 			clientUnderTest.factory.AddUser(Arg.Is<User>(x=>x.Name=="Voja" && x.Surname=="Seselj")).Returns(true);
-            clientUnderTest.factory.AddUser(Arg.Is<User>(x => x.Name != "Voja" && x.Surname == "Seselj")).Returns(false);
+            clientUnderTest.factory.AddUser(Arg.Is<User>(x => x.Name != "Voja" && x.Name != "ex")).Returns(false);
+			clientUnderTest.factory.AddUser(Arg.Is<User>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+
             clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
             clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name != "Mika" && x.Name!="ex")).Returns(false);
             clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
@@ -41,28 +43,137 @@ namespace HiringClientTest
             clientUnderTest.factory.When(x => x.UpdateUser(Arg.Is<User>(f => f.Name == "ex"))).Do(k => { throw new Exception(); });
 
             clientUnderTest.factory.RemoveUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
-            clientUnderTest.factory.RemoveUser(Arg.Is<User>(x => x.Name != "Mika")).Returns(false);
+            clientUnderTest.factory.RemoveUser(Arg.Is<User>(x => x.Name != "Mika" && x.Name!="ex")).Returns(false);
+			clientUnderTest.factory.RemoveUser(Arg.Is<User>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+
             clientUnderTest.factory.AddProject(Arg.Is<Project>(x=>x.Name=="GeRuDok")).Returns(true);
             clientUnderTest.factory.AddProject(Arg.Is<Project>(x => x.Name != "GeRuDok"  && x.Name!="Excp")).Returns(false);
 			clientUnderTest.factory.AddProject(Arg.Is<Project>(p=>p.Name=="Excp")).Returns((x) => { throw new Exception(); });
+
             clientUnderTest.factory.UpdateProject(Arg.Is<Project>(x=>x.Name=="NMMS")).Returns(true);
             clientUnderTest.factory.UpdateProject(Arg.Is<Project>(x => x.Name != "NMMS" && x.Name!="ex")).Returns(false);
             clientUnderTest.factory.UpdateProject(Arg.Is<Project>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+
             clientUnderTest.factory.GetAllUsers().Returns(new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } });
             clientUnderTest.factory.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } });
+
             clientUnderTest.factory.LoginUsersOverview().Returns(new List<User>() { new User() { Name = "Seselj" }, new User() { Name = "Slobo" } });
+
             clientUnderTest.factory.GetTasksFromUserStory(Arg.Is<UserStory>(x => x.Name == "us1")).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } });
-            clientUnderTest.factory.GetProjectFromUserStory(Arg.Is<UserStory>(x=>x.Name=="us")).Returns(new Project() { Name = "NMMS" });
-            clientUnderTest.factory.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" }, new Company() { Name = "dms" } });
+			clientUnderTest.factory.GetTasksFromUserStory(Arg.Is<UserStory>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });           
+			clientUnderTest.factory.GetProjectFromUserStory(Arg.Is<UserStory>(x=>x.Name=="us")).Returns(new Project() { Name = "NMMS" });
+           
+			clientUnderTest.factory.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" }, new Company() { Name = "dms" } });
             clientUnderTest.factory.GetProjectFromUserStory(Arg.Is<UserStory>(x => x.Name == "ex")).Returns((x) => { throw new Exception(); });
             clientUnderTest.factory.GetUserStoryFromProject(Arg.Is<Project>(x => x.Name == "NMMS")).Returns(new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2" } });
-             clientUnderTest.factory.GetUserStoryFromProject(Arg.Is<Project>(x => x.Name == "ex")).Returns(x=>{throw new Exception();});
+            clientUnderTest.factory.GetUserStoryFromProject(Arg.Is<Project>(x => x.Name == "ex")).Returns(x=>{throw new Exception();});
             clientUnderTest.factory.UpdateUserStory(Arg.Is<UserStory>(x=>x.Name=="us")).Returns(true);
-            clientUnderTest.factory.UpdateUserStory(Arg.Is<UserStory>(x => x.Name != "us")).Returns(false);
+            clientUnderTest.factory.UpdateUserStory(Arg.Is<UserStory>(x => x.Name != "us" && x.Name!="ex")).Returns(false);
+			clientUnderTest.factory.UpdateUserStory(Arg.Is<UserStory>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+			clientUnderTest.factory.AddProject(Arg.Is<Project>(p => p.Name == "Excp")).Returns((x) => { throw new Exception(); });
+
+			clientUnderTest.factory.AnswerToUserStory(Arg.Is<Company>(x => x.Name == "dms"),Arg.Is<Project>(y=>y.Name=="dms"),Arg.Is<UserStory>(z=>z.Name=="us")).Returns(true);
+			clientUnderTest.factory.AnswerToUserStory(Arg.Is<Company>(x => x.Name == "ex"), Arg.Is<Project>(y => y.Name == "ex"), Arg.Is<UserStory>(z => z.Name == "ex")).Returns(p => { throw new Exception(); });
+			clientUnderTest.factory.AnswerToUserStory(Arg.Is<Company>(x => x.Name != "dms" && x.Name!="ex"), Arg.Is<Project>(y => y.Name != "dms" && y.Name!="ex"), Arg.Is<UserStory>(z => z.Name != "us" && z.Name!="ex")).Returns(false);
 			
-						
+			clientUnderTest.factory.SendProject(Arg.Is<Company>(x => x.Name == "dms"), Arg.Is<Project>(y => y.Name == "dms")).Returns(true);
+			clientUnderTest.factory.SendProject(Arg.Is<Company>(x => x.Name != "dms" && x.Name != "ex"), Arg.Is<Project>(y => y.Name != "dms" && y.Name != "ex")).Returns(false);
+			clientUnderTest.factory.SendProject(Arg.Is<Company>(x => x.Name == "ex"), Arg.Is<Project>(y => y.Name == "ex")).Returns(x => { throw new Exception(); });
+
+			clientUnderTest.factory.SendRequest(Arg.Is<Company>(x => x.Name == "dms")).Returns(true);
+			clientUnderTest.factory.SendRequest(Arg.Is<Company>(x => x.Name != "dms" && x.Name != "ex")).Returns(false);
+			clientUnderTest.factory.SendRequest(Arg.Is<Company>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+
 		}
 
+
+		[Test]
+		public void SendRequestTestException()
+		{
+			Company company = new Company() { Name = "ex" };
+			Assert.DoesNotThrow(() => clientUnderTest.SendRequest(company));
+		}
+
+		[Test]
+		public void SendRequestTestFault()
+		{
+			Company company = new Company() { Name = "dms1" };
+			bool result = clientUnderTest.SendRequest(company);
+			Assert.IsFalse(result);
+		}
+
+
+		[Test]
+		public void SendRequestTestOk()
+		{
+			Company company = new Company() { Name = "dms" };
+			bool result = clientUnderTest.SendRequest(company);
+			Assert.IsTrue(result);			
+		}
+
+		[Test]
+		public void SendProjectTestOk()
+		{
+			Company company = new Company() { Name = "dms" };
+			Project project = new Project() { Name = "dms" };
+			bool result = clientUnderTest.SendProject(company, project);
+			Assert.IsTrue(result);
+		}
+
+		[Test]
+		public void SendProjectTestFault()
+		{
+			Company company = new Company() { Name = "dms1" };
+			Project project = new Project() { Name = "dms1" };
+			bool result = clientUnderTest.SendProject(company, project);
+			Assert.IsFalse(result);
+		}
+		[Test]
+		public void SendProjectTestException()
+		{
+			Company company = new Company() { Name = "ex" };
+			Project project = new Project() { Name = "ex" };
+			Assert.DoesNotThrow(() => clientUnderTest.SendProject(company, project));
+		}
+
+
+
+		[Test]
+		public void LoginUsersOverviewTestException()
+		{
+			Assert.Throws<NotImplementedException>(() => clientUnderTest.LoginUsersOverview());
+		}
+
+		[Test]
+		public void AnswerToUserStoryTestOk()
+		{
+			Company company = new Company() { Name = "dms" };
+			Project project = new Project() { Name = "dms" };
+			UserStory userStory = new UserStory() { Name = "us" };
+			bool result = clientUnderTest.AnswerToUserStory(company, project, userStory);
+			Assert.IsTrue(result);
+		}
+		[Test]
+		public void AnswerToUserStoryTestFault()
+		{
+			Company company = new Company() { Name = "dms1" };
+			Project project = new Project() { Name = "dms1" };
+			UserStory userStory = new UserStory() { Name = "us1" };
+			bool result = clientUnderTest.AnswerToUserStory(company, project, userStory);
+			Assert.IsFalse(result);
+		}
+
+		[Test]
+		public void AnswerToUserStoryTestException()
+		{
+			Company company = new Company() { Name = "ex" };
+			Project project = new Project() { Name = "ex" };
+			UserStory userStory = new UserStory() { Name = "ex" };
+			Assert.DoesNotThrow(() => clientUnderTest.AnswerToUserStory(company, project, userStory));
+		}
+		
+
+		[Test]
 		public void UpdateUserStoryFault()
 		{
 			UserStory userStory = new UserStory() { Name = "us1" };
@@ -79,6 +190,16 @@ namespace HiringClientTest
 			Assert.IsTrue(result);
 
 		}
+
+
+		[Test]
+		public void UpdateUserStoryException()
+		{
+			UserStory userStory = new UserStory() { Name = "ex" };
+			Assert.DoesNotThrow(()=> clientUnderTest.UpdateUserStory(userStory));
+
+		}
+
 		[Test]
 		public void GetUserStoryFromProjectTest()
 		{
@@ -91,7 +212,7 @@ namespace HiringClientTest
         public void GetUserStoryFromProjectTestException()
         {
             Project project = new Project() { Name = "ex" };
-            Assert.Throws<Exception>(() => clientUnderTest.GetUserStoryFromProject(project));
+            Assert.DoesNotThrow(() => clientUnderTest.GetUserStoryFromProject(project));
         }
 		[Test]
 		public void GetAllCompaniesTest()
@@ -116,7 +237,7 @@ namespace HiringClientTest
         [Test]
         public void LogInTestException()
         {
-            Assert.Throws<Exception>(() => clientUnderTest.LogIn("ex", "ex"));
+            Assert.DoesNotThrow(() => clientUnderTest.LogIn("ex", "ex"));
         }
 
 		[Test]
@@ -134,7 +255,7 @@ namespace HiringClientTest
         [Test]
         public void LogOutTestException()
         {
-            Assert.Throws<Exception>(() => clientUnderTest.LogOut("ex"));
+            Assert.DoesNotThrow(() => clientUnderTest.LogOut("ex"));
         }
 
 		[Test]
@@ -155,15 +276,23 @@ namespace HiringClientTest
 		}
 
 		[Test]
+		public void ModifyCompanyTestException()
+		{
+			Company company = new Company();
+			Assert.Throws<NotImplementedException>(() => clientUnderTest.ModifyCompany(company));
+		}
+
+		[Test]
 		public void GetUserTest()
 		{
 			User result = clientUnderTest.GetUser("pero");
 			string name = "Pero";
 			Assert.AreEqual(result.Name, name);
 		}
+		[Test]
         public void GetUserTestException()
         {
-            Assert.Throws<Exception>(() => clientUnderTest.GetUser("ex"));
+            Assert.DoesNotThrow(() => clientUnderTest.GetUser("ex"));
         }
 
         [Test]
@@ -186,7 +315,7 @@ namespace HiringClientTest
         public void AddUserTestException()
         {
             User user = new User() { Name = "ex", Surname = "ex" };
-            Assert.Throws<Exception>(() => clientUnderTest.AddUser(user));
+            Assert.DoesNotThrow(() => clientUnderTest.AddUser(user));
         }
 
 		[Test]
@@ -210,7 +339,7 @@ namespace HiringClientTest
         public void UpdateUserTestException()
         {
             User user = new User() { Name = "ex" };
-            Assert.Throws<Exception>(() => clientUnderTest.UpdateUser(user));
+			Assert.DoesNotThrow(() => clientUnderTest.UpdateUser(user));
 
         }
 
@@ -234,8 +363,8 @@ namespace HiringClientTest
 
         public void RemoveUserTestException()
         {
-            User user = new User() { Name = "Pera" };
-            Assert.Throws<Exception>(() => clientUnderTest.RemoveUser(user));
+            User user = new User() { Name = "ex" };
+            Assert.DoesNotThrow(() => clientUnderTest.RemoveUser(user));
         }
 
 		[Test]
@@ -257,7 +386,7 @@ namespace HiringClientTest
 		public void AddProjectTestException()
 		{
 			Project project = new Project() { Name = "Excp" };
-			Assert.Throws<Exception>(() => clientUnderTest.AddProject(project));			
+			Assert.DoesNotThrow(() => clientUnderTest.AddProject(project));			
 		}
 
 		[Test]
@@ -275,11 +404,11 @@ namespace HiringClientTest
 			bool result = clientUnderTest.UpdateProject(project);
 			Assert.IsFalse(result);
 		}
-
+		[Test]
         public void UpdateProjectTestException()
         {
             Project project = new Project() { Name = "ex" };
-            Assert.Throws<Exception>(() => clientUnderTest.UpdateProject(project));
+            Assert.DoesNotThrow(() => clientUnderTest.UpdateProject(project));
         }
 
 		[Test]
@@ -308,8 +437,10 @@ namespace HiringClientTest
 			Assert.AreEqual(list, expectedList);
 		}*/
 
+		
+
 		[Test]
-		public void GetTesksFromUserStoryTest()
+		public void GetTasksFromUserStoryTest()
 		{
 			UserStory us = new UserStory() { Name = "us1" };
             List<Common.Entities.Task> actualList = new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } };
@@ -317,10 +448,10 @@ namespace HiringClientTest
             Assert.AreEqual(list[0].Name, actualList[0].Name);
 		}
         [Test]
-        public void GetTesksFromUserStoryTestException()
+		public void GetTasksFromUserStoryException()
         {
             UserStory us = new UserStory() { Name = "ex" };
-            Assert.Throws<Exception>(() => clientUnderTest.GetTasksFromUserStory(us));
+            Assert.DoesNotThrow(() => clientUnderTest.GetTasksFromUserStory(us));
         }
 
 
@@ -333,6 +464,13 @@ namespace HiringClientTest
 			Assert.AreEqual(project.Name, expectedProject.Name);
 		}
 
+		[Test]
+		public void GetProjectFromUserStoryTestException()
+		{
+			UserStory us = new UserStory() { Name = "ex" };
+			Project expectedProject = new Project() { Name = "NMMS" };
+			Assert.DoesNotThrow(()=>clientUnderTest.GetProjectFromUserStory(us));
+		}
 		
 
 	}

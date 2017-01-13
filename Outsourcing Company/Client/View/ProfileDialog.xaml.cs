@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Common;
+using Client.ViewModel;
+using Common.UserControls;
 
 namespace Client.View
 {
@@ -21,49 +23,47 @@ namespace Client.View
 	/// </summary>
 	public partial class ProfileDialog : Window
 	{
-		public OcUser User { get; set; }
-		public ProfileDialog(string LoggedUsername)
-		{
+		public ProfileDialog()
+        {
+            DataContext = new ProfileDialogViewModel();
+            Initialized += ProfileDialog_Initialized;
 
-			using (OutSClientProxy proxy = ((App)App.Current).Proxy)
-			{
-				User = proxy.GetUser(LoggedUsername);
+            InitializeComponent();
+        }        
 
-				if (User == null)
-				{
-					LogHelper.GetLogger().Error("Error while loading ProfileDialog, User = NULL");
+        public ProfileDialog(string LoggedUsername)
+        {
+            DataContext = new ProfileDialogViewModel(LoggedUsername);
+            Initialized += ProfileDialog_Initialized;
 
-				}
-			}
+            InitializeComponent();
 
-			InitializeComponent();
-			DataContext = this;
-			LogHelper.GetLogger().Info("Profile Dialog initialized.");
+        }
 
+        void ProfileDialog_Initialized(object sender, EventArgs e)
+        {
+            var viewModel = DataContext as ProfileDialogViewModel;
 
-		}
+            Binding binding = new Binding
+            {
+                Source = viewModel.User,
+            };
+            userInputControl.SetBinding(UserInputView.UserProperty, binding);
 
-		private void UserInputView_SaveClicked(object sender, EventArgs e)
-		{
-			using (OutSClientProxy proxy = ((App)App.Current).Proxy)
-			{
-				bool success = proxy.UpdateUser(User);
+            binding = new Binding
+            {
+                Source = viewModel.SaveCommand,
+            };
+            userInputControl.SetBinding(UserInputView.SaveCommandProperty, binding);
 
-				if (success)
-				{
-					LogHelper.GetLogger().Info("Profile Dialog closed.");
+            binding = new Binding
+            {
+                Source = viewModel.CancelCommand,
+            };
+            userInputControl.SetBinding(UserInputView.CancelCommandProperty, binding);
 
-					this.Close();
-				}
-			}
+            LogHelper.GetLogger().Info("Profile Dialog initialized.");
 
-		}
-
-		private void UserInputView_CancelClicked(object sender, EventArgs e)
-		{
-			LogHelper.GetLogger().Info("Cancel click occurred. Profile Dialog closed.");
-
-			this.Close();
-		}
+        }
 	}
 }

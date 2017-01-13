@@ -39,8 +39,16 @@ namespace Client
         public HiringClientProxy(NetTcpBinding binding, string address)
             : base(binding, address)
         {
-            this.factory = this.CreateChannel();
-            LogHelper.GetLogger().Info("Hiring company client started comunication with service.");
+			try
+			{
+				this.factory = this.CreateChannel();
+				LogHelper.GetLogger().Info("Hiring company client started comunication with service.");
+			}
+			catch (Exception e)
+			{
+				LogHelper.GetLogger().Error("Hiring company client failed. ", e);
+			}
+           
         }
 
 		public HiringClientProxy() { }
@@ -93,9 +101,10 @@ namespace Client
             {
                 result = this.factory.AnswerToUserStory(company, project, userStory);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+				LogHelper.GetLogger().Error("AnswerToUserStory method failed. " + e.ToString());
+
             }
 
             return result;
@@ -282,20 +291,6 @@ namespace Client
         }
 
         /// <summary>
-        /// The login users overview.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="List"/>.
-        /// </returns>
-        /// <exception cref="NotImplementedException">
-        ///  This is big big 
-        /// </exception>
-        public List<User> LoginUsersOverview()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// The log out.
         /// </summary>
         /// <param name="username">
@@ -453,31 +448,12 @@ namespace Client
 
 			return result;
         }
-
-        /// <summary>
-        /// The user register.
-        /// </summary>
-        /// <param name="user">
-        /// The user.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        /// <exception cref="NotImplementedException">
-        /// This is Sparta.
-        /// </exception>
-        public bool UserRegister(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-
+        
         public bool ModifyCompany(Company company)
         {
             throw new NotImplementedException();
         }
-
-
+        
         public List<User> GetAllUsers()
         {
             List<User> result = null;
@@ -494,8 +470,7 @@ namespace Client
 
             return result;
         }
-
-
+        
         public bool RemoveUser(User user)
         {
             bool result = false;
@@ -521,13 +496,14 @@ namespace Client
 			{
 				result = this.factory.AddUser(user);
 				LogHelper.GetLogger().Info("UpdateUser method succeeded.");
+
 			}
 			catch (Exception e)
 			{
 				LogHelper.GetLogger().Error("UpdateUser method failed. ", e);
 			}
-
 			return result;
+
 		}
 	}
 }
