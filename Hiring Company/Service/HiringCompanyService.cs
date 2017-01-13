@@ -83,9 +83,9 @@ namespace HiringCompanyService
 		
         public bool SendRequest(Company company)
         {
-            //TODO ovo sam ja zamazo :D
-            HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
-			bool success = true;
+            
+
+			bool success = HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
             if (success)
             {
                 try
@@ -93,10 +93,10 @@ namespace HiringCompanyService
                     Service.Hiring2OutSCompanyService.companies[company.Name].SendRequest(Program.baseAddress, Program.myHiringCompany);
                     return true;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-
-                    throw;
+					LogHelper.GetLogger().Error("SendRequest failed. ", e);
+					return false;
                 }
             }
             else
@@ -128,6 +128,7 @@ namespace HiringCompanyService
         }
 
 
+
         public bool SendProject(Company company, Project project)
         {
             LogHelper.GetLogger().Info("Call SendProject method.");
@@ -138,10 +139,11 @@ namespace HiringCompanyService
                 Service.Hiring2OutSCompanyService.companies[company.Name].SendProject(Program.myHiringCompany, project);
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                throw;
+				LogHelper.GetLogger().Error("SendProject failed. ", e);
+				return false;
             }
         }
 
@@ -156,10 +158,11 @@ namespace HiringCompanyService
                 Service.Hiring2OutSCompanyService.companies[company.Name].AnswerToUserStory(Program.myHiringCompany, userStory, project);
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                throw;
+				LogHelper.GetLogger().Error("SendProject failed. ", e);
+				return false;
             }
         }
 
