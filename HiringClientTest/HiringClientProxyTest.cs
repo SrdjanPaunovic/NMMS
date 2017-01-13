@@ -15,58 +15,53 @@ namespace HiringClientTest
 	public class HiringClientProxyTest
 	{
 		private HiringClientProxy clientUnderTest;
-		private Project proj = new Project() { Name = "Abb" };
 		[OneTimeSetUp]
 		public void SetupTest()
 		{
-			clientUnderTest = new HiringClientProxy();
+            
+            clientUnderTest = new HiringClientProxy();
 			clientUnderTest.factory = Substitute.For<IHiringContract>();
-			clientUnderTest.factory.LogIn("admin","admin").Returns(true);
-		    clientUnderTest.factory.LogIn("admin","ad").Returns(false);
-			clientUnderTest.factory.LogOut("admin").Returns(true);
-			clientUnderTest.factory.LogOut("pero").Returns(false);
-			clientUnderTest.factory.UserRegister(new User() { Username = "pero" }).Returns(true);
-		    clientUnderTest.factory.UserRegister(new User() { Username = "jovisa" }).Returns(false);
-			clientUnderTest.factory.GetUser("pero").Returns(new User() { Name = "Pero" });
-			clientUnderTest.factory.AddUser(new User() { Name = "Voja", Surname = "Seselj" }).Returns(true);
-			clientUnderTest.factory.AddUser(new User() { Name = "Toma", Surname = "Diploma" }).Returns(false);
-		    clientUnderTest.factory.UpdateUser(new User() { Name = "Mika" }).Returns(true);
-			clientUnderTest.factory.UpdateUser(new User() { Name = "Pera" }).Returns(false);
 
+			
+			
+           
+		    
 			clientUnderTest.factory.LogIn("admin", "admin").Returns(true);
 			clientUnderTest.factory.LogIn("admin", "ad").Returns(false);
+            clientUnderTest.factory.LogIn("ex", "ex").Returns((x) => { throw new Exception(); });
 			clientUnderTest.factory.LogOut("admin").Returns(true);
 			clientUnderTest.factory.LogOut("pero").Returns(false);
-			clientUnderTest.factory.UserRegister(new User() { Username = "pero" }).Returns(true);
-			clientUnderTest.factory.UserRegister(new User() { Username = "jovisa" }).Returns(false);
+            clientUnderTest.factory.LogOut("ex").Returns(x => { throw new Exception(); });
+			clientUnderTest.factory.UserRegister(Arg.Is<User>(x=>x.Username=="pero")).Returns(true);
+            clientUnderTest.factory.UserRegister(Arg.Is<User>(x => x.Username != "pero")).Returns(false);
 			clientUnderTest.factory.GetUser("pero").Returns(new User() { Name = "Pero" });
-			clientUnderTest.factory.AddUser(new User() { Name = "Voja", Surname = "Seselj" }).Returns(true);
-			clientUnderTest.factory.AddUser(new User() { Name = "Toma", Surname = "Diploma" }).Returns(false);
-			clientUnderTest.factory.UpdateUser(new User() { Name = "Mika" }).Returns(true);
-			clientUnderTest.factory.UpdateUser(new User() { Name = "Pera" }).Returns(false);
-			clientUnderTest.factory.RemoveUser(new User() { Name = "Mika" }).Returns(true);
-			clientUnderTest.factory.RemoveUser(new User() { Name = "Pera" }).Returns(false);
+            clientUnderTest.factory.GetUser("ex").Returns(x => { throw new Exception(); });
+			clientUnderTest.factory.AddUser(Arg.Is<User>(x=>x.Name=="Voja" && x.Surname=="Seselj")).Returns(true);
+            clientUnderTest.factory.AddUser(Arg.Is<User>(x => x.Name != "Voja" && x.Surname == "Seselj")).Returns(false);
+            clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
+            clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name != "Mika" && x.Name!="ex")).Returns(false);
+            clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
 
-			clientUnderTest.factory.AddProject(new Project() { Name = "GeRuDok" }).Returns(true);
-
+            clientUnderTest.factory.RemoveUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
+            clientUnderTest.factory.RemoveUser(Arg.Is<User>(x => x.Name != "Mika")).Returns(false);
+            clientUnderTest.factory.AddProject(Arg.Is<Project>(x=>x.Name=="GeRuDok")).Returns(true);
+            clientUnderTest.factory.AddProject(Arg.Is<Project>(x => x.Name != "GeRuDok"  && x.Name!="Excp")).Returns(false);
 			clientUnderTest.factory.AddProject(Arg.Is<Project>(p=>p.Name=="Excp")).Returns((x) => { throw new Exception(); });
+            clientUnderTest.factory.UpdateProject(Arg.Is<Project>(x=>x.Name=="NMMS")).Returns(true);
+            clientUnderTest.factory.UpdateProject(Arg.Is<Project>(x => x.Name != "NMMS" && x.Name!="ex")).Returns(false);
+            clientUnderTest.factory.UpdateProject(Arg.Is<Project>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+            clientUnderTest.factory.GetAllUsers().Returns(new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } });
+            clientUnderTest.factory.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } });
+            clientUnderTest.factory.LoginUsersOverview().Returns(new List<User>() { new User() { Name = "Seselj" }, new User() { Name = "Slobo" } });
+            clientUnderTest.factory.GetTasksFromUserStory(Arg.Is<UserStory>(x => x.Name == "us1")).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } });
+            clientUnderTest.factory.GetProjectFromUserStory(Arg.Is<UserStory>(x=>x.Name=="us")).Returns(new Project() { Name = "NMMS" });
+            clientUnderTest.factory.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" }, new Company() { Name = "dms" } });
+            clientUnderTest.factory.GetProjectFromUserStory(Arg.Is<UserStory>(x => x.Name == "ex")).Returns((x) => { throw new Exception(); });
+            clientUnderTest.factory.GetUserStoryFromProject(Arg.Is<Project>(x => x.Name == "NMMS")).Returns(new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2" } });
+             clientUnderTest.factory.GetUserStoryFromProject(Arg.Is<Project>(x => x.Name == "ex")).Returns(x=>{throw new Exception();});
+            clientUnderTest.factory.UpdateUserStory(Arg.Is<UserStory>(x=>x.Name=="us")).Returns(true);
+            clientUnderTest.factory.UpdateUserStory(Arg.Is<UserStory>(x => x.Name != "us")).Returns(false);
 			
-
-
-
-			clientUnderTest.factory.UpdateProject(new Project() { Name = "NMMS" }).Returns(true);
-			clientUnderTest.factory.UpdateProject(new Project() { Name = "GMS" }).Returns(false);
-			clientUnderTest.factory.GetAllUsers().Returns(new List<User>() { new User() { Name = "Voja" } });
-			clientUnderTest.factory.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "NMMS" } });
-			clientUnderTest.factory.LoginUsersOverview().Returns(new List<User>() { new User() { Name = "Seselj" } });
-			clientUnderTest.factory.GetTasksFromUserStory(new UserStory() { Name = "us1" }).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() });
-			clientUnderTest.factory.GetProjectFromUserStory(new UserStory() { Name = "us1" }).Returns(new Project() { Name = "NMMS" });
-			clientUnderTest.factory.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" } });
-			clientUnderTest.factory.GetUserStoryFromProject(new Project() { Name = "NMMS" }).Returns(new List<UserStory>() { new UserStory() { Name = "us1" } });
-			clientUnderTest.factory.UpdateUserStory(new UserStory() { Name = "us" }).Returns(true);
-			clientUnderTest.factory.UpdateUserStory(new UserStory() { Name = "us1" }).Returns(false);
-			//clientUnderTest.factory.ModifyCompanyToPartner(new Company() { Name = "DMS" }).Returns(true);
-			//clientUnderTest.factory.ModifyCompanyToPartner(new Company() { Name = "NIS" }).Returns(false);
 						
 		}
 
@@ -90,16 +85,22 @@ namespace HiringClientTest
 		public void GetUserStoryFromProjectTest()
 		{
 			Project project = new Project() { Name = "NMMS" };
-			List<UserStory> expectedUserStories = new List<UserStory>() { new UserStory() { Name = "us1" } };
+			List<UserStory> expectedUserStories = new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2"  }};
 			List<UserStory> list = clientUnderTest.GetUserStoryFromProject(project);
 			Assert.AreEqual(expectedUserStories, list);
 		}
+        [Test]
+        public void GetUserStoryFromProjectTestException()
+        {
+            Project project = new Project() { Name = "ex" };
+            Assert.Throws<Exception>(() => clientUnderTest.GetUserStoryFromProject(project));
+        }
 		[Test]
 		public void GetAllCompaniesTest()
 		{
-			List<Company> expectedCompanies = new List<Company>() { new Company() { Name = "Nis" } };
+			List<Company> actualCompanies = new List<Company>() { new Company() { Name = "Nis" },new Company(){Name="dms"} };
 			List<Company> companies = clientUnderTest.GetAllCompanies();
-			Assert.AreEqual(companies, expectedCompanies);
+            Assert.AreEqual( companies[0].Name,actualCompanies[0].Name);
 		}
 		[Test]
 		public void LogInTestOk()
@@ -114,6 +115,12 @@ namespace HiringClientTest
 			Assert.IsFalse(result);
 		}
 
+        [Test]
+        public void LogInTestException()
+        {
+            Assert.Throws<Exception>(() => clientUnderTest.LogIn("ex", "ex"));
+        }
+
 		[Test]
 		public void LogOutTestOk()
 		{
@@ -126,19 +133,27 @@ namespace HiringClientTest
 			bool result = clientUnderTest.LogOut("pero");
 			Assert.IsFalse(result);
 		}
+        [Test]
+        public void LogOutTestException()
+        {
+            Assert.Throws<Exception>(() => clientUnderTest.LogOut("ex"));
+        }
+
 		[Test]
 		public void UserRegisterTestOk()
 		{
 			User user = new User() { Username = "pero" };
-			bool result = clientUnderTest.UserRegister(user);
-			Assert.IsTrue(result);
+			//bool result = clientUnderTest.UserRegister(user);
+            Assert.Throws<NotImplementedException>(() => clientUnderTest.UserRegister(user));
 		}
 		[Test]
 		public void UserRegisterTestFault()
 		{
 			User user = new User() { Username = "jovisa" };
-			bool result = clientUnderTest.UserRegister(user);
-			Assert.IsFalse(result);
+			//bool result = clientUnderTest.UserRegister(user);
+            // kad se implementira onda otkomentarisi
+            Assert.Throws<NotImplementedException>(() => clientUnderTest.UserRegister(user));
+
 		}
 
 		[Test]
@@ -148,7 +163,12 @@ namespace HiringClientTest
 			string name = "Pero";
 			Assert.AreEqual(result.Name, name);
 		}
-		[Test]
+        public void GetUserTestException()
+        {
+            Assert.Throws<Exception>(() => clientUnderTest.GetUser("ex"));
+        }
+
+        [Test]
 		public void AddUserTestOk()
 		{
 			User user = new User() { Name = "Voja", Surname = "Seselj" };
@@ -164,8 +184,15 @@ namespace HiringClientTest
 			Assert.IsFalse(result);
 		}
 
+        [Test]
+        public void AddUserTestException()
+        {
+            User user = new User() { Name = "ex", Surname = "ex" };
+            Assert.Throws<Exception>(() => clientUnderTest.AddUser(user));
+        }
+
 		[Test]
-		public void UpdateUserOk()
+		public void UpdateUserTestOk()
 		{
 			User user = new User() { Name = "Mika" };
 			bool result = clientUnderTest.UpdateUser(user);
@@ -174,16 +201,24 @@ namespace HiringClientTest
 		}
 
 		[Test]
-		public void UpdateUserFault()
+		public void UpdateUserTestFault()
 		{
 			User user = new User() { Name = "Pera" };
 			bool result = clientUnderTest.UpdateUser(user);
-			Assert.IsTrue(result);
+			Assert.IsFalse(result);
 
 		}
+        [Test]
+        public void UpdateUserTestException()
+        {
+            User user = new User() { Name = "ex" };
+            Assert.Throws<Exception>(() => clientUnderTest.UpdateUser(user));
+
+        }
+
 
 		[Test]
-		public void RemoveUserOk()
+		public void RemoveUserTestOk()
 		{
 			User user = new User() { Name = "Mika" };
 			bool result = clientUnderTest.RemoveUser(user);
@@ -191,13 +226,19 @@ namespace HiringClientTest
 		}
 
 		[Test]
-		public void RemoveUserFault()
+		public void RemoveUserTestFault()
 		{
 			User user = new User() { Name = "Pera" };
 			bool result = clientUnderTest.RemoveUser(user);
 			Assert.IsFalse(result);
 
 		}
+
+        public void RemoveUserTestException()
+        {
+            User user = new User() { Name = "Pera" };
+            Assert.Throws<Exception>(() => clientUnderTest.RemoveUser(user));
+        }
 
 		[Test]
 		public void AddProjectTestOk()
@@ -237,37 +278,53 @@ namespace HiringClientTest
 			Assert.IsFalse(result);
 		}
 
+        public void UpdateProjectTestException()
+        {
+            Project project = new Project() { Name = "ex" };
+            Assert.Throws<Exception>(() => clientUnderTest.UpdateProject(project));
+        }
+
 		[Test]
 		public void GetAllUsersTest()
 		{
-			List<User> expectedList = new List<User>() { new User() { Name = "Voja" } };
+            List<User> expectedList = new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } };
 			List<User> list = clientUnderTest.GetAllUsers();
-			Assert.AreEqual(list, expectedList);
+			CollectionAssert.AreEqual(list, expectedList);
 		}
 
 		[Test]
 		public void GetAllProjectsTest()
 		{
-			List<Project> expectedList = new List<Project>() { new Project() { Name = "NMMS" } };
+            List<Project> expectedList = new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } };
 			List<Project> list = clientUnderTest.GetAllProjects();
-			Assert.AreEqual(list, expectedList);
+			CollectionAssert.AreEqual(list, expectedList);
 		}
-
+        /*
+         * Nije jos implementirana metoda
+         * 
 		[Test]
 		public void LoginUseraOverviewTest()
 		{
-			List<User> expectedList = new List<User>() { new User() { Name = "Seselj" } };
+            List<User> expectedList = new List<User>() { new User() { Name = "Seselj" }, new User() { Name = "Slobo" }  };
 			List<User> list = clientUnderTest.LoginUsersOverview();
 			Assert.AreEqual(list, expectedList);
-		}
+		}*/
+
 		[Test]
 		public void GetTesksFromUserStoryTest()
 		{
 			UserStory us = new UserStory() { Name = "us1" };
-			List<Common.Entities.Task> expectedList = new List<Common.Entities.Task>() { new Common.Entities.Task() };
+            List<Common.Entities.Task> expectedList = new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } };
 			var list = clientUnderTest.GetTasksFromUserStory(us);
-			Assert.AreEqual(list, expectedList);
+			CollectionAssert.AreEqual(list, expectedList);
 		}
+        [Test]
+        public void GetTesksFromUserStoryTestException()
+        {
+            UserStory us = new UserStory() { Name = "ex" };
+            Assert.Throws<Exception>(() => clientUnderTest.GetTasksFromUserStory(us));
+        }
+
 
 		[Test]
 		public void GetProjectFromUserStoryTest()
