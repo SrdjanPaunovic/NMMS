@@ -64,10 +64,34 @@ namespace HiringServiceTest
 
 			HiringCompanyDB.Instance.ModifyCompanyToPartner(Arg.Is<Company>(x=>x.Name=="DMS")).Returns(true);
             HiringCompanyDB.Instance.ModifyCompanyToPartner(Arg.Is<Company>(x => x.Name != "DMS")).Returns(false);
+			HiringCompanyDB.Instance.ChangeCompanyState(new Company(),State.CompanyState.NoPartner).ReturnsForAnyArgs(true);
+
+		}
 
 
+		[Test]
+		public void AnswerToUserStoryTest()
+		{
+			Project project = new Project();
+			Company company = new Company();
+			UserStory userStory=new UserStory();
+			bool result = serviceUnderTest.AnswerToUserStory(company, project, userStory);
+			Assert.IsTrue(result);
+		}
 
-			
+		[Test]
+		public void SendProjectTestOk()
+		{
+			Project project=new Project();
+			Company company=new Company();
+			bool result = serviceUnderTest.SendProject(company, project);
+			Assert.IsTrue(result);
+		}
+
+		[Test]
+		public void SendRequestTestOk() { 
+			bool result=serviceUnderTest.SendRequest(new Company());
+			Assert.IsFalse(result);
 		}
 
 		[Test]
@@ -264,17 +288,14 @@ namespace HiringServiceTest
             Assert.AreEqual(list[0].Name, actualList[0].Name);
 		}
 
-        /*
-         * Nije jos implementirana metoda
-         * 
 		[Test]
 		public void LoginUseraOverviewTest()
 		{
-            List<User> expectedList = new List<User>() { new User() { Name = "Seselj" }, new User() { Name = "Slobo" } };
-			List<User> list = serviceUnderTest.LoginUsersOverview();
-			Assert.AreEqual(list, expectedList);
+            List<User> actualList = new List<User>() { new User() { Name = "Seselj" }, new User() { Name = "Slobo" } };
+			List<User> expectedList = serviceUnderTest.LoginUsersOverview();
+			Assert.AreEqual(expectedList[0].Name, actualList[0].Name);
 		}
-         * ***/
+        
 		[Test]
 		public void GetTesksFromUserStoryTest()
 		{
