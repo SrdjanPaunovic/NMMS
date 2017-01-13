@@ -137,7 +137,7 @@ namespace Service
 				
 				if (project.IsAccepted)
 				{
-					project.DevelopCompany = project.DevelopCompany;
+					project.DevelopCompany = Program.myOutSourceCompany;
 				}
 				else
 				{
