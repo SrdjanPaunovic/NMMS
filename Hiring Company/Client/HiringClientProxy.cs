@@ -291,20 +291,6 @@ namespace Client
         }
 
         /// <summary>
-        /// The login users overview.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="List"/>.
-        /// </returns>
-        /// <exception cref="NotImplementedException">
-        ///  This is big big 
-        /// </exception>
-        public List<User> LoginUsersOverview()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// The log out.
         /// </summary>
         /// <param name="username">
@@ -462,31 +448,12 @@ namespace Client
 
 			return result;
         }
-
-        /// <summary>
-        /// The user register.
-        /// </summary>
-        /// <param name="user">
-        /// The user.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        /// <exception cref="NotImplementedException">
-        /// This is Sparta.
-        /// </exception>
-        public bool UserRegister(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-
+        
         public bool ModifyCompany(Company company)
         {
             throw new NotImplementedException();
         }
-
-
+        
         public List<User> GetAllUsers()
         {
             List<User> result = null;
@@ -503,8 +470,7 @@ namespace Client
 
             return result;
         }
-
-
+        
         public bool RemoveUser(User user)
         {
             bool result = false;

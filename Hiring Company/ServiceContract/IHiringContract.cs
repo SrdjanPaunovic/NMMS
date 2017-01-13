@@ -18,9 +18,6 @@ namespace ServiceContract
 		bool LogOut(string username);
 
 		[OperationContract]
-		bool UserRegister(User user);
-
-		[OperationContract]
 		User GetUser(string username);
 
 		[OperationContract]
@@ -43,9 +40,6 @@ namespace ServiceContract
 
         [OperationContract]
         List<Project> GetAllProjects();
-
-		[OperationContract]
-		List<User> LoginUsersOverview();
 
 		[OperationContract]
 		bool SendRequest(Company company);

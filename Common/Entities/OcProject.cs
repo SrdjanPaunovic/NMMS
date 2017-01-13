@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace Common.Entities
 {
+    [DataContract]
     public class OcProject:Project
     {
+        [DataMember]
         public Team Team { get; set; }
 
 		public OcProject()

@@ -12,7 +12,7 @@ using System.ServiceModel;
 
 namespace Service
 {
-    public class OutsourcingCompanyService : IOutsourcingCompanyService
+    public class OutsourcingCompanyService : IOutsourcingContract
     {
         public bool AddUser(OcUser user)
         {
@@ -63,25 +63,12 @@ namespace Service
             return OutsourcingCompanyDB.Instance.LogOut(username);
         }
 
-        public bool UserRegister(OcUser user)
-        {
-            LogHelper.GetLogger().Info("Call UserRegister method.");
-            return OutsourcingCompanyDB.Instance.UserRegister(user);
-        }
-
-        public List<OcUser> LoginUsersOverview()
-        {
-            LogHelper.GetLogger().Info("Call LoginUsersOverview method.");
-            return OutsourcingCompanyDB.Instance.LoginUsersOverview();
-        }
-
         public List<Company> GetAllCompanies()
         {
             LogHelper.GetLogger().Info("Call GetAllCompanies method.");
             return OutsourcingCompanyDB.Instance.GetAllCompanies();
         }
-
-
+        
         public bool AnswerToRequest(Company company)
         {
             try
@@ -99,8 +86,7 @@ namespace Service
             }
 
         }
-
-
+        
         public List<OcProject> GetAllProjects()
         {
             LogHelper.GetLogger().Info("Call GetAllProjects method.");
@@ -109,25 +95,19 @@ namespace Service
 
         public OcUser GetUser(string username)
         {
-            //throw new NotImplementedException();
             LogHelper.GetLogger().Info("Call GetUser method.");
-            return OutsourcingCompanyDB.Instance.GetUser(username);           ///////////////////////odje
+            return OutsourcingCompanyDB.Instance.GetUser(username);
         }
 
         public bool UpdateUser(OcUser user)
         {
-            //throw new NotImplementedException();
             LogHelper.GetLogger().Info("Call UpdateUser method.");
             return OutsourcingCompanyDB.Instance.UpdateUser(user);
         }
 
-
-
-
-
         public bool SendUserStory(Company company, UserStory userStrory, Project project)
         {
-            return OutsourcingCompanyDB.Instance.AddUserStory(userStrory);   // promeniti u bazi (modyfy)
+            return OutsourcingCompanyDB.Instance.AddUserStory(userStrory); 
         }
 
 		public bool AnswerToProject(Company company, Project project)
@@ -158,31 +138,26 @@ namespace Service
 
         }
 
-
         public bool ModifyCompany(Company company)
         {
             return OutsourcingCompanyDB.Instance.ModifyCompanyToPartner(company);
         }
-
 
         public bool ChangeCompanyState(Company company, State.CompanyState state)
         {
             return OutsourcingCompanyDB.Instance.ChangeCompanyState(company, state);
         }
 
-
         public bool RemoveCompany(Company company)
         {
             return OutsourcingCompanyDB.Instance.RemoveCompany(company);
         }
-
 
         public List<Team> GetAllTeams()
         {
             LogHelper.GetLogger().Info("Call GetAllTeams method.");
             return OutsourcingCompanyDB.Instance.GetAllTeams();
         }
-
 
         public List<OcUser> GetAllUsers()
         {
@@ -196,8 +171,6 @@ namespace Service
             return OutsourcingCompanyDB.Instance.GetAllUsersWithoutTeam();
         }
 
-
-
         public bool UpdateProject(OcProject project)
         {
             LogHelper.GetLogger().Info("Call UpdateProject method.");
@@ -205,11 +178,44 @@ namespace Service
             return OutsourcingCompanyDB.Instance.UpdateProject(project);
         }
 
-
         public bool RemoveProject(OcProject project)
         {
             LogHelper.GetLogger().Info("Call RemeveProject method.");
             return OutsourcingCompanyDB.Instance.RemoveProject(project);
+        }
+
+        public bool RemoveUser(OcUser user)
+        {
+            LogHelper.GetLogger().Info("Call RemoveUser method.");
+            return OutsourcingCompanyDB.Instance.RemoveUser(user);
+        }
+
+        public List<UserStory> GetUserStoryFromProject(OcProject project)
+        {
+            LogHelper.GetLogger().Info("Call GetUserStoryFromProject method.");
+
+            return OutsourcingCompanyDB.Instance.GetUserStoryFromProject(project);
+        }
+
+        public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
+        {
+            LogHelper.GetLogger().Info("Call GetTasksFromUserStory method.");
+
+            return OutsourcingCompanyDB.Instance.GetTasksFromUserStory(userStory);
+        }
+
+        public OcProject GetProjectFromUserStory(UserStory userStory)
+        {
+            LogHelper.GetLogger().Info("Call GetProjectFromUserStory method.");
+
+            return OutsourcingCompanyDB.Instance.GetProjectFromUserStory(userStory);
+        }
+
+        public bool UpdateUserStory(UserStory userStory)
+        {
+            LogHelper.GetLogger().Info("Call UpdateUserStory method.");
+
+            return OutsourcingCompanyDB.Instance.UpdateUserStory(userStory);
         }
     }
 }

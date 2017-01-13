@@ -13,13 +13,13 @@ namespace Service.Access
         bool AddUser(User user);
         bool LogIn(string username, string password);
         bool LogOut(string username);
-        bool UserRegister(User user);
+        //bool UserRegister(User user);
         bool UpdateUser(User user);
         bool RemoveUser(User user);
 		bool AddUserStory(UserStory userStory);
         User GetUser(string username);
 
-        List<User> LoginUsersOverview();
+        //List<User> LoginUsersOverview();
         List<User> GetAllUsers();
 
         bool AddCompany(Company company);
@@ -32,13 +32,11 @@ namespace Service.Access
 		bool ModifyCompanyToPartner(Company company);
 		bool RemoveCompany(Company company);
 
-        bool RequestPartnership(int id);
-
 		List<UserStory> GetUserStoryFromProject(Project project);
 
         bool UpdateUserStory(UserStory userStory);
 
-        bool UpdateTask(Common.Entities.Task task);
+        //bool UpdateTask(Common.Entities.Task task);
 
         List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
         Project GetProjectFromUserStory(UserStory userStory);

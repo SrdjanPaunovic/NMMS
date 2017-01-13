@@ -10,9 +10,9 @@ using Common;
 
 namespace Client
 {
-    public class OutSClientProxy : ChannelFactory<IOutsourcingCompanyService>, IOutsourcingCompanyService
+    public class OutSClientProxy : ChannelFactory<IOutsourcingContract>, IOutsourcingContract
     {
-        IOutsourcingCompanyService factory;
+        IOutsourcingContract factory;
         public OutSClientProxy(NetTcpBinding binding, string address)
             : base(binding, address)
         {
@@ -82,7 +82,7 @@ namespace Client
             }
             return result;
         }
-
+        /*
         public bool AddUserStory(UserStory userStory)
         {
             throw new NotImplementedException();
@@ -104,7 +104,7 @@ namespace Client
             }
             return result;
 
-        }
+        }*/
 
         public bool AddTeam(Team team)
         {
@@ -154,45 +154,6 @@ namespace Client
             {
                 //TODO log
                 LogHelper.GetLogger().Error("Logout method failed.  " + e.ToString());
-
-            }
-            return result;
-        }
-
-        public bool UserRegister(OcUser user)
-        {
-            bool result = false;
-            try
-            {
-                result = factory.UserRegister(user);
-                LogHelper.GetLogger().Info("UserRegister method succeeded.");
-
-
-            }
-            catch (Exception e)
-            {
-
-                LogHelper.GetLogger().Error("UserRegister method failed.  " + e.ToString());
-
-            }
-            return result;
-
-        }
-
-        public List<OcUser> LoginUsersOverview()
-        {
-            List<OcUser> result = new List<OcUser>();
-            try
-            {
-                result = factory.LoginUsersOverview();
-                LogHelper.GetLogger().Info("LoginUsersOverview method succeeded.");
-
-
-            }
-            catch (Exception e)
-            {
-                LogHelper.GetLogger().Error("UserRegister method failed.  " + e.ToString());
-
 
             }
             return result;
@@ -304,10 +265,6 @@ namespace Client
             }
             return result;
         }
-
-
-
-
 
         public bool SendUserStory(Company company, UserStory userStrory, Project project)
         {
@@ -456,6 +413,95 @@ namespace Client
                 LogHelper.GetLogger().Error("RemoveProject method failed. " + e.ToString());
 
             }
+            return result;
+        }
+
+
+        public bool RemoveUser(OcUser user)
+        {
+            bool result = false;
+
+            try
+            {
+                result = this.factory.RemoveUser(user);
+                LogHelper.GetLogger().Info("UpdateUser method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("UpdateUser method failed. ", e);
+            }
+
+            return result;
+        }
+
+
+        public List<UserStory> GetUserStoryFromProject(OcProject project)
+        {
+            List<UserStory> result = null;
+
+            try
+            {
+                result = this.factory.GetUserStoryFromProject(project);
+
+                LogHelper.GetLogger().Info("GetUserStoryFromProject method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("GetUserStoryFromProject method failed. " + e.Message);
+            }
+
+            return result;
+        }
+
+        public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
+        {
+            List<Common.Entities.Task> result = null;
+
+            try
+            {
+                result = this.factory.GetTasksFromUserStory(userStory);
+                LogHelper.GetLogger().Info("GetTasksFromUserStory method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("GetTasksFromUserStory method failed. ", e);
+            }
+
+            return result;
+        }
+
+        public OcProject GetProjectFromUserStory(UserStory userStory)
+        {
+            OcProject result = null;
+
+            try
+            {
+                result = this.factory.GetProjectFromUserStory(userStory);
+                LogHelper.GetLogger().Info("GetProjectFromUserStory method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("GetProjectFromUserStory method failed. ", e);
+            }
+
+            return result;
+        }
+
+        public bool UpdateUserStory(UserStory userStory)
+        {
+            bool result = false;
+
+            try
+            {
+                result = this.factory.UpdateUserStory(userStory);
+
+                LogHelper.GetLogger().Info("UpdateUserStory method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("UpdateUserStory method failed. ", e);
+            }
+
             return result;
         }
     }

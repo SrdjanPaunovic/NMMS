@@ -1,6 +1,7 @@
 ﻿using Client.View;
 using Common;
 using Common.Entities;
+using ServiceContract;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace Client.ViewModel
 {
@@ -25,6 +27,22 @@ namespace Client.ViewModel
             TEAMS
         }
 
+        public IOutsourcingContract proxy;
+
+        public MainWindowViewModel()
+        {
+            string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string path = System.IO.Path.GetDirectoryName(executable);
+            path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
+            EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
+            RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
+            proxy = ((App)App.Current).Proxy;
+        }
+        public MainWindowViewModel(string test)
+        {
+
+        }
+
         #region Fields
         private string loggedUsername = "";
         private ObservableCollection<Company> partnerCompanies = new ObservableCollection<Company>();
@@ -32,6 +50,7 @@ namespace Client.ViewModel
         private ObservableCollection<Project> projects = new ObservableCollection<Project>();
         private ObservableCollection<Team> teams = new ObservableCollection<Team>();
         private ObservableCollection<OcProject> acceptedProjects = new ObservableCollection<OcProject>();
+        private ObservableCollection<OcUser> allEmployees = new ObservableCollection<OcUser>();
 
 
 
@@ -55,10 +74,21 @@ namespace Client.ViewModel
         private ICommand newTeamCommand;
         private ICommand acceptProjectRequestCommand;
         private ICommand rejectProjectRequestCommand;
+        private ICommand editUserProfileCommand;
+        private ICommand deleteUserCommand;
+        private ICommand addUserCommand;
 
         #endregion Fields
 
         #region Properties
+        public BitmapImage EditIcon { get; set; }
+        public BitmapImage RemoveIcon { get; set; }
+
+        public ObservableCollection<OcUser> AllEmployees
+        {
+            get { return allEmployees; }
+            set { allEmployees = value; }
+        }
         public WindowState CurrentState
         {
             get { return currentState; }
@@ -68,6 +98,7 @@ namespace Client.ViewModel
                 OnPropertyChanged("CurrentState");
             }
         }
+
         public ObservableCollection<Company> PartnerCompanies
         {
             get { return partnerCompanies; }
@@ -166,7 +197,7 @@ namespace Client.ViewModel
         {
             get
             {
-                return editProjectCommand ?? (editProjectCommand = new RelayCommand((param) => this.EditProject(param as Project)));
+                return editProjectCommand ?? (editProjectCommand = new RelayCommand((param) => this.EditProject(param as OcProject)));
             }
         }
 
@@ -253,6 +284,30 @@ namespace Client.ViewModel
             }
 
         }
+
+        public ICommand EditUserProfileCommand
+        {
+            get
+            {
+                return editUserProfileCommand ?? (editUserProfileCommand = new RelayCommand(param => this.EditUserProfile(param)));
+            }
+        }
+
+        public ICommand DeleteUserCommand
+        {
+            get
+            {
+                return deleteUserCommand ?? (deleteUserCommand = new RelayCommand(param => this.DeleteUser(param)));
+            }
+        }
+
+        public ICommand AddUserCommand
+        {
+            get
+            {
+                return addUserCommand ?? (addUserCommand = new RelayCommand(param => this.AddUser(param)));
+            }
+        }
         #endregion Properties
 
         #region Methods
@@ -270,19 +325,16 @@ namespace Client.ViewModel
             }
 
             string username = parameters[0].ToString();
-            string pass = parameters[0].ToString();
+            string pass = parameters[1].ToString();
 
-            //using(HiringClientProxy proxy = new HiringClientProxy(netTcpBinding, ((App)App.Current).HostAddress))
-            using (OutSClientProxy proxy = ((App)App.Current).Proxy)
+            bool success = proxy.LogIn(username, pass);
+
+            if (success)
             {
-                bool success = proxy.LogIn(username, pass);
-
-                if (success)
-                {
-                    LoggedUsername = username;
-                    CurrentState = WindowState.PROJECTS;
-                }
+                LoggedUsername = username;
+                CurrentState = WindowState.PROJECTS;
             }
+
         }
 
         private void ShowProfile()
@@ -296,6 +348,23 @@ namespace Client.ViewModel
         private void ShowEmployees()
         {
             LogHelper.GetLogger().Info("ShowEmployees called.");
+
+            AllEmployees.Clear();
+
+            List<OcUser> result = proxy.GetAllUsers();
+            if (result != null)
+            {
+                foreach (var user in result)
+                {
+                    AllEmployees.Add(user);
+                }
+
+                LogHelper.GetLogger().Info("Get employees is done successfuly");
+            }
+            else
+            {
+                LogHelper.GetLogger().Info("Get employees failed");
+            }
 
             CurrentState = WindowState.EMPLOYEES;
         }
@@ -322,20 +391,19 @@ namespace Client.ViewModel
 
         private void LogOut(object param)
         {
-            using (OutSClientProxy proxy = ((App)App.Current).Proxy)
-            {
-                bool success = proxy.LogOut(LoggedUsername);
 
-                if (success)
-                {
-                    LoggedUsername = "";
-                    CurrentState = WindowState.LOGIN;
-                }
-                else
-                {
-                    MessageBox.Show("Error while loggout");
-                }
+            bool success = proxy.LogOut(LoggedUsername);
+
+            if (success)
+            {
+                LoggedUsername = "";
+                CurrentState = WindowState.LOGIN;
             }
+            else
+            {
+                MessageBox.Show("Error while loggout");
+            }
+
         }
 
         void NewProject()
@@ -344,7 +412,7 @@ namespace Client.ViewModel
             projectDialog.ShowDialog();
         }
 
-        void EditProject(Project project)
+        void EditProject(OcProject project)
         {
             ProjectViewDialog projectDialog = new ProjectViewDialog(project);
             projectDialog.ShowDialog();
@@ -352,94 +420,80 @@ namespace Client.ViewModel
 
         void FetchCompanies()
         {
-            try
+
+            List<Company> result = proxy.GetAllCompanies();
+            PartnerCompanies.Clear();
+            NonPartnerCompanies.Clear();
+
+            if (result != null)
             {
-                using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
+                foreach (Company company in result)
                 {
-                    List<Company> result = proxy.GetAllCompanies();
-                    PartnerCompanies.Clear();
-                    NonPartnerCompanies.Clear();
-                    foreach (Company company in result)
+                    if (company.State == State.CompanyState.NoPartner)
                     {
-                        if (company.State == State.CompanyState.NoPartner)
-                        {
-                            NonPartnerCompanies.Add(company);
-                        }
-                        else
-                        {
-                            PartnerCompanies.Add(company);
-                        }
+                        NonPartnerCompanies.Add(company);
+                    }
+                    else
+                    {
+                        PartnerCompanies.Add(company);
                     }
                 }
+
                 LogHelper.GetLogger().Info("There are some companies ready to cooperate");
-
             }
-            catch (Exception e)
+            else
             {
-                LogHelper.GetLogger().Error("There are no companies", e);
+                LogHelper.GetLogger().Warn("GetAllCompanies, return NULL");
             }
-
         }
 
         void FetchProjects()
         {
-            using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
+            List<OcProject> result = proxy.GetAllProjects();
+            Projects.Clear();
+            acceptedProjects.Clear();
+            if (result != null)
             {
-                List<OcProject> result = proxy.GetAllProjects();
-                Projects.Clear();
-                acceptedProjects.Clear();
-                if (result != null)
+                foreach (var proj in result)
                 {
-                    foreach (var proj in result)
+                    if (proj.IsAccepted)
                     {
-                        if (proj.IsAccepted)
-                        {
-                            acceptedProjects.Add(proj);
-                        }
-                        else
-                        {
-                            Projects.Add(proj);
-                        }
+                        acceptedProjects.Add(proj);
+                    }
+                    else
+                    {
+                        Projects.Add(proj);
                     }
                 }
             }
 
-
-
-            /*Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Approved" });
-            Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Disapproved" });
-            */
         }
 
         void FetchAcceptedProjects()
         {
             FetchProjects();
-            using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
+
+            List<OcProject> result = proxy.GetAllProjects();
+            AcceptedProjects.Clear();
+            if (result != null)
             {
-                List<OcProject> result = proxy.GetAllProjects();
-                AcceptedProjects.Clear();
-                if (result != null)
+                foreach (var proj in result)
                 {
-                    foreach (var proj in result)
-                    {
-                        if (proj.IsAccepted)
-                            AcceptedProjects.Add(proj);
-                    }
+                    if (proj.IsAccepted)
+                        AcceptedProjects.Add(proj);
                 }
             }
+
         }
 
 
         void FetchTeams()
         {
-            using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
+            List<Team> result = proxy.GetAllTeams();
+            Teams.Clear();
+            foreach (var proj in result)
             {
-                List<Team> result = proxy.GetAllTeams();
-                Teams.Clear();
-                foreach (var proj in result)
-                {
-                    Teams.Add(proj);
-                }
+                Teams.Add(proj);
             }
         }
 
@@ -449,18 +503,14 @@ namespace Client.ViewModel
 
             if (param == null)
             {
-                throw new Exception("[AcceptRequestCommnad] Command parameters has NULL value");
+                LogHelper.GetLogger().Warn("[AcceptRequestCommnad] Command parameters has NULL value");
             }
             Company company = param as Company;
 
-            using (OutSClientProxy proxy = ((App)App.Current).Proxy)
-            {
-                company.State = State.CompanyState.Partner;
-                bool success = proxy.AnswerToRequest(company);
-                proxy.ModifyCompany(company);
-                FetchCompanies();
-            }
-
+            company.State = State.CompanyState.Partner;
+            bool success = proxy.AnswerToRequest(company);
+            proxy.ModifyCompany(company);
+            FetchCompanies();
         }
 
         private void RejectRequest(object param)
@@ -469,17 +519,15 @@ namespace Client.ViewModel
 
             if (param == null)
             {
-                throw new Exception("[RejectRequestCommnad] Command parameters has NULL value");
+                LogHelper.GetLogger().Warn("[RejectRequestCommnad] Command parameters has NULL value");
             }
             Company company = param as Company;
 
-            using (OutSClientProxy proxy = ((App)App.Current).Proxy)
-            {
-                company.State = State.CompanyState.NoPartner;
-                bool success = proxy.AnswerToRequest(company);
-                proxy.RemoveCompany(company);
-                FetchCompanies();
-            }
+            company.State = State.CompanyState.NoPartner;
+            bool success = proxy.AnswerToRequest(company);
+            proxy.RemoveCompany(company);
+            FetchCompanies();
+
         }
 
         private void NewTeam()
@@ -495,21 +543,17 @@ namespace Client.ViewModel
 
             if (param == null)
             {
-                throw new Exception("[AcceptProjectRequestCommnad] Command parameters has NULL value");
+                LogHelper.GetLogger().Warn("[AcceptProjectRequestCommnad] Command parameters has NULL value");
             }
             OcProject OcProject = param as OcProject;
             Project project = new Project(OcProject);
             OcProject.IsAccepted = true;
-            using (OutSClientProxy proxy = ((App)App.Current).Proxy)
-            {
-                Company company = new Company(project.HiringCompany);
-                project.IsAccepted = true;
-                bool success = proxy.AnswerToProject(company, project);
-                proxy.UpdateProject(OcProject);
-                FetchAcceptedProjects();
 
-            }
-
+            Company company = new Company(project.HiringCompany);
+            project.IsAccepted = true;
+            bool success = proxy.AnswerToProject(company, project);
+            proxy.UpdateProject(OcProject);
+            FetchAcceptedProjects();
         }
 
 
@@ -519,21 +563,85 @@ namespace Client.ViewModel
 
             if (param == null)
             {
-                throw new Exception("[RejectProjectRequestCommnad] Command parameters has NULL value");
+                LogHelper.GetLogger().Warn("[RejectProjectRequestCommnad] Command parameters has NULL value");
             }
             //Company company = param as Company;
             OcProject OcProject = param as OcProject;
             Project project = new Project(OcProject);
             OcProject.IsAccepted = false;
-            using (OutSClientProxy proxy = ((App)App.Current).Proxy)
+
+            Company company = new Company(project.HiringCompany);
+            project.IsAccepted = false;
+            bool success = proxy.AnswerToProject(company, project);
+            proxy.RemoveProject(OcProject);
+            FetchAcceptedProjects();
+
+        }
+
+        private void EditUserProfile(object param)
+        {
+            LogHelper.GetLogger().Info("ShowProfile called.");
+
+            var user = param as OcUser;
+            if (user == null)
             {
-                Company company = new Company(project.HiringCompany);
-                project.IsAccepted = false;
-                bool success = proxy.AnswerToProject(company, project);
-                proxy.RemoveProject(OcProject);
-                FetchAcceptedProjects();
+                LogHelper.GetLogger().Warn("ShowProfile params NULL.");
+            }
+            LogHelper.GetLogger().Info("ShowProfile params ok.");
+
+            ProfileDialog profileDialog = new ProfileDialog(user.Username);
+            var res = profileDialog.ShowDialog();
+            if (res == true)
+            {
+                if (profileDialog.Tag != null)
+                {
+                    LoggedUsername = profileDialog.Tag.ToString();
+                }
+            }
+        }
+
+        private void DeleteUser(object param)
+        {
+
+            LogHelper.GetLogger().Info("DeleteUser called.");
+
+            var user = param as OcUser;
+            if (user == null)
+            {
+                LogHelper.GetLogger().Warn("DeleteUser params NULL.");
+            }
+            LogHelper.GetLogger().Info("DeleteUser params ok.");
+
+
+            bool success = false;
+
+            success = proxy.RemoveUser(user);
+            if (success)
+            {
+                LogHelper.GetLogger().Info("DeleteUser is done successfuly");
+                ShowEmployees();
+            }
+            else
+            {
+                LogHelper.GetLogger().Info("DeleteUser failed");
 
             }
+
+        }
+
+        private void AddUser(object param)
+        {
+
+            LogHelper.GetLogger().Info("AddUser called.");
+
+            ProfileDialog profileDialog = new ProfileDialog();
+            var res = profileDialog.ShowDialog();
+            if (res == true)
+            {
+                LogHelper.GetLogger().Info("User successfully added.");
+            }
+
+
         }
         #endregion Methods
 

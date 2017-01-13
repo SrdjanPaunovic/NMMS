@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ServiceModel;
 using Common;
+using Client.ViewModel;
 
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
@@ -30,7 +31,7 @@ namespace Client
 			InitializeComponent();
 			LogHelper.GetLogger().Debug("Main window for outsourcing company initialized.");
 
-			/*CollectionView companiesView = (CollectionView)CollectionViewSource.GetDefaultView(partnerCompanies.ItemsSource);
+			CollectionView companiesView = (CollectionView)CollectionViewSource.GetDefaultView(partnerCompanies.ItemsSource);
 			PropertyGroupDescription companyGroupDescription = new PropertyGroupDescription("State");
 			companiesView.GroupDescriptions.Add(companyGroupDescription);
 
@@ -38,7 +39,19 @@ namespace Client
 			CollectionView projectsView = (CollectionView)CollectionViewSource.GetDefaultView(projects.ItemsSource);
 			PropertyGroupDescription projectGroupDescription = new PropertyGroupDescription("Status");
 			projectsView.GroupDescriptions.Add(projectGroupDescription);
-			LogHelper.GetLogger().Debug("asdsadasd");*/
+            LogHelper.GetLogger().Debug("Main window initialized.");
 		}
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var viewModel = DataContext as MainWindowViewModel;
+            if (viewModel != null)
+            {
+                if (viewModel.LoggedUsername.Trim() != "")
+                {
+                    viewModel.LogOutCommand.Execute(viewModel.LoggedUsername);
+                }
+            }
+        }
 	}
 }
