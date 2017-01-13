@@ -84,7 +84,8 @@ namespace HiringCompanyService
         public bool SendRequest(Company company)
         {
             //TODO ovo sam ja zamazo :D
-			bool success = true;//  HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
+            HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
+			bool success = true;
             if (success)
             {
                 try

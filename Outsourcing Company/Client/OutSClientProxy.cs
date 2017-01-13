@@ -422,6 +422,42 @@ namespace Client
             }
             return result;
         }
+
+
+        public bool UpdateProject(OcProject project)
+        {
+            bool result = false;
+            try
+            {
+                result = factory.UpdateProject(project);
+                LogHelper.GetLogger().Info("UpdateProject method succeeded.");
+
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("UpdateProject method failed. " + e.ToString());
+
+            }
+            return result;
+        }
+
+
+        public bool RemoveProject(OcProject project)
+        {
+            bool result = false;
+            try
+            {
+                result = factory.RemoveProject(project);
+                LogHelper.GetLogger().Info("RemoveProject method succeeded.");
+
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("RemoveProject method failed. " + e.ToString());
+
+            }
+            return result;
+        }
     }
 }
 

@@ -73,6 +73,11 @@ namespace ServiceContract
 
         [OperationContract]
         List<Team> GetAllTeams();
-       
+
+        [OperationContract]
+        bool UpdateProject(OcProject project);
+
+        [OperationContract]
+        bool RemoveProject(OcProject project);
 	}
 }

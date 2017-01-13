@@ -500,6 +500,66 @@ namespace Service.Access
             }
             return true;
         }
+
+
+        public bool UpdateProject(OcProject project)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                OcProject proj = context.Projects.FirstOrDefault<OcProject>((x) => x.Name == project.Name);
+
+                if (proj != null)
+                {
+
+                    proj.UpdateProperties(project);
+                    List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
+                    foreach (var us in userStories)
+                    {
+                        if (project.UserStories.ToList().Exists((x) => x.Id == us.Id))
+                        {
+                            continue;
+                        }
+
+                        context.Entry(us).State = System.Data.Entity.EntityState.Deleted;
+                    }
+
+                    foreach (var us in project.UserStories)
+                    {
+                        if (us.Id == 0)
+                        {
+                            proj.UserStories.Add(us);
+                        }
+                    }
+                    proj.IsAccepted = project.IsAccepted;
+                    proj.DevelopCompany = project.DevelopCompany;
+                    context.Entry(proj).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                    LogHelper.GetLogger().Info(" UpdateProject method succeeded. Returned true.");
+
+                    return true;
+                }
+                LogHelper.GetLogger().Info("UpdateProject method returned false.");
+
+                return false;
+            }
+        }
+
+
+        public bool RemoveProject(OcProject project)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                OcProject c = context.Projects.FirstOrDefault<OcProject>((x) => x.Name.Equals(project.Name));
+                if (c == null)
+                {
+                    return false;
+                }
+                context.Projects.Remove(c);
+                context.Entry(c).State = System.Data.Entity.EntityState.Deleted;
+                context.SaveChanges();
+            }
+            return true;
+        }
     }
 }
 

@@ -196,5 +196,20 @@ namespace Service
             return OutsourcingCompanyDB.Instance.GetAllUsersWithoutTeam();
         }
 
+
+
+        public bool UpdateProject(OcProject project)
+        {
+            LogHelper.GetLogger().Info("Call UpdateProject method.");
+
+            return OutsourcingCompanyDB.Instance.UpdateProject(project);
+        }
+
+
+        public bool RemoveProject(OcProject project)
+        {
+            LogHelper.GetLogger().Info("Call RemeveProject method.");
+            return OutsourcingCompanyDB.Instance.RemoveProject(project);
+        }
     }
 }
