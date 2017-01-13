@@ -22,10 +22,6 @@ namespace HiringClientTest
             clientUnderTest = new HiringClientProxy();
 			clientUnderTest.factory = Substitute.For<IHiringContract>();
 
-			
-			
-           
-		    
 			clientUnderTest.factory.LogIn("admin", "admin").Returns(true);
 			clientUnderTest.factory.LogIn("admin", "ad").Returns(false);
             clientUnderTest.factory.LogIn("ex", "ex").Returns((x) => { throw new Exception(); });
@@ -41,6 +37,8 @@ namespace HiringClientTest
             clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
             clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name != "Mika" && x.Name!="ex")).Returns(false);
             clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+
+            clientUnderTest.factory.When(x => x.UpdateUser(Arg.Is<User>(f => f.Name == "ex"))).Do(k => { throw new Exception(); });
 
             clientUnderTest.factory.RemoveUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
             clientUnderTest.factory.RemoveUser(Arg.Is<User>(x => x.Name != "Mika")).Returns(false);
@@ -85,9 +83,9 @@ namespace HiringClientTest
 		public void GetUserStoryFromProjectTest()
 		{
 			Project project = new Project() { Name = "NMMS" };
-			List<UserStory> expectedUserStories = new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2"  }};
-			List<UserStory> list = clientUnderTest.GetUserStoryFromProject(project);
-			Assert.AreEqual(expectedUserStories, list);
+			List<UserStory> actualUserStories = new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2"  }};
+			List<UserStory> expected = clientUnderTest.GetUserStoryFromProject(project);
+            Assert.AreEqual(expected[0].Name, actualUserStories[0].Name);
 		}
         [Test]
         public void GetUserStoryFromProjectTestException()
@@ -287,17 +285,17 @@ namespace HiringClientTest
 		[Test]
 		public void GetAllUsersTest()
 		{
-            List<User> expectedList = new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } };
-			List<User> list = clientUnderTest.GetAllUsers();
-			CollectionAssert.AreEqual(list, expectedList);
+            List<User> actual = new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } };
+			List<User> expected = clientUnderTest.GetAllUsers();
+			CollectionAssert.AreEqual(expected[0].Name, actual[0].Name);
 		}
 
 		[Test]
 		public void GetAllProjectsTest()
 		{
-            List<Project> expectedList = new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } };
-			List<Project> list = clientUnderTest.GetAllProjects();
-			CollectionAssert.AreEqual(list, expectedList);
+            List<Project> actual = new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } };
+			List<Project> expected = clientUnderTest.GetAllProjects();
+			CollectionAssert.AreEqual(expected[0].Name, actual[0].Name);
 		}
         /*
          * Nije jos implementirana metoda
@@ -314,9 +312,9 @@ namespace HiringClientTest
 		public void GetTesksFromUserStoryTest()
 		{
 			UserStory us = new UserStory() { Name = "us1" };
-            List<Common.Entities.Task> expectedList = new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } };
+            List<Common.Entities.Task> actualList = new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } };
 			var list = clientUnderTest.GetTasksFromUserStory(us);
-			CollectionAssert.AreEqual(list, expectedList);
+            Assert.AreEqual(list[0].Name, actualList[0].Name);
 		}
         [Test]
         public void GetTesksFromUserStoryTestException()
@@ -329,10 +327,10 @@ namespace HiringClientTest
 		[Test]
 		public void GetProjectFromUserStoryTest()
 		{
-			UserStory us = new UserStory() { Name = "us1" };
+			UserStory us = new UserStory() { Name = "us" };
 			Project expectedProject = new Project() { Name = "NMMS" };
 			Project project = clientUnderTest.GetProjectFromUserStory(us);
-			Assert.AreEqual(project, expectedProject);
+			Assert.AreEqual(project.Name, expectedProject.Name);
 		}
 
 		

@@ -30,12 +30,13 @@ namespace HiringClientTest.ViewModelTest
 			//clientViewModelUnderTest.proxy.
 
 		}
+        /*
 		[Test]
 		public void ConstructorTest()
 		{
 			Assert.DoesNotThrow(() => new MainWindowViewModel());
 		}
-
+        */
 		[Test]
 		public void LoginCommandTest()
 		{
@@ -178,12 +179,13 @@ namespace HiringClientTest.ViewModelTest
 
 		}
 		*/
+        /*
 		[Test]
 		public void ShowProfileTest()
 		{
 			clientViewModelUnderTest.ShowProfileCommand.Execute(new Object());
 		}
-
+        */
 
 	}
 }

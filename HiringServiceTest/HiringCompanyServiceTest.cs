@@ -53,8 +53,11 @@ namespace HiringServiceTest
             HiringCompanyDB.Instance.GetAllUsers().Returns(new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } });
             HiringCompanyDB.Instance.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } });
             HiringCompanyDB.Instance.LoginUsersOverview().Returns(new List<User>() { new User() { Name = "Seselj" }, new User() { Name = "Slobo" } });
-            HiringCompanyDB.Instance.GetTasksFromUserStory(new UserStory() { Name = "us1" }).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } });
-            HiringCompanyDB.Instance.GetProjectFromUserStory(new UserStory() { Name = "us1" }).Returns(new Project() { Name = "NMMS" });
+            
+            HiringCompanyDB.Instance.GetTasksFromUserStory(Arg.Is<UserStory>(x=>x.Name=="us1")).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } });
+
+            HiringCompanyDB.Instance.GetProjectFromUserStory(Arg.Is<UserStory>(x => x.Name == "us1")).Returns(new Project() { Name = "NMMS" });
+
             HiringCompanyDB.Instance.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" }, new Company() { Name = "dms" } });
             HiringCompanyDB.Instance.GetUserStoryFromProject(Arg.Is<Project>(x => x.Name == "NMMS")).Returns(new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2" } });
             HiringCompanyDB.Instance.UpdateUserStory(Arg.Is<UserStory>(x => x.Name == "us")).Returns(true);
@@ -105,10 +108,10 @@ namespace HiringServiceTest
 		[Test]
 		public void GetUserStoryFromProjectTest()
 		{
-			Project project=new Project() { Name = "NMMS" };
-            List<UserStory> expectedUserStories = new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2" } };
-			List<UserStory> list = serviceUnderTest.GetUserStoryFromProject(project);
-			CollectionAssert.AreEqual(expectedUserStories, list);
+            Project project = new Project() { Name = "NMMS" };
+            List<UserStory> actualUserStories = new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2" } };
+            List<UserStory> expected = serviceUnderTest.GetUserStoryFromProject(project);
+            Assert.AreEqual(expected[0].Name, actualUserStories[0].Name);
 		}
 		[Test]
 		public void GetAllCompaniesTest()
@@ -249,17 +252,17 @@ namespace HiringServiceTest
 		[Test]
 		public void GetAllUsersTest()
 		{
-            List<User> expectedList = new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } };
-			List<User> list = serviceUnderTest.GetAllUsers();
-			CollectionAssert.AreEqual(list,expectedList);
+            List<User> actual = new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } };
+			List<User> expected = serviceUnderTest.GetAllUsers();
+			CollectionAssert.AreEqual(expected[0].Name,actual[0].Name);
 		}
 
 		[Test]
 		public void GetAllProjectsTest()
 		{
-            List<Project> expectedList = new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } };
+            List<Project> actualList = new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } };
 			List<Project> list = serviceUnderTest.GetAllProjects();
-			
+            Assert.AreEqual(list[0].Name, actualList[0].Name);
 		}
 
         /*
@@ -277,18 +280,19 @@ namespace HiringServiceTest
 		public void GetTesksFromUserStoryTest()
 		{
 			UserStory us = new UserStory() { Name = "us1" };
-            List<Common.Entities.Task> expectedList = new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } };
+            List<Common.Entities.Task> actualList = new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } };
 			var list = serviceUnderTest.GetTasksFromUserStory(us);
-			Assert.AreEqual(list, expectedList);
+            Assert.AreEqual(list[0].Name, actualList[0].Name);
+
 		}
 
 		[Test]
 		public void GetProjectFromUserStoryTest()
 		{
 			UserStory us = new UserStory() { Name = "us1" };
-			Project expectedProject = new Project() { Name = "NMMS" };
-			Project project = serviceUnderTest.GetProjectFromUserStory(us);
-			Assert.AreEqual(project, expectedProject);
+			Project actualProject = new Project() { Name = "NMMS" };
+			Project expected = serviceUnderTest.GetProjectFromUserStory(us);
+			Assert.AreEqual(expected.Name, actualProject.Name);
 		}
 
 		
