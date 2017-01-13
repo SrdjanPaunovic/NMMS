@@ -551,6 +551,7 @@ namespace Client.ViewModel
 
             Company company = new Company(project.HiringCompany);
             project.IsAccepted = true;
+            project.IsProjectRequestSent = true;
             bool success = proxy.AnswerToProject(company, project);
             proxy.UpdateProject(OcProject);
             FetchAcceptedProjects();
@@ -572,6 +573,7 @@ namespace Client.ViewModel
 
             Company company = new Company(project.HiringCompany);
             project.IsAccepted = false;
+			    	project.IsProjectRequestSent = false;            
             bool success = proxy.AnswerToProject(company, project);
             proxy.RemoveProject(OcProject);
             FetchAcceptedProjects();
@@ -588,6 +590,7 @@ namespace Client.ViewModel
                 LogHelper.GetLogger().Warn("ShowProfile params NULL.");
             }
             LogHelper.GetLogger().Info("ShowProfile params ok.");
+
 
             ProfileDialog profileDialog = new ProfileDialog(user.Username);
             var res = profileDialog.ShowDialog();

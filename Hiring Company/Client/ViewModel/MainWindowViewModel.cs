@@ -46,7 +46,9 @@ namespace Client.ViewModel
 		private ObservableCollection<Project> projects = new ObservableCollection<Project>();
 		private ObservableCollection<User> allEmployees = new ObservableCollection<User>();
 		private ObservableCollection<Project> acceptedProjects = new ObservableCollection<Project>();
+		private ObservableCollection<Project> nonSentProjects = new ObservableCollection<Project>();
 
+		
 
 
 
@@ -116,6 +118,13 @@ namespace Client.ViewModel
 			get { return acceptedProjects; }
 			set { acceptedProjects = value; }
 		}
+
+		public ObservableCollection<Project> NonSentProjects
+		{
+			get { return nonSentProjects; }
+			set { nonSentProjects = value; }
+		}
+
 
 		public ICommand LoginCommand
 		{
@@ -424,6 +433,7 @@ namespace Client.ViewModel
 			List<Project> result = proxy.GetAllProjects();
 			Projects.Clear();
 			AcceptedProjects.Clear();
+			NonSentProjects.Clear();
 			if (result != null)
 			{
 				foreach (var proj in result)
@@ -432,6 +442,10 @@ namespace Client.ViewModel
 					if (proj.IsAccepted)
 					{
 						AcceptedProjects.Add(proj);
+					}
+					if (!proj.IsProjectRequestSent)
+					{
+						NonSentProjects.Add(proj);
 					}
 				}
 			}
@@ -550,6 +564,7 @@ namespace Client.ViewModel
 
 			bool success = proxy.SendProject(company, project);
 			FetchCompanies();
+			
 
 		}
 

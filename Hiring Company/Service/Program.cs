@@ -11,6 +11,8 @@ using Common.Entities;
 using Common;
 using System.ServiceModel.Description;
 using System.Threading;
+using System.Net;
+using System.Net.Sockets;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -101,7 +103,7 @@ namespace HiringCompanyService
 			myHiringCompany = new Company(companyName);
 
 
-			baseAddress = "net.tcp://localhost:8000/Service";
+			baseAddress = "net.tcp://"+GetLocalIPAddress()+":8000/Service";
 			hostForOutS = new ServiceHost(typeof(Service.Hiring2OutSCompanyService), new Uri(baseAddress));
 			hostForOutS.AddServiceEndpoint(typeof(IHiring2OutSourceContract), new NetTcpBinding(SecurityMode.None), "");
 			hostForOutS.Description.Behaviors.Remove(typeof(ServiceDebugBehavior));
@@ -190,6 +192,18 @@ namespace HiringCompanyService
 			checkPasswordThread.Abort();
 			LogHelper.GetLogger().Info("StartCheckingPasswordThread thread aborted.");
 
+		}
+		public static string GetLocalIPAddress()
+		{
+			var host = Dns.GetHostEntry(Dns.GetHostName());
+			foreach (var ip in host.AddressList)
+			{
+				if (ip.AddressFamily == AddressFamily.InterNetwork)
+				{
+					return ip.ToString();
+				}
+			}
+			throw new Exception("Local IP Address Not Found!");
 		}
 
 

@@ -105,10 +105,13 @@ namespace Service
             #endregion
 
             myOutSourceCompany = new Company(companyName);
+
+			Console.WriteLine("Enter Hiring Company IP adress");
+			string insertAdress = Console.ReadLine();
             Console.WriteLine("WCFService service is started.");
             Console.WriteLine("Press <enter> to stop service...");
 
-            baseAddress = "net.tcp://localhost:8000/Service";
+            baseAddress = "net.tcp://"+insertAdress+":8000/Service";
             factory = new DuplexChannelFactory<IHiring2OutSourceContract>(instanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(baseAddress));
             IHiring2OutSourceContract proxy = factory.CreateChannel();
 

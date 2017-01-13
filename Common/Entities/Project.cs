@@ -21,6 +21,7 @@ namespace Common.Entities
 			EndTime = DateTime.Now;
 			IsAproved = false;
 			IsAccepted = false;
+			IsProjectRequestSent = false;
 		}
 		public Project(Project proj)
 		{
@@ -33,6 +34,7 @@ namespace Common.Entities
 			this.IsAccepted = proj.IsAccepted;
 			this.DevelopCompany = proj.DevelopCompany;
 			this.HiringCompany = proj.HiringCompany;
+			this.IsProjectRequestSent = proj.IsProjectRequestSent;
 
 		}
 		public Project(OcProject proj)
@@ -46,6 +48,7 @@ namespace Common.Entities
 			this.IsAccepted = proj.IsAccepted;
 			this.DevelopCompany = proj.DevelopCompany;
 			this.HiringCompany = proj.HiringCompany;
+			this.IsProjectRequestSent = proj.IsProjectRequestSent;
 		}
 
 
@@ -83,6 +86,9 @@ namespace Common.Entities
 
 		[DataMember]
 		public string HiringCompany { get; set; }
+
+		[DataMember]
+		public bool IsProjectRequestSent { get; set; }
 
 		public void UpdateProperties(Project project)
 		{

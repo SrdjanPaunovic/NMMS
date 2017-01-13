@@ -291,6 +291,7 @@ namespace Service.Access
 						}
 					}
 					proj.IsAccepted = project.IsAccepted;
+					proj.IsProjectRequestSent = project.IsProjectRequestSent;
 					if (project.DevelopCompany != null)
 					{
 						var v = context.Companies.FirstOrDefault<Company>(x => x.Name == project.DevelopCompany.Name);

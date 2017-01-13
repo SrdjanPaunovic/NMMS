@@ -118,7 +118,8 @@ namespace HiringCompanyService
             {
                 // salje napravljen i odobren projekat
                 Service.Hiring2OutSCompanyService.companies[company.Name].SendProject(Program.myHiringCompany, project);
-                return true;
+				project.IsProjectRequestSent = true;
+				return HiringCompanyDB.Instance.UpdateProject(project);
             }
             catch (Exception)
             {
