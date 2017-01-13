@@ -504,6 +504,7 @@ namespace Client.ViewModel
             {
                 Company company = new Company(project.HiringCompany);
                 project.IsAccepted = true;
+				project.IsProjectRequestSent = true;
                 bool success = proxy.AnswerToProject(company, project);
                 proxy.UpdateProject(OcProject);
                 FetchAcceptedProjects();
@@ -529,6 +530,7 @@ namespace Client.ViewModel
             {
                 Company company = new Company(project.HiringCompany);
                 project.IsAccepted = false;
+				project.IsProjectRequestSent = false;
                 bool success = proxy.AnswerToProject(company, project);
                 proxy.RemoveProject(OcProject);
                 FetchAcceptedProjects();
