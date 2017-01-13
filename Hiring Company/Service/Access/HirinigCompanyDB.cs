@@ -318,7 +318,11 @@ namespace Service.Access
 						}
 					}
 					proj.IsAccepted = project.IsAccepted;
-					proj.DevelopCompany = project.DevelopCompany;
+					if (project.DevelopCompany != null)
+					{
+						var v = context.Companies.FirstOrDefault<Company>(x => x.Name == project.DevelopCompany.Name);
+						proj.DevelopCompany = v;
+					}
 					context.Entry(proj).State = System.Data.Entity.EntityState.Modified;
 					context.SaveChanges();
 					LogHelper.GetLogger().Info(" UpdateProject method succeeded. Returned true.");
@@ -335,7 +339,15 @@ namespace Service.Access
 		{
 			using (AccessDB context = new AccessDB())
 			{
-				List<Project> projects = context.Projects.ToList();
+				List<Project> projects = context.Projects.Include("DevelopCompany").ToList();
+
+				foreach (var proj in projects)
+				{
+					if (proj.DevelopCompany != null)
+					{
+						//todo reference in company
+					}
+				}
 
 				LogHelper.GetLogger().Info("GetAllProjects method succeeded. Returned list of projects.");
 

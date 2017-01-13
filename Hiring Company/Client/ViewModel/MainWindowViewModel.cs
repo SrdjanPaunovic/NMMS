@@ -15,13 +15,14 @@ using System.Windows.Media.Imaging;
 using Common.Entities;
 using ServiceContract;
 
+
 namespace Client.ViewModel
 {
 
 	public class MainWindowViewModel : INotifyPropertyChanged
 	{
 
-		public  IHiringContract proxy;
+		public IHiringContract proxy;
 
 		public MainWindowViewModel()
 		{
@@ -38,17 +39,20 @@ namespace Client.ViewModel
 		}
 		#region Fields
 
-		
+
 
 		private string loggedUsername = "";
 		private ObservableCollection<Company> partnerCompanies = new ObservableCollection<Company>();
 		private ObservableCollection<Company> nonPartnerCompanies = new ObservableCollection<Company>();
 		private ObservableCollection<Project> projects = new ObservableCollection<Project>();
 		private ObservableCollection<User> allEmployees = new ObservableCollection<User>();
+		private ObservableCollection<Project> acceptedProjects = new ObservableCollection<Project>();
 
 
 
-		private Common.Entities.WindowState currentState =Common.Entities.WindowState.LOGIN;
+
+
+		private Common.Entities.WindowState currentState = Common.Entities.WindowState.LOGIN;
 		private NetTcpBinding netTcpBinding = new NetTcpBinding();
 		//commands
 		private ICommand loginCommand;
@@ -67,7 +71,7 @@ namespace Client.ViewModel
 		private ICommand addUserCommand;
 		private ICommand sendProjectRequestCommand;
 
-		
+
 		#endregion Fields
 
 		#region Properties
@@ -106,6 +110,12 @@ namespace Client.ViewModel
 		{
 			get { return projects; }
 			set { projects = value; }
+		}
+
+		public ObservableCollection<Project> AcceptedProjects
+		{
+			get { return acceptedProjects; }
+			set { acceptedProjects = value; }
 		}
 
 		public ICommand LoginCommand
@@ -239,12 +249,12 @@ namespace Client.ViewModel
 		{
 			get
 			{
-				return sendProjectRequestCommand ?? (sendProjectRequestCommand = new RelayCommand(param=>this.SendProjectRequest(param)));
+				return sendProjectRequestCommand ?? (sendProjectRequestCommand = new RelayCommand(param => this.SendProjectRequest(param)));
 			}
 
 		}
 
-		
+
 
 		#endregion Properties
 
@@ -289,10 +299,10 @@ namespace Client.ViewModel
 			var res = profileDialog.ShowDialog();
 			if (res == true)
 			{
-                if (profileDialog.Tag != null)
-                {
-                    LoggedUsername = profileDialog.Tag.ToString();
-                }
+				if (profileDialog.Tag != null)
+				{
+					LoggedUsername = profileDialog.Tag.ToString();
+				}
 			}
 		}
 
@@ -414,11 +424,16 @@ namespace Client.ViewModel
 
 			List<Project> result = proxy.GetAllProjects();
 			Projects.Clear();
+			AcceptedProjects.Clear();
 			if (result != null)
 			{
 				foreach (var proj in result)
 				{
 					Projects.Add(proj);
+					if (proj.IsAccepted)
+					{
+						AcceptedProjects.Add(proj);
+					}
 				}
 			}
 
@@ -465,10 +480,10 @@ namespace Client.ViewModel
 			var res = profileDialog.ShowDialog();
 			if (res == true)
 			{
-                if (profileDialog.Tag != null)
-                {
-                    LoggedUsername = profileDialog.Tag.ToString();
-                }
+				if (profileDialog.Tag != null)
+				{
+					LoggedUsername = profileDialog.Tag.ToString();
+				}
 			}
 		}
 
@@ -527,7 +542,7 @@ namespace Client.ViewModel
 			object[] parameters = param as object[];
 			Company company = parameters[0] as Company;
 			Project project = parameters[1] as Project;
- 
+
 			if (company == null || project == null)
 			{
 				LogHelper.GetLogger().Warn("SendCompanyRequest Command parameter has Wrong type value.");
@@ -536,7 +551,7 @@ namespace Client.ViewModel
 
 			bool success = proxy.SendProject(company, project);
 			FetchCompanies();
-			
+
 		}
 
 		#endregion Methods
