@@ -394,21 +394,7 @@ namespace Service.Access
 			throw new NotImplementedException();
 		}
 
-		public bool ChangeCompanyState(Company company, State.CompanyState companyState)
-		{
-			using (AccessDB context = new AccessDB())
-			{
-				Company c = context.Companies.FirstOrDefault<Company>((x) => x.Name == company.Name);
-				if (c == null)
-				{
-					return false;
-				}
-				c.State = companyState;
-				context.Entry(c).State = System.Data.Entity.EntityState.Modified;
-				context.SaveChanges();
-			}
-			return true;
-		}
+		
 
 		public bool RemoveCompany(Company company)
 		{
@@ -498,5 +484,22 @@ namespace Service.Access
 			}
 
 		}
-	}
+
+
+        public bool ChangeCompanyState(Company company, State.CompanyState companyState)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                Company c = context.Companies.FirstOrDefault<Company>((x) => x.Name == company.Name);
+                if (c == null)
+                {
+                    return false;
+                }
+                c.State = companyState;
+                context.Entry(c).State = System.Data.Entity.EntityState.Modified;
+                context.SaveChanges();
+            }
+            return true;
+        }
+    }
 }

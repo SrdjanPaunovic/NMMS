@@ -31,6 +31,9 @@ namespace Client.ViewModel
         private ObservableCollection<Company> nonPartnerCompanies = new ObservableCollection<Company>();
         private ObservableCollection<Project> projects = new ObservableCollection<Project>();
         private ObservableCollection<Team> teams = new ObservableCollection<Team>();
+        private ObservableCollection<OcProject> acceptedProjects = new ObservableCollection<OcProject>();
+
+
 
         private WindowState currentState = WindowState.LOGIN;
         private NetTcpBinding netTcpBinding = new NetTcpBinding();
@@ -50,8 +53,8 @@ namespace Client.ViewModel
         private ICommand rejectCompanyRequestCommand;
         private ICommand displayTeamsCommand;
         private ICommand newTeamCommand;
-		private ICommand acceptProjectRequestCommand;
-		private ICommand rejectProjectRequestCommand;
+        private ICommand acceptProjectRequestCommand;
+        private ICommand rejectProjectRequestCommand;
 
         #endregion Fields
 
@@ -87,6 +90,12 @@ namespace Client.ViewModel
         {
             get { return teams; }
             set { teams = value; }
+        }
+
+        public ObservableCollection<OcProject> AcceptedProjects
+        {
+            get { return acceptedProjects; }
+            set { acceptedProjects = value; }
         }
 
         public ICommand LoginCommand
@@ -227,23 +236,23 @@ namespace Client.ViewModel
             }
         }
 
-		public ICommand AcceptProjectRequestCommand
-		{
-			get
-			{
-				return acceptProjectRequestCommand ?? (acceptCompanyRequest = new RelayCommand((param) => this.AcceptProjectRequest(param)));
-			}
+        public ICommand AcceptProjectRequestCommand
+        {
+            get
+            {
+                return acceptProjectRequestCommand ?? (acceptCompanyRequest = new RelayCommand((param) => this.AcceptProjectRequest(param)));
+            }
 
-		}
+        }
 
-		public ICommand RejectProjectRequestCommand
-		{
-			get
-			{
-				return rejectProjectRequestCommand ?? (rejectCompanyRequestCommand = new RelayCommand((param) => this.RejectProjectRequest(param)));
-			}
+        public ICommand RejectProjectRequestCommand
+        {
+            get
+            {
+                return rejectProjectRequestCommand ?? (rejectCompanyRequestCommand = new RelayCommand((param) => this.RejectProjectRequest(param)));
+            }
 
-		}
+        }
         #endregion Properties
 
         #region Methods
@@ -378,19 +387,48 @@ namespace Client.ViewModel
             {
                 List<OcProject> result = proxy.GetAllProjects();
                 Projects.Clear();
+                acceptedProjects.Clear();
                 if (result != null)
                 {
                     foreach (var proj in result)
                     {
-                        Projects.Add(proj);
+                        if (proj.IsAccepted)
+                        {
+                            acceptedProjects.Add(proj);
+                        }
+                        else
+                        {
+                            Projects.Add(proj);
+                        }
                     }
                 }
             }
+
+
 
             /*Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Approved" });
             Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Disapproved" });
             */
         }
+
+        void FetchAcceptedProjects()
+        {
+            FetchProjects();
+            using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
+            {
+                List<OcProject> result = proxy.GetAllProjects();
+                AcceptedProjects.Clear();
+                if (result != null)
+                {
+                    foreach (var proj in result)
+                    {
+                        if (proj.IsAccepted)
+                            AcceptedProjects.Add(proj);
+                    }
+                }
+            }
+        }
+
 
         void FetchTeams()
         {
@@ -451,49 +489,52 @@ namespace Client.ViewModel
             teamDialog.ShowDialog();
         }
 
-				private void AcceptProjectRequest(object param)
-		{
-			LogHelper.GetLogger().Info("AcceptProjectRequest called.");
+        private void AcceptProjectRequest(object param)
+        {
+            LogHelper.GetLogger().Info("AcceptProjectRequest called.");
 
-			if (param == null)
-			{
-				throw new Exception("[AcceptProjectRequestCommnad] Command parameters has NULL value");
-			}
-			//Company company = param as Company;
-			OcProject OcProject = param as OcProject;
-			Project project = new Project(OcProject);
-			
-			using (OutSClientProxy proxy = ((App)App.Current).Proxy)
-			{
-				Company company = new Company(project.HiringCompany);
-				project.IsAccepted = true;
-				bool success = proxy.AnswerToProject(company, project);
-			//	proxy.ModifyCompany(company);
-				FetchCompanies();
-			}
+            if (param == null)
+            {
+                throw new Exception("[AcceptProjectRequestCommnad] Command parameters has NULL value");
+            }
+            OcProject OcProject = param as OcProject;
+            Project project = new Project(OcProject);
+            OcProject.IsAccepted = true;
+            using (OutSClientProxy proxy = ((App)App.Current).Proxy)
+            {
+                Company company = new Company(project.HiringCompany);
+                project.IsAccepted = true;
+                bool success = proxy.AnswerToProject(company, project);
+                proxy.UpdateProject(OcProject);
+                FetchAcceptedProjects();
 
-		}
+            }
+
+        }
 
 
-		private void RejectProjectRequest(object param)
-		{
-			LogHelper.GetLogger().Info("RejectProjectRequest called.");
+        private void RejectProjectRequest(object param)
+        {
+            LogHelper.GetLogger().Info("RejectProjectRequest called.");
 
-			if (param == null)
-			{
-				throw new Exception("[RejectProjectRequestCommnad] Command parameters has NULL value");
-			}
-			//Company company = param as Company;
-			OcProject OcProject = param as OcProject;
-			Project project = new Project(OcProject);
-			using (OutSClientProxy proxy = ((App)App.Current).Proxy)
-			{
-				project.IsAccepted = false;
-				bool success = proxy.AnswerToProject(new Company(), project);
-				//	proxy.ModifyCompany(company);
-				FetchCompanies();
-			}
-		}
+            if (param == null)
+            {
+                throw new Exception("[RejectProjectRequestCommnad] Command parameters has NULL value");
+            }
+            //Company company = param as Company;
+            OcProject OcProject = param as OcProject;
+            Project project = new Project(OcProject);
+            OcProject.IsAccepted = false;
+            using (OutSClientProxy proxy = ((App)App.Current).Proxy)
+            {
+                Company company = new Company(project.HiringCompany);
+                project.IsAccepted = false;
+                bool success = proxy.AnswerToProject(company, project);
+                proxy.RemoveProject(OcProject);
+                FetchAcceptedProjects();
+
+            }
+        }
         #endregion Methods
 
         #region PropertyChangedNotifier

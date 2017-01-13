@@ -30,6 +30,7 @@ namespace Service.Access
         List<OcUser> GetAllUsersWithoutTeam();
 
         bool UpdateUser(OcUser user);
+        bool UpdateProject(OcProject project);
 
         List<OcProject> GetAllProjects();
         List<Team> GetAllTeams();
@@ -40,5 +41,7 @@ namespace Service.Access
         bool ChangeCompanyState(Company company, State.CompanyState state);
 
         bool RemoveCompany(Company company);
+
+        bool RemoveProject(OcProject project);
     }
 }

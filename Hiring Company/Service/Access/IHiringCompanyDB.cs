@@ -43,11 +43,15 @@ namespace Service.Access
         List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
         Project GetProjectFromUserStory(UserStory userStory);
 
+        bool ChangeCompanyState(Company company, State.CompanyState companyState);
+
         // double PasswordAge();
 
         // jos treba funkcija za provjeru koliko je user storija zavrseno od nekog projekta.
 
 
 
+
+      
     }
 }
