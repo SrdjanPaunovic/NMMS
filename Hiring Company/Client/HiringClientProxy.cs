@@ -39,8 +39,16 @@ namespace Client
         public HiringClientProxy(NetTcpBinding binding, string address)
             : base(binding, address)
         {
-            this.factory = this.CreateChannel();
-            LogHelper.GetLogger().Info("Hiring company client started comunication with service.");
+			try
+			{
+				this.factory = this.CreateChannel();
+				LogHelper.GetLogger().Info("Hiring company client started comunication with service.");
+			}
+			catch (Exception e)
+			{
+				LogHelper.GetLogger().Error("Hiring company client failed. ", e);
+			}
+           
         }
 
 		public HiringClientProxy() { }
@@ -93,9 +101,10 @@ namespace Client
             {
                 result = this.factory.AnswerToUserStory(company, project, userStory);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+				LogHelper.GetLogger().Error("AnswerToUserStory method failed. " + e.ToString());
+
             }
 
             return result;
@@ -521,13 +530,14 @@ namespace Client
 			{
 				result = this.factory.AddUser(user);
 				LogHelper.GetLogger().Info("UpdateUser method succeeded.");
+
 			}
 			catch (Exception e)
 			{
 				LogHelper.GetLogger().Error("UpdateUser method failed. ", e);
 			}
-
 			return result;
+
 		}
 	}
 }
