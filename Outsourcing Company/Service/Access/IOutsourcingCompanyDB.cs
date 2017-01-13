@@ -16,11 +16,12 @@ namespace Service.Access
         bool AddProject(OcProject project);
         bool AddUserStory(UserStory userStory);
         bool AddTask(Common.Entities.Task task);
+        bool RemoveUser(OcUser user);
+
         bool AddTeam(Team team);
         bool LogIn(string username, string password);
         bool LogOut(string username);
-        bool UserRegister(OcUser user);
-        List<OcUser> LoginUsersOverview();
+
         List<Company> GetAllCompanies();
         OcUser GetUser(string username);
         List<OcUser> GetAllUsers();
@@ -34,5 +35,10 @@ namespace Service.Access
         bool ChangeCompanyState(Company company, State.CompanyState state);
         bool RemoveCompany(Company company);
         bool RemoveProject(OcProject project);
+        List<UserStory> GetUserStoryFromProject(OcProject project);
+        List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
+        OcProject GetProjectFromUserStory(UserStory userStory);
+        bool UpdateUserStory(UserStory userStory);
+
     }
 }

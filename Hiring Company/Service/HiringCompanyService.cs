@@ -30,21 +30,6 @@ namespace HiringCompanyService
 
         }
 
-        public bool UserRegister(User user)
-        {
-            LogHelper.GetLogger().Info("Call UserRegister method.");
-
-            return HiringCompanyDB.Instance.UserRegister(user);
-
-        }
-
-        public List<User> LoginUsersOverview()
-        {
-            LogHelper.GetLogger().Info("Call LoginUsersOverview method.");
-
-            return HiringCompanyDB.Instance.LoginUsersOverview();
-        }
-
         public List<Company> GetAllCompanies()
         {
             LogHelper.GetLogger().Info("Call GetAllCompanies method.");
@@ -58,7 +43,6 @@ namespace HiringCompanyService
 
             return HiringCompanyDB.Instance.UpdateUser(user);
         }
-
 
         public User GetUser(string username)
         {
@@ -112,7 +96,6 @@ namespace HiringCompanyService
             return HiringCompanyDB.Instance.GetUserStoryFromProject(project);
         }
 
-
         public bool UpdateProject(Project project)
         {
             LogHelper.GetLogger().Info("Call UpdateProject method.");
@@ -127,8 +110,6 @@ namespace HiringCompanyService
             return HiringCompanyDB.Instance.UpdateUserStory(userStory);
         }
 
-
-
         public bool SendProject(Company company, Project project)
         {
             LogHelper.GetLogger().Info("Call SendProject method.");
@@ -137,7 +118,8 @@ namespace HiringCompanyService
             {
                 // salje napravljen i odobren projekat
                 Service.Hiring2OutSCompanyService.companies[company.Name].SendProject(Program.myHiringCompany, project);
-                return true;
+				project.IsProjectRequestSent = true;
+				return HiringCompanyDB.Instance.UpdateProject(project);
             }
             catch (Exception e)
             {
@@ -173,15 +155,13 @@ namespace HiringCompanyService
             return HiringCompanyDB.Instance.GetTasksFromUserStory(userStory);
         }
 
-
         public Project GetProjectFromUserStory(UserStory userStory)
         {
             LogHelper.GetLogger().Info("Call GetProjectFromUserStory method.");
 
             return HiringCompanyDB.Instance.GetProjectFromUserStory(userStory);
         }
-
-
+        
         public bool ModifyCompany(Company company)
         {
             LogHelper.GetLogger().Info("Call ModifyCompany method.");
@@ -189,14 +169,12 @@ namespace HiringCompanyService
             return HiringCompanyDB.Instance.ModifyCompanyToPartner(company);
         }
 
-
         public List<User> GetAllUsers()
         {
             LogHelper.GetLogger().Info("Call GetAllUsers method.");
 
             return HiringCompanyDB.Instance.GetAllUsers();
         }
-
 
         public bool RemoveUser(User user)
         {

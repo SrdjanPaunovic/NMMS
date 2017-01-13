@@ -7,6 +7,7 @@
         xmlns:userControls="clr-namespace:Common.UserControls;assembly=Common"
         xmlns:viewModel ="clr-namespace:Client.ViewModel"
         mc:Ignorable="d"
+        Closing="Window_Closing"
         Title="MainWindow" Height="350" Width="600">
     <Window.DataContext>
         <viewModel:MainWindowViewModel x:Name="viewModel" />
@@ -271,6 +272,88 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentState}" Value="EMPLOYEES">
+                            <Setter Property="Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Command="{Binding ElementName=viewModel,Path=AddUserCommand}">New user</Button>
+            </Grid>
+            <DataGrid Grid.Row="1" 
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      AutoGenerateColumns="False" 
+                      GridLinesVisibility ="Horizontal"
+                      HorizontalContentAlignment="Center"
+                      HorizontalGridLinesBrush="LightGray"
+                      Name="Employees_listView" ItemsSource="{Binding AllEmployees}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn  Header="" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center" Width="10" Height="10" >
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="LightGray"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsAuthenticated}" Value="True">
+                                                        <Setter Property="Fill" Value="#FF00FF51"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Username" Binding="{Binding Username}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Role" Binding="{Binding Role}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Mail address" Binding="{Binding MailAddress}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Team" Binding="{Binding Team}" IsReadOnly="True"/>
+                    <DataGridTemplateColumn Header="Actions">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid VerticalAlignment="Center" Name="grid" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <userControls:ImageButton Grid.Column="0" NormalImage="{Binding ElementName=viewModel,Path=EditIcon}"
+                                                                  Command="{Binding ElementName=viewModel,Path=EditUserProfileCommand}"
+                                                                  CommandParameter="{Binding ElementName=grid,Path=DataContext}"
+                                                                  Width="24" Height="24"/>
+                                    <userControls:ImageButton Grid.Column="1" NormalImage="{Binding ElementName=viewModel,Path=RemoveIcon}"
+                                                                  Command="{Binding ElementName=viewModel,Path=DeleteUserCommand}"
+                                                                  CommandParameter="{Binding ElementName=grid,Path=DataContext}"
+                                                                  Width="24" Height="24"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
 
     </Grid>

@@ -108,7 +108,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <ComboBox Grid.Column="0" x:Name="CB_Projects" 
-                                                  ItemsSource="{Binding ElementName=viewModel,Path=Projects}">
+                                                  ItemsSource="{Binding ElementName=viewModel,Path=NonSentProjects}">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <Grid>

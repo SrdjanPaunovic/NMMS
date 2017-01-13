@@ -84,8 +84,12 @@ namespace Service.Access
 				int i = db.SaveChanges();
 				if (i > 0)
 				{
+                    LogHelper.GetLogger().Info(" AddUserStory method succeeded. Returned true.");
+
 					return true;
 				}
+
+                LogHelper.GetLogger().Info("AddUserStory method returned false.");
 				return false;
 
 			}
@@ -138,54 +142,28 @@ namespace Service.Access
 			return false;
 		}
 
-		public bool UserRegister(User user)
-		{
-			using (AccessDB context = new AccessDB())
-			{
+        //public List<User> LoginUsersOverview()
+        //{
 
-				var result = from users in context.Users select users;
-				List<User> userList = result.ToList();
-				foreach (var registeredUser in userList)
-				{
-					if (registeredUser.Username.Equals(user.Username))
-					{
-						LogHelper.GetLogger().Info(" UserRegister method returned false.");
-						return false;
-					}
-				}
-				if (HiringCompanyDB.Instance.AddUser(user))
-				{
-					LogHelper.GetLogger().Info("Call UserRegister method succeeded. Returned true.");
-					return true;
-				}
+        //    using (AccessDB context = new AccessDB())
+        //    {
+        //        List<User> loginUsers = new List<User>();
+        //        var result = from users in context.Users select users;
+        //        List<User> userList = result.ToList();
 
-			}
-			LogHelper.GetLogger().Info(" UserRegister method returned false.");
-			return false;
-		}
+        //        foreach (var user in userList)
+        //        {
+        //            if (user.IsAuthenticated)
+        //            {
+        //                loginUsers.Add(user);
+        //            }
 
-		public List<User> LoginUsersOverview()
-		{
+        //        }
+        //        LogHelper.GetLogger().Info("LoginUsersOverview method succeeded. Returned list of users loged in.");
 
-			using (AccessDB context = new AccessDB())
-			{
-				List<User> loginUsers = new List<User>();
-				var result = from users in context.Users select users;
-				List<User> userList = result.ToList();
-
-				foreach (var user in userList)
-				{
-					if (user.IsAuthenticated)
-					{
-						loginUsers.Add(user);
-					}
-
-				}
-				LogHelper.GetLogger().Info("LoginUsersOverview method succeeded. Returned list of users loged in.");
-
-				return loginUsers;
-			}
-		}
+        //        return loginUsers;
+        //    }
+        //}
 
 		public List<Company> GetAllCompanies()
 		{
@@ -197,11 +175,6 @@ namespace Service.Access
 
 				return companies;
 			}
-		}
-
-		public bool RequestPartnership(int id)
-		{
-			throw new NotImplementedException();
 		}
 
 		public bool UpdateUser(User user)
@@ -318,6 +291,7 @@ namespace Service.Access
 						}
 					}
 					proj.IsAccepted = project.IsAccepted;
+					proj.IsProjectRequestSent = project.IsProjectRequestSent;
 					if (project.DevelopCompany != null)
 					{
 						var v = context.Companies.FirstOrDefault<Company>(x => x.Name == project.DevelopCompany.Name);
@@ -400,13 +374,6 @@ namespace Service.Access
 				return false;
 			}
 		}
-
-		public bool UpdateTask(Common.Entities.Task task)
-		{
-			throw new NotImplementedException();
-		}
-
-		
 
 		public bool RemoveCompany(Company company)
 		{
@@ -513,5 +480,6 @@ namespace Service.Access
             }
             return true;
         }
+
     }
 }

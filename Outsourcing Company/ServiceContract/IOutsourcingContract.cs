@@ -9,30 +9,34 @@ using Common.Entities;
 namespace ServiceContract
 {
 	[ServiceContract]
-	public interface IOutsourcingCompanyService
+	public interface IOutsourcingContract
 	{
         [OperationContract ]
         bool AddUser(OcUser user);
+
         [OperationContract]
         bool AddCompany(Company company);
+
         [OperationContract]
         bool AddProject(OcProject project);
+
+        //[OperationContract]
+        //bool AddUserStory(UserStory userStory);
+
+        //[OperationContract]
+        //bool AddTask(Common.Entities.Task task);
+
         [OperationContract]
-        bool AddUserStory(UserStory userStory);
-        [OperationContract]
-        bool AddTask(Common.Entities.Task task);
+        bool RemoveUser(OcUser user);
 
         [OperationContract]
         bool AddTeam(Team team);
-        [OperationContract]
-        bool LogIn(string username, string password);
-        [OperationContract]
-        bool LogOut(string username);
 
         [OperationContract]
-        bool UserRegister(OcUser user);
+        bool LogIn(string username, string password);
+
         [OperationContract]
-        List<OcUser> LoginUsersOverview();
+        bool LogOut(string username);
 
         [OperationContract]
         bool AnswerToRequest(Company company);
@@ -64,7 +68,6 @@ namespace ServiceContract
         [OperationContract]
         bool RemoveCompany(Company company);
 
-
 		[OperationContract]
 		bool SendUserStory(Company company, UserStory userStrory, Project project);
 		
@@ -79,5 +82,17 @@ namespace ServiceContract
 
         [OperationContract]
         bool RemoveProject(OcProject project);
+
+        [OperationContract]
+        List<UserStory> GetUserStoryFromProject(OcProject project);
+
+        [OperationContract]
+        List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
+
+        [OperationContract]
+        OcProject GetProjectFromUserStory(UserStory userStory);
+
+        [OperationContract]
+        bool UpdateUserStory(UserStory UserStory);
 	}
 }
