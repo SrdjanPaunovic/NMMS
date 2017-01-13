@@ -14,6 +14,7 @@ namespace Common.Entities
     {
         [DataMember]
         public Team Team { get; set; }
+
         public OcUser()
         {
 

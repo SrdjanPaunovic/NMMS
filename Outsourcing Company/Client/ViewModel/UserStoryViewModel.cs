@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.Entities;
+using ServiceContract;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,17 +10,15 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Common;
-using System.Windows.Media.Imaging;
-using ServiceContract;
 
 namespace Client.ViewModel
 {
-    public class UserStoryViewModel
+    class UserStoryViewModel
     {
-
         private UserStory userStory;
-        private IHiringContract proxy = ((App)App.Current).Proxy;
+        private IOutsourcingContract proxy = ((App)App.Current).Proxy;
+
+
 
         public UserStoryViewModel(UserStory userStory)
         {
@@ -99,6 +98,11 @@ namespace Client.ViewModel
             bool success = false;
             if (UserStory.Id != 0)
             {
+                //copy of project because OcProject cant pass in typecased Project
+               /* Project copyProj = new Project();
+                copyProj.UpdateProperties(UserStory.Project);
+                copyProj.Id = UserStory.Project.Id;*/
+                UserStory.Project = null;
                 success = proxy.UpdateUserStory(UserStory);
             }
 

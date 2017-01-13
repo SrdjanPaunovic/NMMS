@@ -29,7 +29,7 @@ namespace Service
 
             string address = "net.tcp://localhost:5000/IOutSourceContract";
             ServiceHost host = new ServiceHost(typeof(OutsourcingCompanyService));
-            host.AddServiceEndpoint(typeof(IOutsourcingCompanyService), binding, address);
+            host.AddServiceEndpoint(typeof(IOutsourcingContract), binding, address);
 
             host.Description.Behaviors.Remove(typeof(ServiceDebugBehavior));
             host.Description.Behaviors.Add(new ServiceDebugBehavior() { IncludeExceptionDetailInFaults = true });
