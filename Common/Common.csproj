@@ -114,6 +114,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncObservableCollection.cs" />
     <Compile Include="Converters\MultiParamConverter.cs" />
     <Compile Include="Converters\ProjectNameConverter.cs" />
     <Compile Include="Entities\Company.cs" />
