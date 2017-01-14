@@ -13,7 +13,7 @@ namespace Service.Access
 	public class HiringCompanyDB : IHiringCompanyDB
 	{
 
-		public static IHiringCompanyDB hirinigCompanyDB;  
+		public static IHiringCompanyDB hirinigCompanyDB;
 
 		public static IHiringCompanyDB Instance
 		{
@@ -406,7 +406,7 @@ namespace Service.Access
 			throw new NotImplementedException();
 		}
 
-		
+
 
 		public bool RemoveCompany(Company company)
 		{
@@ -498,20 +498,31 @@ namespace Service.Access
 		}
 
 
-        public bool ChangeCompanyState(Company company, State.CompanyState companyState)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                Company c = context.Companies.FirstOrDefault<Company>((x) => x.Name == company.Name);
-                if (c == null)
-                {
-                    return false;
-                }
-                c.State = companyState;
-                context.Entry(c).State = System.Data.Entity.EntityState.Modified;
-                context.SaveChanges();
-            }
-            return true;
-        }
-    }
+		public bool ChangeCompanyState(Company company, State.CompanyState companyState)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				Company c = context.Companies.FirstOrDefault<Company>((x) => x.Name == company.Name);
+				if (c == null)
+				{
+					return false;
+				}
+				c.State = companyState;
+				context.Entry(c).State = System.Data.Entity.EntityState.Modified;
+				context.SaveChanges();
+			}
+			return true;
+		}
+
+		public bool RemoveAllCompanies()
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				foreach (var company in context.Companies)
+					context.Companies.Remove(company);
+				context.SaveChanges();
+			}
+			return true;
+		}
+	}
 }

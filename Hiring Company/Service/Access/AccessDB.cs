@@ -10,16 +10,17 @@ using Common;
 
 namespace Service.Access
 {
-	public class AccessDB:DbContext
+	public class AccessDB : DbContext
 	{
-		public AccessDB() : base("HiringDB") {
+		public AccessDB() : base("HiringDB")
+		{
 			LogHelper.GetLogger().Info("AccessDB initialized");
 		}
 		public DbSet<User> Users { get; set; }
-        public DbSet<Company> Companies { get; set; }
-        public DbSet<UserStory> UserStories { get; set; }
-        public DbSet<Project> Projects { get; set; }
-        public DbSet<Common.Entities.Task> Tasks { get; set; }
+		public DbSet<Company> Companies { get; set; }
+		public DbSet<UserStory> UserStories { get; set; }
+		public DbSet<Project> Projects { get; set; }
+		public DbSet<Common.Entities.Task> Tasks { get; set; }
 
 
 	}

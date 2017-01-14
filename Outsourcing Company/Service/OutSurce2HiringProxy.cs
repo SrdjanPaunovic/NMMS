@@ -19,7 +19,6 @@ namespace Service
             return OutsourcingCompanyDB.Instance.AddCompany(company);
         }
 
-
 		public bool SendProject(Company company, Project project)
 		{
 			OcProject proj = new OcProject(project);
