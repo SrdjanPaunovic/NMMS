@@ -17,7 +17,6 @@ namespace HiringCompanyService
 
         public bool LogIn(string username, string password)
         {
-
             LogHelper.GetLogger().Info("Call Login method.");
             return HiringCompanyDB.Instance.LogIn(username, password);
         }

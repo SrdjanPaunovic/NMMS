@@ -29,6 +29,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
@@ -36,6 +54,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,13 +66,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StepDefinitions\LoginSteps.cs" />
     <Compile Include="Features\Login.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Login.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StepDefinitions\LoginSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Features\Login.feature">
@@ -67,10 +86,17 @@
       <Project>{e330ffd1-f001-4d0d-8b8a-182caf5bdddf}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Hiring Company\Client\HiringClient.csproj">
+      <Project>{3e84e861-6ca7-4da8-ad27-6bac51782fbd}</Project>
+      <Name>HiringClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Hiring Company\Service\HiringService.csproj">
       <Project>{de353fa5-6d5c-4482-b26a-35d6fc5e423b}</Project>
       <Name>HiringService</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
