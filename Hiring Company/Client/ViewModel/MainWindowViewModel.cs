@@ -267,7 +267,7 @@ namespace Client.ViewModel
 		#endregion Properties
 
 		#region Methods
-		private void LoginClick(object param)
+		public void LoginClick(object param)
 		{
 			LogHelper.GetLogger().Info("LoginClick occurred.");
 
@@ -314,7 +314,7 @@ namespace Client.ViewModel
 			}
 		}
 
-		private void ShowEmployees()
+		public void ShowEmployees()
 		{
 			LogHelper.GetLogger().Info("ShowEmployees called.");
 			try
@@ -355,7 +355,7 @@ namespace Client.ViewModel
 			CurrentState = Common.Entities.WindowState.PROJECTS;
 		}
 
-		private void LogOut(object param)
+		public void LogOut(object param)
 		{
 			LogHelper.GetLogger().Info("LogOut called.");
 
@@ -390,7 +390,7 @@ namespace Client.ViewModel
 			projectDialog.ShowDialog();
 		}
 
-		void FetchCompanies()
+	    public void FetchCompanies()
 		{
 
 			LogHelper.GetLogger().Info("FetchCompanies called.");
@@ -426,7 +426,7 @@ namespace Client.ViewModel
 
 		}
 
-		void FetchProjects()
+		public void FetchProjects()
 		{
 			LogHelper.GetLogger().Info("FetchProjects called.");
 
