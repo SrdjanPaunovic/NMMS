@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -37,6 +38,39 @@ namespace Client.ViewModel
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
             proxy = ((App)App.Current).Proxy;
+            Thread updateThread = new Thread(() => UpdateData(this));
+            updateThread.Start();
+        }
+
+        private void UpdateData(MainWindowViewModel viewModel)
+        {
+            if (viewModel != null)
+            {
+                while (true)
+                {
+                    switch (viewModel.CurrentState)
+                    {
+                        case WindowState.LOGIN:
+                            break;
+                        case WindowState.EMPLOYEES:
+                            viewModel.ShowEmployeesCommand.Execute(null);
+                            break;
+                        case WindowState.COMPANIES:
+                            viewModel.DisplayCompaniesCommand.Execute(null);
+                            break;
+                        case WindowState.PROJECTS:
+                            viewModel.DisplayProjectsCommand.Execute(null);
+                            break;
+                        case WindowState.TEAMS:
+                            viewModel.DisplayTeamsCommand.Execute(null);
+                            break;
+                        default:
+                            break;
+                    }
+                    Thread.Sleep(3800);
+                }
+            }
+
         }
         public MainWindowViewModel(string test)
         {
@@ -45,12 +79,12 @@ namespace Client.ViewModel
 
         #region Fields
         private string loggedUsername = "";
-        private ObservableCollection<Company> partnerCompanies = new ObservableCollection<Company>();
-        private ObservableCollection<Company> nonPartnerCompanies = new ObservableCollection<Company>();
-        private ObservableCollection<Project> projects = new ObservableCollection<Project>();
-        private ObservableCollection<Team> teams = new ObservableCollection<Team>();
-        private ObservableCollection<OcProject> acceptedProjects = new ObservableCollection<OcProject>();
-        private ObservableCollection<OcUser> allEmployees = new ObservableCollection<OcUser>();
+        private ObservableCollection<Company> partnerCompanies = new AsyncObservableCollection<Company>();
+        private ObservableCollection<Company> nonPartnerCompanies = new AsyncObservableCollection<Company>();
+        private ObservableCollection<Project> projects = new AsyncObservableCollection<Project>();
+        private ObservableCollection<Team> teams = new AsyncObservableCollection<Team>();
+        private ObservableCollection<OcProject> acceptedProjects = new AsyncObservableCollection<OcProject>();
+        private ObservableCollection<OcUser> allEmployees = new AsyncObservableCollection<OcUser>();
 
 
 
@@ -573,7 +607,7 @@ namespace Client.ViewModel
 
             Company company = new Company(project.HiringCompany);
             project.IsAccepted = false;
-			    	project.IsProjectRequestSent = false;            
+            project.IsProjectRequestSent = false;
             bool success = proxy.AnswerToProject(company, project);
             proxy.RemoveProject(OcProject);
             FetchAcceptedProjects();
