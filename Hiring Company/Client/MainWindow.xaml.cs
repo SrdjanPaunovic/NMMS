@@ -45,7 +45,7 @@ namespace Client
 			LogHelper.GetLogger().Debug("Main window initialized.");
 		}
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        public void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             var viewModel = DataContext as MainWindowViewModel;
             if (viewModel != null)

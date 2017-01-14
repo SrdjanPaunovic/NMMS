@@ -20,6 +20,8 @@ using System.Windows.Data;
 namespace Client.ViewModel
 {
 
+
+
     public class MainWindowViewModel : INotifyPropertyChanged
     {
 
@@ -616,4 +618,5 @@ namespace Client.ViewModel
         #endregion
 
     }
+
 }
