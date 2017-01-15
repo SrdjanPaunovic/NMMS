@@ -24,8 +24,6 @@ namespace Client.ViewModel
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-		private static object _syncLock = new object();
-
 		public IHiringContract proxy = ((App)App.Current).Proxy;
         public MainWindowViewModel()
         {
@@ -34,30 +32,26 @@ namespace Client.ViewModel
             path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
-			BindingOperations.EnableCollectionSynchronization(allEmployees, _syncLock);
 
 		}
 
 		public void UpdateData()
         {
-			lock (_syncLock)
+			switch (CurrentState)
 			{
-				switch (CurrentState)
-				{
-					case Common.Entities.WindowState.LOGIN:
-						break;
-					case Common.Entities.WindowState.EMPLOYEES:
-						ShowEmployeesCommand.Execute(null);
-						break;
-					case Common.Entities.WindowState.COMPANIES:
-						DisplayCompaniesCommand.Execute(null);
-						break;
-					case Common.Entities.WindowState.PROJECTS:
-						DisplayProjectsCommand.Execute(null);
-						break;
-					default:
-						break;
-				}
+				case Common.Entities.WindowState.LOGIN:
+					break;
+				case Common.Entities.WindowState.EMPLOYEES:
+					ShowEmployeesCommand.Execute(null);
+					break;
+				case Common.Entities.WindowState.COMPANIES:
+					DisplayCompaniesCommand.Execute(null);
+					break;
+				case Common.Entities.WindowState.PROJECTS:
+					DisplayProjectsCommand.Execute(null);
+					break;
+				default:
+					break;
 			}
         }
         public MainWindowViewModel(string test)

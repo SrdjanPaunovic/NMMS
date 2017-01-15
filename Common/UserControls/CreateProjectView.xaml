@@ -67,13 +67,13 @@
                         <Grid Grid.Column="1" Margin="2">
                             <Grid.Style>
                                 <Style TargetType="Grid">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                    <Setter Property="Visibility" Value="Visible"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding LoggedUser.Role}" Value="PO">
                                             <Setter Property="IsEnabled" Value="True"></Setter>
                                         </DataTrigger>
-                                        <DataTrigger Value="True">
+                                        <!--<DataTrigger Value="True">
                                             <DataTrigger.Binding>
                                                 <MultiBinding Converter="{StaticResource multiComparatorConverter}">
                                                     <Binding Path="Project.ProductOwner.Id"/>
@@ -81,7 +81,7 @@
                                                 </MultiBinding>
                                             </DataTrigger.Binding>
                                             <Setter Property="Visibility" Value="Visible"></Setter>
-                                        </DataTrigger>
+                                        </DataTrigger>-->
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>

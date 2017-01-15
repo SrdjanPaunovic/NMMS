@@ -23,10 +23,16 @@ namespace Client.ViewModel
         public UserStoryViewModel(UserStory userStory)
         {
             this.UserStory = userStory;
+			OcProject ocProj = proxy.GetProjectFromUserStory(UserStory);
+			Project proj = new Project(ocProj);
+			proj.Id = ocProj.Id;
+			UserStory.Project = proj;
 
             List<Common.Entities.Task> tasks = proxy.GetTasksFromUserStory(UserStory);
-            UserStory.Tasks = new ObservableCollection<Common.Entities.Task>(tasks);
-            UserStory.Project = proxy.GetProjectFromUserStory(UserStory);
+			if (tasks != null)
+			{
+				UserStory.Tasks = new AsyncObservableCollection<Common.Entities.Task>(tasks);
+			}
         }
 
         #region Commands
