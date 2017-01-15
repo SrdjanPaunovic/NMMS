@@ -50,20 +50,20 @@ namespace HiringServiceTest
 
 
 		}
-
+        /*
 		[Test]
 		public void IntroduceTestOk()
 		{
 			Company company = new Company() { Name = "dms" };
 			bool result = serviceUnderTest.Introduce(company);
 			Assert.IsTrue(result);
-		}
+		}*/
+
 		[Test]
 		public void IntroduceTestFault()
 		{
 			Company company = new Company() { Name = "eps" };
-			bool result = serviceUnderTest.Introduce(company);
-			Assert.IsFalse(result);
+			Assert.Throws<NullReferenceException>(()=>serviceUnderTest.Introduce(company));
 		}
 
 		[Test]

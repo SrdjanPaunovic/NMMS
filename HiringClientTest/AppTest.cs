@@ -33,16 +33,6 @@ namespace HiringClientTest
            Assert.Throws<InvalidOperationException>(() => new App());
        }
 
-       [Test]
-       public void ProxyPropertyTest()
-       {
-           HiringClientProxy proxy = new HiringClientProxy();
-           appUnderTest.Proxy = proxy;
-           Assert.AreEqual(proxy, appUnderTest.Proxy);
-
-       }
-
-     
 
     }
 }

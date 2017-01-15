@@ -1,4 +1,5 @@
 ﻿using Common.Entities;
+using ServiceContract;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,53 +18,46 @@ namespace Client
 	public partial class App : Application
 	{
         public readonly string HostAddress = "net.tcp://localhost:4000/IHiringContract";
-        private HiringClientProxy proxy;
-		private User loggedUser;
         public CompanyType CompanyType = CompanyType.HIRING;
+        public static IHiringContract Proxy;
+        private User loggedUser;
 
 
-		public App()
+        public User LoggedUser
         {
-            proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
+            get { return loggedUser; }
+            set { loggedUser = value; }
+        }
+        public  App()
+        {
+            Proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
 
 			log4net.Config.XmlConfigurator.Configure();
 			Exit += App_Exit;
         }
 		public void App_Exit(object sender, ExitEventArgs e)
 		{
-			proxy.Close();
+           
+              //Proxy.Close();
+            
 		}
 
         public App(string test) { }
 
-		public HiringClientProxy Proxy
+       /* public static IHiringContract Proxy
         {
             get
             {
-				if (proxy.State != CommunicationState.Opened)
-				{
-					proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
-				}
-				return proxy;
+                //if (proxy.State != CommunicationState.Opened)
+                //{
+                //    proxy= new HiringClientProxy(new NetTcpBinding(), HostAddress);
+                //}
+                return proxy;
             }
             set
             {
                 proxy = value;
             }
-        }
-
-		public User LoggedUser
-		{
-			get
-			{
-				return loggedUser;
-			}
-
-			set
-			{
-				loggedUser = value;
-			}
-		}
-
-	}
+        }*/
+    }
 }

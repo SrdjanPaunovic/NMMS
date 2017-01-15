@@ -54,6 +54,26 @@ namespace Service.Access
             }
         }
 
+        public OcUser GetScrumMaster()
+        {
+
+            using (AccessDB context = new AccessDB())
+            {
+
+                OcUser scrumMaster = context.Users.FirstOrDefault((x) => x.Role == Role.SM);
+                if (scrumMaster != null)
+                {
+                    LogHelper.GetLogger().Info("GetScrumMaster method succeeded.");
+
+                    return scrumMaster;
+                }
+            }
+            LogHelper.GetLogger().Info(" GetUser returned null.");
+
+            return null;
+        }
+
+
         public bool AddProject(OcProject project)
         {
             using (var context = new AccessDB())

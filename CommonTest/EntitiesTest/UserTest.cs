@@ -28,6 +28,13 @@ namespace CommonTest.EntitiesTest
 			Assert.DoesNotThrow(() => new User());
 		}
 
+        [Test]
+        public void ConstructorParamTest()
+        {
+            Assert.DoesNotThrow(() => new User("us","pas",Role.CEO));
+        }
+
+
 	
 
 		[Test]
@@ -109,6 +116,37 @@ namespace CommonTest.EntitiesTest
 			Assert.AreEqual(password, userUnderTest.Password);
 
 		}
+
+        [Test]
+        public void StartTimePropertyTest()
+        {
+            DateTime startTime = DateTime.Now;
+            userUnderTest.StartTime = startTime;
+            Assert.AreEqual(startTime, userUnderTest.StartTime);
+        }
+
+        [Test]
+        public void EndTimePropertyTest()
+        {
+            DateTime endTime = DateTime.Now;
+            userUnderTest.EndTime = endTime;
+            Assert.AreEqual(endTime, userUnderTest.EndTime);
+        }
+
+        public void MailProperyTest()
+        {
+            string mail = "mail@mail.com";
+            userUnderTest.MailAddress = mail;
+            Assert.AreEqual(mail, userUnderTest.MailAddress);
+
+        }
+
+        [Test]
+        public void UpdateProperiesTest()
+        {
+            User us = new User();
+            Assert.DoesNotThrow(() => userUnderTest.UpdateProperties(us));
+        }
 
 	}
 }

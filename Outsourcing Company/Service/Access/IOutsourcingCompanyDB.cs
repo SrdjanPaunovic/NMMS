@@ -40,6 +40,8 @@ namespace Service.Access
         List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
         OcProject GetProjectFromUserStory(UserStory userStory);
         bool UpdateUserStory(UserStory userStory);
-        List<UserStory> GetAllUserStory();
+        List<UserStory> GetAllUserStory();      
+
+         OcUser GetScrumMaster();
     }
 }
