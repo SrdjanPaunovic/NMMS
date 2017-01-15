@@ -91,5 +91,37 @@ namespace CommonTest.EntitiesTest
 			Assert.AreEqual(accept, userStoryUnderTest.IsUserStoryAccepted);
 		}
 
+        [Test]
+        public void IsUserStorySentPropertyTest()
+        {
+            bool accept = true;
+            userStoryUnderTest.IsUserStorySent = accept;
+            Assert.AreEqual(accept, userStoryUnderTest.IsUserStorySent);
+        }
+
+        [Test]
+        public void ProjectNamePropertyTest()
+        {
+            string accept = "US1";
+            userStoryUnderTest.ProjectName = accept;
+            Assert.AreEqual(accept, userStoryUnderTest.ProjectName);
+        }
+
+        [Test]
+        public void DevCompanyPropertyTest()
+        {
+            string accept = "DC";
+            userStoryUnderTest.DevComp = accept;
+            Assert.AreEqual(accept, userStoryUnderTest.DevComp);
+        }
+
+
+        [Test]
+        public void UpdateProperiesTest()
+        {
+            UserStory us = new UserStory();
+            Assert.DoesNotThrow(()=> userStoryUnderTest.UpdateProperties(us));
+        }
+
     }
 }
