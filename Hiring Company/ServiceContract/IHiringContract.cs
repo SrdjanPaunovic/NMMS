@@ -27,19 +27,19 @@ namespace ServiceContract
 		bool UpdateUser(User user);
 
 		[OperationContract]
-        bool RemoveUser(User user);
+		bool RemoveUser(User user);
 
 		[OperationContract]
 		bool AddProject(Project project);
 
-        [OperationContract]
-        bool UpdateProject(Project project);
+		[OperationContract]
+		bool UpdateProject(Project project);
 
-        [OperationContract]
-        List<User> GetAllUsers();
+		[OperationContract]
+		List<User> GetAllUsers();
 
-        [OperationContract]
-        List<Project> GetAllProjects();
+		[OperationContract]
+		List<Project> GetAllProjects();
 
 		[OperationContract]
 		bool SendRequest(Company company);
@@ -54,10 +54,10 @@ namespace ServiceContract
 		Project GetProjectFromUserStory(UserStory userStory);
 
 		[OperationContract]
-        bool UpdateUserStory(UserStory UserStory);
+		bool UpdateUserStory(UserStory UserStory);
 
-        [OperationContract]
-        List<Company> GetAllCompanies();
+		[OperationContract]
+		List<Company> GetAllCompanies();
 
 		[OperationContract]
 		bool SendProject(Company company, Project project);
@@ -73,5 +73,9 @@ namespace ServiceContract
 
         [OperationContract]
         List<UserStory> GetAllUserStories();
+
+
+		[OperationContract]
+		bool RemoveAllCompanies();
 	}
 }

@@ -73,20 +73,21 @@ namespace HiringCompanyService
 			
                 //  HirinigCompanyDB.Instance.AddCompany(company);
 			*/
-			#endregion
-			User user = new User("admin", "admin", Role.CEO);
-			user.Name = "savo";
-			user.Surname = "oroz";
-            HiringCompanyDB.Instance.AddUser(user);
+			//User user = new User("admin", "admin", Role.CEO);
+			//user.Name = "savo";
+			//user.Surname = "oroz";
+			//HiringCompanyDB.Instance.AddUser(user);
 
-			Company c1 = new Company("C1");
-			Company c2 = new Company();
-			Company c3 = new Company();
-			c2.Name = "C2";
-			c2.State = State.CompanyState.Requested;
-			c3.Name = "C3";
-			c3.State = State.CompanyState.Partner;
-		    //HiringCompanyDB.Instance.AddCompany(c1);
+			//Company c1 = new Company("C1");
+			//Company c2 = new Company();
+			//Company c3 = new Company();
+			//c2.Name = "C2";
+			//c2.State = State.CompanyState.Requested;
+			//c3.Name = "C3";
+			//c3.State = State.CompanyState.Partner;
+
+			#endregion
+			//HiringCompanyDB.Instance.AddCompany(c1);
 			//HiringCompanyDB.Instance.AddCompany(c2);
 			//HiringCompanyDB.Instance.AddCompany(c3);
 

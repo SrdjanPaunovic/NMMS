@@ -520,4 +520,17 @@ namespace Service.Access
             }
         }
     }
+
+		
+		public bool RemoveAllCompanies()
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				foreach (var company in context.Companies)
+					context.Companies.Remove(company);
+				context.SaveChanges();
+			}
+			return true;
+		}
+	}
 }
