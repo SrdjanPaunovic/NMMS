@@ -38,39 +38,29 @@ namespace Client.ViewModel
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
             proxy = ((App)App.Current).Proxy;
-            Thread updateThread = new Thread(() => UpdateData(this));
-            updateThread.Start();
         }
 
-        private void UpdateData(MainWindowViewModel viewModel)
+        public void UpdateData()
         {
-            if (viewModel != null)
+			switch (CurrentState)
             {
-                while (true)
-                {
-                    switch (viewModel.CurrentState)
-                    {
-                        case WindowState.LOGIN:
-                            break;
-                        case WindowState.EMPLOYEES:
-                            viewModel.ShowEmployeesCommand.Execute(null);
-                            break;
-                        case WindowState.COMPANIES:
-                            viewModel.DisplayCompaniesCommand.Execute(null);
-                            break;
-                        case WindowState.PROJECTS:
-                            viewModel.DisplayProjectsCommand.Execute(null);
-                            break;
-                        case WindowState.TEAMS:
-                            viewModel.DisplayTeamsCommand.Execute(null);
-                            break;
-                        default:
-                            break;
-                    }
-                    Thread.Sleep(3800);
-                }
+                case WindowState.LOGIN:
+                    break;
+                case WindowState.EMPLOYEES:
+                    ShowEmployeesCommand.Execute(null);
+                    break;
+                case WindowState.COMPANIES:
+                    DisplayCompaniesCommand.Execute(null);
+                    break;
+                case WindowState.PROJECTS:
+                    DisplayProjectsCommand.Execute(null);
+                    break;
+                case WindowState.TEAMS:
+                    DisplayTeamsCommand.Execute(null);
+                    break;
+                default:
+                    break;
             }
-
         }
         public MainWindowViewModel(string test)
         {
@@ -78,7 +68,6 @@ namespace Client.ViewModel
         }
 
         #region Fields
-        private string loggedUsername = "";
         private ObservableCollection<Company> partnerCompanies = new AsyncObservableCollection<Company>();
         private ObservableCollection<Company> nonPartnerCompanies = new AsyncObservableCollection<Company>();
         private ObservableCollection<Project> projects = new AsyncObservableCollection<Project>();
@@ -118,7 +107,23 @@ namespace Client.ViewModel
         public BitmapImage EditIcon { get; set; }
         public BitmapImage RemoveIcon { get; set; }
 
-        public ObservableCollection<OcUser> AllEmployees
+		public OcUser LoggedUser
+		{
+			get
+			{
+				return ((App)App.Current).LoggedUser;
+			}
+
+			set
+			{
+				((App)App.Current).LoggedUser = value;
+				OnPropertyChanged("LoggedUser");
+
+			}
+		}
+
+
+		public ObservableCollection<OcUser> AllEmployees
         {
             get { return allEmployees; }
             set { allEmployees = value; }
@@ -232,20 +237,6 @@ namespace Client.ViewModel
             get
             {
                 return editProjectCommand ?? (editProjectCommand = new RelayCommand((param) => this.EditProject(param as OcProject)));
-            }
-        }
-
-        public string LoggedUsername
-        {
-            get
-            {
-                return loggedUsername;
-            }
-
-            set
-            {
-                loggedUsername = value;
-                OnPropertyChanged("LoggedUsername");
             }
         }
 
@@ -365,8 +356,8 @@ namespace Client.ViewModel
 
             if (success)
             {
-                LoggedUsername = username;
-                CurrentState = WindowState.PROJECTS;
+				LoggedUser = proxy.GetUser(username);
+				CurrentState = WindowState.PROJECTS;
             }
 
         }
@@ -375,8 +366,7 @@ namespace Client.ViewModel
         {
             LogHelper.GetLogger().Info("ShowProfile called.");
 
-            ProfileDialog profileDialog = new ProfileDialog(LoggedUsername);
-            profileDialog.ShowDialog();
+			EditUserProfile(LoggedUser);
         }
 
         private void ShowEmployees()
@@ -426,12 +416,13 @@ namespace Client.ViewModel
         private void LogOut(object param)
         {
 
-            bool success = proxy.LogOut(LoggedUsername);
+            bool success = proxy.LogOut(LoggedUser.Username);
 
             if (success)
             {
-                LoggedUsername = "";
-                CurrentState = WindowState.LOGIN;
+                LoggedUser.Username = "";
+				LoggedUser = null;
+				CurrentState = WindowState.LOGIN;
             }
             else
             {
@@ -626,14 +617,14 @@ namespace Client.ViewModel
             LogHelper.GetLogger().Info("ShowProfile params ok.");
 
 
-            ProfileDialog profileDialog = new ProfileDialog(user.Username);
+            ProfileDialog profileDialog = new ProfileDialog(user);
             var res = profileDialog.ShowDialog();
             if (res == true)
             {
                 if (profileDialog.Tag != null)
                 {
-                    LoggedUsername = profileDialog.Tag.ToString();
-                }
+                    LoggedUser = profileDialog.Tag as OcUser;
+				}
             }
         }
 

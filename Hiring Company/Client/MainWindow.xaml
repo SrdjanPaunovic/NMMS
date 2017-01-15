@@ -6,14 +6,15 @@
         xmlns:local="clr-namespace:Client"
         xmlns:userControls="clr-namespace:Common.UserControls;assembly=Common"
         xmlns:viewModel ="clr-namespace:Client.ViewModel"
-        xmlns:converterts="clr-namespace:Common.Converters;assembly=Common"
+        xmlns:converters="clr-namespace:Common.Converters;assembly=Common"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="600" Closing="Window_Closing">
     <Window.DataContext>
         <viewModel:MainWindowViewModel x:Name="viewModel" />
     </Window.DataContext>
     <Window.Resources>
-        <converterts:MultiParamConverter x:Key="multiParamConverter"/>
+        <converters:MultiParamConverter x:Key="multiParamConverter"/>
+        <converters:MultiComparatorConverter x:Key="multiComparatorConverter"/>
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
@@ -46,10 +47,28 @@
             </Grid.Style>
             <Button Margin="10,2" Grid.Column="0" Command="{Binding ShowEmployeesCommand}">Employees</Button>
             <Button Margin="10,2" Grid.Column="1" Command="{Binding ShowCompaniesCommand}">Companies</Button>
-            <Button Margin="10,2" Grid.Column="2" Command="{Binding ShowProjectsCommand}">Projects</Button>
+            <Grid Margin="10,2" Grid.Column="2">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding LoggedUser.Role}" Value="CEO">
+                                <Setter Property="Visibility" Value="Visible"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding LoggedUser.Role}" Value="PO">
+                                <Setter Property="Visibility" Value="Visible"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding LoggedUser.Role}" Value="CM">
+                                <Setter Property="Visibility" Value="Visible"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Button  Command="{Binding ShowProjectsCommand}">Projects</Button>
+            </Grid>
             <TextBlock Margin="10,2" Grid.Column="4" VerticalAlignment="Center">
                 <Hyperlink Command="{Binding ShowProfileCommand}"> 
-                    <TextBlock Text="{Binding LoggedUsername}"></TextBlock>
+                    <TextBlock Text="{Binding LoggedUser.Username}"/>
                 </Hyperlink>
             </TextBlock>
             <Button Margin="10,2" Grid.Column="5" Command="{Binding LogOutCommand}">Log out</Button>
@@ -107,6 +126,16 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding LoggedUser.Role,ElementName=viewModel}" Value="CEO">
+                                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
                                         <ComboBox Grid.Column="0" x:Name="CB_Projects" 
                                                   ItemsSource="{Binding ElementName=viewModel,Path=NonSentProjects}">
                                             <ComboBox.ItemTemplate>
@@ -127,15 +156,16 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </Grid.Style>
-                                            <Button Name="company_btn3"  Content="Send project"
-                                                Command="{Binding ElementName=viewModel, Path=SendProjectRequestCommand}">
-                                                <Button.CommandParameter>
-                                                    <MultiBinding Converter="{StaticResource multiParamConverter}">
-                                                        <Binding Path="DataContext" ElementName="company_btn3"/>
-                                                        <Binding Path="SelectedItem" ElementName="CB_Projects"/>
-                                                    </MultiBinding>
-                                                </Button.CommandParameter>
-                                            </Button>
+                                                <Button Name="company_btn3"  
+                                                        Content="Send project"
+                                                        Command="{Binding ElementName=viewModel, Path=SendProjectRequestCommand}">
+                                                    <Button.CommandParameter>
+                                                        <MultiBinding Converter="{StaticResource multiParamConverter}">
+                                                            <Binding Path="DataContext" ElementName="company_btn3"/>
+                                                            <Binding Path="SelectedItem" ElementName="CB_Projects"/>
+                                                        </MultiBinding>
+                                                    </Button.CommandParameter>
+                                                </Button>
                                         </Grid>
                                     </Grid>
                                 </DataTemplate>
@@ -187,7 +217,7 @@
                             <Setter Property="Visibility" Value="Visible"></Setter>
                         </DataTrigger>
                     </Style.Triggers>
-                </Style>
+                </Style>                
             </Grid.Style>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -196,7 +226,19 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Margin="5">
-                <Button HorizontalAlignment="Left" Command="{Binding ElementName=viewModel, Path=NewProjectCommand}">New project</Button>
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding LoggedUser.Role}" Value="PO">
+                                    <Setter Property="Visibility" Value="Visible"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Button HorizontalAlignment="Left" Command="{Binding ElementName=viewModel, Path=NewProjectCommand}">New project</Button>
+                </Grid>
                 <Button HorizontalAlignment="Right" Command="{Binding ElementName=viewModel, Path=DisplayProjectsCommand}">Display projects</Button>
             </Grid>
 
@@ -304,7 +346,20 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Command="{Binding ElementName=viewModel,Path=AddUserCommand}">New user</Button>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding LoggedUser.Role}" Value="CEO">
+                                <Setter Property="Visibility" Value="Visible"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding LoggedUser.Role}" Value="HR">
+                                <Setter Property="Visibility" Value="Visible"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Button Command="{Binding ElementName=viewModel,Path=AddUserCommand}" Content="New user"/>
             </Grid>
             <DataGrid Grid.Row="1" 
                       CanUserAddRows="False"
@@ -349,14 +404,54 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <userControls:ImageButton Grid.Column="0" NormalImage="{Binding ElementName=viewModel,Path=EditIcon}"
+
+                                    <Grid Grid.Column="0">
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding LoggedUser.Role,ElementName=viewModel}" Value="CEO">
+                                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding LoggedUser.Role,ElementName=viewModel}" Value="HR">
+                                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Value="True">
+                                                        <DataTrigger.Binding>
+                                                            <MultiBinding Converter="{StaticResource multiComparatorConverter}">
+                                                                <Binding Path="Id"/>
+                                                                <Binding Path="LoggedUser.Id" ElementName="viewModel"/>
+                                                            </MultiBinding>
+                                                        </DataTrigger.Binding>
+                                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                        <userControls:ImageButton NormalImage="{Binding ElementName=viewModel,Path=EditIcon}"
                                                                   Command="{Binding ElementName=viewModel,Path=EditUserProfileCommand}"
                                                                   CommandParameter="{Binding ElementName=grid,Path=DataContext}"
                                                                   Width="24" Height="24"/>
-                                    <userControls:ImageButton Grid.Column="1" NormalImage="{Binding ElementName=viewModel,Path=RemoveIcon}"
+                                    </Grid>
+                                    <Grid Grid.Column="1">
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding LoggedUser.Role,ElementName=viewModel}" Value="CEO">
+                                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding LoggedUser.Role,ElementName=viewModel}" Value="HR">
+                                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                        <userControls:ImageButton NormalImage="{Binding ElementName=viewModel,Path=RemoveIcon}"
                                                                   Command="{Binding ElementName=viewModel,Path=DeleteUserCommand}"
                                                                   CommandParameter="{Binding ElementName=grid,Path=DataContext}"
                                                                   Width="24" Height="24"/>
+                                    </Grid>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

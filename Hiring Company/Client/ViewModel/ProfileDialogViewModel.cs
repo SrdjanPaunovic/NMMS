@@ -26,10 +26,10 @@ namespace Client.ViewModel
             LogHelper.GetLogger().Info("Profile Dialog initialized.");
         }
 
-        public ProfileDialogViewModel(string LoggedUsername)
+        public ProfileDialogViewModel(User user)
         {
 
-            User = proxy.GetUser(LoggedUsername);
+			User = user;
 
             if (User == null)
             {
@@ -95,8 +95,11 @@ namespace Client.ViewModel
             {
                 LogHelper.GetLogger().Info("Profile Dialog closed.");
                 parentWindow.DialogResult = true;
-                parentWindow.Tag = User.Username;
-                parentWindow.Close();
+				if(((App)App.Current).LoggedUser.Id == User.Id)
+				{
+					parentWindow.Tag = User;
+				}
+				parentWindow.Close();
             }
             else
             {

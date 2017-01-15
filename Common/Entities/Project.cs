@@ -25,30 +25,17 @@ namespace Common.Entities
 		}
 		public Project(Project proj)
 		{
-			this.Name = proj.Name;
-			this.Description = proj.Description;
-			this.StartTime = proj.StartTime;
-			this.EndTime = proj.EndTime;
-			this.IsAproved = proj.IsAproved;
+			this.UpdateProperties(proj);
 			this.UserStories = proj.UserStories;
-			this.IsAccepted = proj.IsAccepted;
 			this.DevelopCompany = proj.DevelopCompany;
 			this.HiringCompany = proj.HiringCompany;
-			this.IsProjectRequestSent = proj.IsProjectRequestSent;
-
 		}
 		public Project(OcProject proj)
 		{
-			this.Name = proj.Name;
-			this.Description = proj.Description;
-			this.StartTime = proj.StartTime;
-			this.EndTime = proj.EndTime;
-			this.IsAproved = proj.IsAproved;
+			this.UpdateProperties(proj);
 			this.UserStories = proj.UserStories;
-			this.IsAccepted = proj.IsAccepted;
 			this.DevelopCompany = proj.DevelopCompany;
 			this.HiringCompany = proj.HiringCompany;
-			this.IsProjectRequestSent = proj.IsProjectRequestSent;
 		}
 
 
@@ -97,6 +84,11 @@ namespace Common.Entities
 			this.StartTime = project.StartTime;
 			this.EndTime = project.EndTime;
 			this.Description = project.Description;
+			this.IsProjectRequestSent = project.IsProjectRequestSent;
+			this.IsAccepted = project.IsAccepted;
+			this.IsAproved = project.IsAproved;
+
+
 		}
 	}
 }

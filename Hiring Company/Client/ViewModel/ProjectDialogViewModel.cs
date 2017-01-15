@@ -29,7 +29,8 @@ namespace Client.ViewModel
 			isEditing = false;
 			Project = new Project()
 			{
-				Name = "New Project"
+				Name = "New Project",
+				ProductOwner = ((App)App.Current).LoggedUser
 			};
 		}
 
@@ -103,6 +104,21 @@ namespace Client.ViewModel
 			{
 				project = value;
 				OnPropertyChanged("Project");
+			}
+		}
+
+		public User LoggedUser
+		{
+			get
+			{
+				return ((App)App.Current).LoggedUser;
+			}
+
+			set
+			{
+				((App)App.Current).LoggedUser = value;
+				OnPropertyChanged("LoggedUser");
+
 			}
 		}
 		#endregion Properties

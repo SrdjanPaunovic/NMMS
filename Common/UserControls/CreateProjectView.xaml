@@ -10,6 +10,7 @@
              d:DesignHeight="400" d:DesignWidth="500">
     <UserControl.Resources>
         <converters:MultiParamConverter x:Key="multiParamConverter"/>
+        <converters:MultiComparatorConverter x:Key="multiComparatorConverter"/>
     </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -63,11 +64,34 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Name="StoryName" Grid.Column="0" Margin="5,0" ></TextBox>
-                        <Button Name="AddStoryBtn" Grid.Column="1" Margin="2"
+                        <Grid Grid.Column="1" Margin="2">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding LoggedUser.Role}" Value="PO">
+                                            <Setter Property="IsEnabled" Value="True"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Value="True">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource multiComparatorConverter}">
+                                                    <Binding Path="Project.ProductOwner.Id"/>
+                                                    <Binding Path="LoggedUser.Id"/>
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="Visibility" Value="Visible"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Button Name="AddStoryBtn"
                                 Content="Add"
                                 Command="{Binding AddStoryCommand}"
                                 CommandParameter="{Binding Path=Text, ElementName=StoryName}">
-                        </Button>
+                            </Button>
+                        </Grid>
+                        
                     </Grid>
                     <ScrollViewer Grid.Row="1" 
                            Margin="5" 

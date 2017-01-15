@@ -247,7 +247,14 @@ namespace Service.Access
 		{
 			using (var db = new AccessDB())
 			{
+				User prodOw = null;
+				if (project.ProductOwner != null)
+				{
+					prodOw = db.Users.FirstOrDefault<User>(x => x.Id == project.ProductOwner.Id);
+				}
+				project.ProductOwner = prodOw;
 				db.Projects.Add(project);
+
 				int i = db.SaveChanges();
 				if (i > 0)
 				{
@@ -313,13 +320,12 @@ namespace Service.Access
 		{
 			using (AccessDB context = new AccessDB())
 			{
-				List<Project> projects = context.Projects.Include("DevelopCompany").ToList();
+				List<Project> projects = context.Projects.Include("DevelopCompany").Include("ProductOwner").ToList();
 
 				foreach (var proj in projects)
 				{
-					if (proj.DevelopCompany != null)
+					if (proj.ProductOwner != null)
 					{
-						//todo reference in company
 					}
 				}
 
