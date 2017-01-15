@@ -21,8 +21,15 @@ namespace CommonTest.EntitiesTest
 		[Test]
 		public void ConstructorTest()
 		{
-			Assert.DoesNotThrow(() => new User());
+			Assert.DoesNotThrow(() => new Company());
 		}
+
+        [Test]
+        public void ConstructorParamTest()
+        {
+            string name = "comp";
+            Assert.DoesNotThrow(() => new Company(name));
+        }
 
 		[Test]
 		public void IdPropertyTest()
