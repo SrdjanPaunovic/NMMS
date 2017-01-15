@@ -117,6 +117,7 @@ namespace HiringCompanyService
             try
             {
                 // salje napravljen i odobren projekat
+				project.HiringCompany = Program.myHiringCompany.Name;
                 bool result = HiringCompanyDB.Instance.UpdateProject(project);
                 Service.Hiring2OutSCompanyService.companies[company.Name].SendProject(Program.myHiringCompany, project);
                 project.IsProjectRequestSent = true;
