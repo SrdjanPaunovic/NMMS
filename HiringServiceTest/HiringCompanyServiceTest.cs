@@ -36,8 +36,6 @@ namespace HiringServiceTest
             HiringCompanyDB.Instance.LogIn("admin", "ad").Returns(false);
             HiringCompanyDB.Instance.LogOut("admin").Returns(true);
             HiringCompanyDB.Instance.LogOut("pero").Returns(false);
-            HiringCompanyDB.Instance.UserRegister(Arg.Is<User>(x => x.Username == "pero")).Returns(true);
-            HiringCompanyDB.Instance.UserRegister(Arg.Is<User>(x => x.Username != "pero")).Returns(false);
             HiringCompanyDB.Instance.GetUser("pero").Returns(new User() { Name = "Pero" });
             HiringCompanyDB.Instance.AddUser(Arg.Is<User>(x => x.Name == "Voja" && x.Surname == "Seselj")).Returns(true);
             HiringCompanyDB.Instance.AddUser(Arg.Is<User>(x => x.Name != "Voja" && x.Surname == "Seselj")).Returns(false);
@@ -50,9 +48,7 @@ namespace HiringServiceTest
             HiringCompanyDB.Instance.UpdateProject(Arg.Is<Project>(x => x.Name == "NMMS")).Returns(true);
             HiringCompanyDB.Instance.UpdateProject(Arg.Is<Project>(x => x.Name != "NMMS")).Returns(false);
             HiringCompanyDB.Instance.GetAllUsers().Returns(new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } });
-            HiringCompanyDB.Instance.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } });
-            HiringCompanyDB.Instance.LoginUsersOverview().Returns(new List<User>() { new User() { Name = "Seselj" }, new User() { Name = "Slobo" } });
-            
+            HiringCompanyDB.Instance.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } });  
             HiringCompanyDB.Instance.GetTasksFromUserStory(Arg.Is<UserStory>(x=>x.Name=="us1")).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } });
 
             HiringCompanyDB.Instance.GetProjectFromUserStory(Arg.Is<UserStory>(x => x.Name == "us1")).Returns(new Project() { Name = "NMMS" });
@@ -168,21 +164,8 @@ namespace HiringServiceTest
 			bool result = serviceUnderTest.LogOut("pero");
 			Assert.IsFalse(result);
 		}
-		[Test]
-		public void UserRegisterTestOk()
-		{
-			User user = new User() { Username = "pero" };
-			bool result=serviceUnderTest.UserRegister(user);
-			Assert.IsTrue(result);
-		}
-		[Test]
-		public void UserRegisterTestFault()
-		{
-			User user = new User() { Username = "jovisa" };
-			bool result = serviceUnderTest.UserRegister(user);
-			Assert.IsFalse(result);
-		}
-
+		
+		
 		[Test]
 		public void GetUserTest()
 		{
@@ -288,13 +271,7 @@ namespace HiringServiceTest
             Assert.AreEqual(list[0].Name, actualList[0].Name);
 		}
 
-		[Test]
-		public void LoginUseraOverviewTest()
-		{
-            List<User> actualList = new List<User>() { new User() { Name = "Seselj" }, new User() { Name = "Slobo" } };
-			List<User> expectedList = serviceUnderTest.LoginUsersOverview();
-			Assert.AreEqual(expectedList[0].Name, actualList[0].Name);
-		}
+		
         
 		[Test]
 		public void GetTesksFromUserStoryTest()

@@ -27,13 +27,12 @@ namespace Client
 			log4net.Config.XmlConfigurator.Configure();
 			Exit += App_Exit;
         }
-
-		private void App_Exit(object sender, ExitEventArgs e)
+		public void App_Exit(object sender, ExitEventArgs e)
 		{
 			proxy.Close();
 		}
 
-
+        public App(string test) { }
 
 		public HiringClientProxy Proxy
         {
@@ -44,6 +43,10 @@ namespace Client
 					proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
 				}
 				return proxy;
+            }
+            set
+            {
+                proxy = value;
             }
         }
 

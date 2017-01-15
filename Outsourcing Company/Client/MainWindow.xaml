@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Client"
         xmlns:converters="clr-namespace:Common.Converters;assembly=Common"
         xmlns:userControls="clr-namespace:Common.UserControls;assembly=Common"
+        xmlns:converterts="clr-namespace:Common.Converters;assembly=Common"
         xmlns:viewModel ="clr-namespace:Client.ViewModel"
         mc:Ignorable="d"
         Closing="Window_Closing"
@@ -14,8 +15,8 @@
         <viewModel:MainWindowViewModel x:Name="viewModel" />
     </Window.DataContext>
     <Window.Resources>
-        <converters:MultiParamConverter x:Key="multiParamConverter"/>
         <converters:MultiComparatorConverter x:Key="multiComparatorConverter"/>
+        <converterts:MultiParamConverter x:Key="multiParamConverter"/>
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
@@ -202,6 +203,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Margin="5">
                 <!--<Button HorizontalAlignment="Left" Command="{Binding ElementName=viewModel, Path=NewProjectCommand}">New project</Button>-->
@@ -310,6 +312,34 @@
                                         <Button Command="{Binding ElementName=viewModel,Path=EditProjectCommand}"
                                                 CommandParameter="{Binding}">E</Button>
                                     </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
+            <TextBlock Margin="2" Grid.Row="4" HorizontalAlignment="Left" Text="UserStory for approve"/>
+            <ListView Name="UserStories" Grid.Row="5" ItemsSource="{Binding NonSentUS}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Project" DisplayMemberBinding="{Binding ProjectName}" />
+                        <GridViewColumn Header="Start time" DisplayMemberBinding="{Binding StartTime, StringFormat=dd/MM/yyyy}"/>
+                        <GridViewColumn Header="End time" DisplayMemberBinding="{Binding EndTime, StringFormat=dd/MM/yyyy}"/>
+                        <GridViewColumn Width="120">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="us_btn" Command="{Binding ElementName=viewModel, Path=UserStoryRequestCommand}" CommandParameter="{Binding ElementName=us_btn,Path=DataContext}">Send US
+                                    </Button>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

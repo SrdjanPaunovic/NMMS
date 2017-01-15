@@ -67,5 +67,11 @@ namespace ServiceContract
 
         [OperationContract]
         bool ModifyCompany(Company company);
+
+        [OperationContract]
+        bool RemoveUS(UserStory userStory);
+
+        [OperationContract]
+        List<UserStory> GetAllUserStories();
 	}
 }

@@ -505,5 +505,40 @@ namespace Client
 			return result;
 
 		}
-	}
+
+
+        public bool RemoveUS(UserStory userStory)
+        {
+            bool result = false;
+
+            try
+            {
+                result = this.factory.RemoveUS(userStory);
+                LogHelper.GetLogger().Info("RemoveUS method succeeded.");
+
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("RemoveUS method failed. ", e);
+            }
+            return result;
+        }
+
+
+        public List<UserStory> GetAllUserStories()
+        {
+             List<UserStory> result = null;
+             try
+             {
+                 result = this.factory.GetAllUserStories();
+                 LogHelper.GetLogger().Info("GetAllUserStories method succeeded.");
+
+             }
+             catch (Exception e)
+             {
+                 LogHelper.GetLogger().Error("GetAllUserStories method failed. ", e);
+             }
+             return result;
+        }
+    }
 }

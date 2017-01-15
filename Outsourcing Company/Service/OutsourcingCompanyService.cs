@@ -107,7 +107,13 @@ namespace Service
 
         public bool SendUserStory(Company company, UserStory userStrory, Project project)
         {
-            return OutsourcingCompanyDB.Instance.AddUserStory(userStrory); 
+            //return OutsourcingCompanyDB.Instance.AddUserStory(userStrory); 
+            userStrory.DevComp = Program.myOutSourceCompany.Name;
+            string ipAdress = OutSurce2HiringProxy.hiringAdress[company.Name];
+            Program.factory = new DuplexChannelFactory<IHiring2OutSourceContract>(Program.instanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(ipAdress));
+            IHiring2OutSourceContract proxy1 = Program.factory.CreateChannel();
+            proxy1.SendUserStory(company, userStrory, project);
+            return true;
         }
 
 		public bool AnswerToProject(Company company, Project project)
@@ -216,6 +222,13 @@ namespace Service
             LogHelper.GetLogger().Info("Call UpdateUserStory method.");
 
             return OutsourcingCompanyDB.Instance.UpdateUserStory(userStory);
+        }
+
+
+        public List<UserStory> GetAllUserStories()
+        {
+            LogHelper.GetLogger().Info("Call GetAllUserStory method.");
+            return OutsourcingCompanyDB.Instance.GetAllUserStory();
         }
     }
 }

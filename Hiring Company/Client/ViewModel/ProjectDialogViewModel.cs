@@ -39,7 +39,7 @@ namespace Client.ViewModel
 			Project = project;
 
 			List<UserStory> userStories = proxy.GetUserStoryFromProject(project);
-			Project.UserStories = new ObservableCollection<UserStory>(userStories);
+			Project.UserStories = new AsyncObservableCollection<UserStory>(userStories);
 
 			isEditing = true;
 		}
@@ -141,7 +141,7 @@ namespace Client.ViewModel
 
 			var userControl = param as UserControl;
 			Window parentWindow = Window.GetWindow(userControl);
-
+           // Project.ProductOwner = proxy.GetUser();   // set Product owner
 			bool success = false;
 			if (isEditing)
 			{
@@ -175,7 +175,8 @@ namespace Client.ViewModel
 
 			UserStory us = new UserStory
 			{
-				Name = name
+				Name = name,
+                Project= Project
 			};
 			Project.UserStories.Add(us);
 		}

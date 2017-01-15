@@ -69,15 +69,15 @@ namespace Client
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        var viewModel = DataContext as MainWindowViewModel;
+        if (viewModel != null)
         {
-            var viewModel = DataContext as MainWindowViewModel;
-            if (viewModel != null)
-            {
-                if(viewModel.LoggedUser != null){
-                    viewModel.LogOutCommand.Execute(viewModel.LoggedUser.Username);
-                }
+            if(viewModel.LoggedUser != null){
+                viewModel.LogOutCommand.Execute(viewModel.LoggedUser.Username);
             }
         }
+    }
 
 	}
 }

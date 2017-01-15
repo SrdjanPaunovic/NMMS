@@ -28,8 +28,6 @@ namespace HiringClientTest
 			clientUnderTest.factory.LogOut("admin").Returns(true);
 			clientUnderTest.factory.LogOut("pero").Returns(false);
             clientUnderTest.factory.LogOut("ex").Returns(x => { throw new Exception(); });
-			clientUnderTest.factory.UserRegister(Arg.Is<User>(x=>x.Username=="pero")).Returns(true);
-            clientUnderTest.factory.UserRegister(Arg.Is<User>(x => x.Username != "pero")).Returns(false);
 			clientUnderTest.factory.GetUser("pero").Returns(new User() { Name = "Pero" });
             clientUnderTest.factory.GetUser("ex").Returns(x => { throw new Exception(); });
 			clientUnderTest.factory.AddUser(Arg.Is<User>(x=>x.Name=="Voja" && x.Surname=="Seselj")).Returns(true);
@@ -57,7 +55,6 @@ namespace HiringClientTest
             clientUnderTest.factory.GetAllUsers().Returns(new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } });
             clientUnderTest.factory.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } });
 
-            clientUnderTest.factory.LoginUsersOverview().Returns(new List<User>() { new User() { Name = "Seselj" }, new User() { Name = "Slobo" } });
 
             clientUnderTest.factory.GetTasksFromUserStory(Arg.Is<UserStory>(x => x.Name == "us1")).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } });
 			clientUnderTest.factory.GetTasksFromUserStory(Arg.Is<UserStory>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });           
@@ -138,11 +135,6 @@ namespace HiringClientTest
 
 
 
-		[Test]
-		public void LoginUsersOverviewTestException()
-		{
-			Assert.Throws<NotImplementedException>(() => clientUnderTest.LoginUsersOverview());
-		}
 
 		[Test]
 		public void AnswerToUserStoryTestOk()
@@ -258,22 +250,7 @@ namespace HiringClientTest
             Assert.DoesNotThrow(() => clientUnderTest.LogOut("ex"));
         }
 
-		[Test]
-		public void UserRegisterTestOk()
-		{
-			User user = new User() { Username = "pero" };
-			//bool result = clientUnderTest.UserRegister(user);
-            Assert.Throws<NotImplementedException>(() => clientUnderTest.UserRegister(user));
-		}
-		[Test]
-		public void UserRegisterTestFault()
-		{
-			User user = new User() { Username = "jovisa" };
-			//bool result = clientUnderTest.UserRegister(user);
-            // kad se implementira onda otkomentarisi
-            Assert.Throws<NotImplementedException>(() => clientUnderTest.UserRegister(user));
-
-		}
+		
 
 		[Test]
 		public void ModifyCompanyTestException()

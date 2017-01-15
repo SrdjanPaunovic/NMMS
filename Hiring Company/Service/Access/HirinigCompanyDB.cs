@@ -10,137 +10,139 @@ using Common;
 
 namespace Service.Access
 {
-	public class HiringCompanyDB : IHiringCompanyDB
-	{
+    public class HiringCompanyDB : IHiringCompanyDB
+    {
 
-		public static IHiringCompanyDB hirinigCompanyDB;  
+        public static IHiringCompanyDB hirinigCompanyDB;
 
-		public static IHiringCompanyDB Instance
-		{
-			get
-			{
-				if (hirinigCompanyDB == null)
-				{
-					hirinigCompanyDB = new HiringCompanyDB();
-				}
-				return hirinigCompanyDB;
-			}
-			set
-			{
-				if (hirinigCompanyDB == null)
-				{
-					hirinigCompanyDB = value;
-				}
-			}
-		}
+        public static IHiringCompanyDB Instance
+        {
+            get
+            {
+                if (hirinigCompanyDB == null)
+                {
+                    hirinigCompanyDB = new HiringCompanyDB();
+                }
+                return hirinigCompanyDB;
+            }
+            set
+            {
+                if (hirinigCompanyDB == null)
+                {
+                    hirinigCompanyDB = value;
+                }
+            }
+        }
 
-		public bool AddUser(User user)
-		{
-			using (var db = new AccessDB())
-			{
-				var uList = db.Users.ToList();
-				if (uList.Exists(x => x.Username == user.Username))
-				{
-					LogHelper.GetLogger().Info("AddUser method returned false. User with username:" + user.Name + " already exists");
+        public bool AddUser(User user)
+        {
+            using (var db = new AccessDB())
+            {
+                var uList = db.Users.ToList();
+                if (uList.Exists(x => x.Username == user.Username))
+                {
+                    LogHelper.GetLogger().Info("AddUser method returned false. User with username:" + user.Name + " already exists");
 
-					return false;
-				}
-				db.Users.Add(user);
-				int i = db.SaveChanges();
-				if (i > 0)
-				{
-					LogHelper.GetLogger().Info(" AddUser method succeeded. Returned true.");
-					return true;
-				}
-				LogHelper.GetLogger().Info("AddUser method returned false.");
-				return false;
-			}
-		}
+                    return false;
+                }
+                db.Users.Add(user);
+                int i = db.SaveChanges();
+                if (i > 0)
+                {
+                    LogHelper.GetLogger().Info(" AddUser method succeeded. Returned true.");
+                    return true;
+                }
+                LogHelper.GetLogger().Info("AddUser method returned false.");
+                return false;
+            }
+        }
 
-		public bool AddCompany(Company company)
-		{
+        public bool AddCompany(Company company)
+        {
 
-			using (var db = new AccessDB())
-			{
-				db.Companies.Add(company);
-				int i = db.SaveChanges();
-				if (i > 0)
-				{
-					LogHelper.GetLogger().Info("AddCompany method succeeded. Returned true.");
+            using (var db = new AccessDB())
+            {
+                db.Companies.Add(company);
+                int i = db.SaveChanges();
+                if (i > 0)
+                {
+                    LogHelper.GetLogger().Info("AddCompany method succeeded. Returned true.");
 
-					return true;
-				}
-				LogHelper.GetLogger().Info("AddCompany method succeeded. Returned false.");
-				return false;
+                    return true;
+                }
+                LogHelper.GetLogger().Info("AddCompany method succeeded. Returned false.");
+                return false;
 
-			}
-		}
+            }
+        }
 
-		public bool AddUserStory(UserStory userStory)
-		{
-			using (var db = new AccessDB())
-			{
-				db.UserStories.Add(userStory);
-				int i = db.SaveChanges();
-				if (i > 0)
-				{
+        public bool AddUserStory(UserStory userStory)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                Project proj = context.Projects.FirstOrDefault<Project>((x) => x.Name == userStory.ProjectName);
+                userStory.Project = proj;
+                context.UserStories.Add(userStory);
+                int i = context.SaveChanges();
+                if (i > 0)
+                {
                     LogHelper.GetLogger().Info(" AddUserStory method succeeded. Returned true.");
 
-					return true;
-				}
+                    return true;
+                }
 
                 LogHelper.GetLogger().Info("AddUserStory method returned false.");
-				return false;
+                return false;
 
-			}
-		}
+            }
+        }
 
-		public bool LogIn(string username, string password)
-		{
-			using (AccessDB context = new AccessDB())
-			{
+        public bool LogIn(string username, string password)
+        {
+            using (AccessDB context = new AccessDB())
+            {
 
-				User user = context.Users.FirstOrDefault((x) => x.Username == username);
-				if (user != null)
-				{
-					if (user.Password.Equals(password))
-					{
-						user.IsAuthenticated = true;
-						context.Entry(user).State = System.Data.Entity.EntityState.Modified;
-						context.SaveChanges();
-						LogHelper.GetLogger().Info("AddCompany method succeeded. Returned true.");
+                User user = context.Users.FirstOrDefault((x) => x.Username == username);
+                if (user != null)
+                {
+                    if (user.Password.Equals(password))
+                    {
+                        user.IsAuthenticated = true;
+                        context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                        context.SaveChanges();
+                        LogHelper.GetLogger().Info("AddCompany method succeeded. Returned true.");
 
-						return true;
-					}
-				}
-			}
-			LogHelper.GetLogger().Info("AddCompany method returned false.");
-			return false;
-		}
+                        return true;
+                    }
+                }
+            }
+            LogHelper.GetLogger().Info("AddCompany method returned false.");
+            return false;
+        }
 
-		public bool LogOut(string username)
-		{
-			using (AccessDB context = new AccessDB())
-			{
-				var result = from b in context.Users
-							 where b.Username.Equals(username)
-							 select b;
-				User user = result.ToList().FirstOrDefault();
-				if (user != null)
-				{
-					if (user.IsAuthenticated)
-					{
-						user.IsAuthenticated = false;
-						context.Entry(user).State = System.Data.Entity.EntityState.Modified;
-						context.SaveChanges();
-						LogHelper.GetLogger().Info("LogOut method succeeded. Returned true.");
-						return true;
-					}
-				}
-			}
-			LogHelper.GetLogger().Info("LogOut method returned false.");
-			return false;
-		}
+        public bool LogOut(string username)
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                var result = from b in context.Users
+                             where b.Username.Equals(username)
+                             select b;
+                User user = result.ToList().FirstOrDefault();
+                if (user != null)
+                {
+                    if (user.IsAuthenticated)
+                    {
+                        user.IsAuthenticated = false;
+                        context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                        context.SaveChanges();
+                        LogHelper.GetLogger().Info("LogOut method succeeded. Returned true.");
+                        return true;
+                    }
+                }
+            }
+            LogHelper.GetLogger().Info("LogOut method returned false.");
+            return false;
+        }
 
         //public List<User> LoginUsersOverview()
         //{
@@ -470,7 +472,6 @@ namespace Service.Access
 
 		}
 
-
         public bool ChangeCompanyState(Company company, State.CompanyState companyState)
         {
             using (AccessDB context = new AccessDB())
@@ -487,5 +488,36 @@ namespace Service.Access
             return true;
         }
 
+
+
+        public bool RemoveUS(UserStory userStory)
+        {
+
+            using (AccessDB context = new AccessDB())
+            {
+                UserStory c = context.UserStories.FirstOrDefault<UserStory>((x) => x.Name.Equals(userStory.Name));
+                if (c == null)
+                {
+                    return false;
+                }
+                context.UserStories.Remove(c);
+                context.Entry(c).State = System.Data.Entity.EntityState.Deleted;
+                context.SaveChanges();
+            }
+            return true;
+        }
+
+
+
+        public List<UserStory> GetAllUserStoryes()
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                List<UserStory> stories = context.UserStories.ToList();
+                LogHelper.GetLogger().Info("GetAllUserStories method succeeded. Returned list of all UserStoryes.");
+
+                return stories;
+            }
+        }
     }
 }

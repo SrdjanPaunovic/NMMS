@@ -42,7 +42,8 @@ namespace Service.Access
         Project GetProjectFromUserStory(UserStory userStory);
 
         bool ChangeCompanyState(Company company, State.CompanyState companyState);
-
+        bool RemoveUS(UserStory userStory);
+        List<UserStory> GetAllUserStoryes();
         // double PasswordAge();
 
         // jos treba funkcija za provjeru koliko je user storija zavrseno od nekog projekta.
