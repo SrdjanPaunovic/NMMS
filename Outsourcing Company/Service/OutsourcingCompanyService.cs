@@ -230,5 +230,12 @@ namespace Service
             LogHelper.GetLogger().Info("Call GetAllUserStory method.");
             return OutsourcingCompanyDB.Instance.GetAllUserStory();
         }
+
+
+        public bool UpdateTeam(Team team)
+        {
+            LogHelper.GetLogger().Info("Call UpdateTeam method.");
+            return OutsourcingCompanyDB.Instance.UpdateTeam(team);
+        }
     }
 }

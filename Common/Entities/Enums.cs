@@ -54,4 +54,10 @@ namespace Common.Entities
         COMPANIES,
         PROJECTS
     }
+
+    public enum CompanyType
+    {
+        HIRING = 0,
+        OUTSOURCING
+    }
 }

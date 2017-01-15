@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.Entities;
+using ServiceContract;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,14 +14,18 @@ namespace Client.ViewModel
 {
     public class TeamDialogViewModel
     {
+        public IOutsourcingContract proxy = ((App)App.Current).Proxy;
+
         public TeamDialogViewModel(Team t = null)
         {
-            if (team == null)
+            if (t == null)
             {
                 Team = new Team();
+                IsEditing = false;
             }
             else
             {
+                IsEditing = true;
                 Team = t;
                 TeamLead = t.TeamLead;
             }
@@ -37,23 +42,20 @@ namespace Client.ViewModel
                 }
             }
 
-            using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
+
+            List<OcUser> users = proxy.GetAllUsersWithoutTeam();
+            foreach (OcUser user in users)
             {
-                List<OcUser> users = proxy.GetAllUsersWithoutTeam();
-                foreach (OcUser user in users)
+                if (user.Role == Role.developer && user.Team == null)
                 {
-                    if (user.Role == Role.developer && user.Team == null)
-                    {
-                        Developers.Add(user);
-                    }
-                    if (user.Role == Role.TL && user.Team == null)
-                    {
-                        TeamLeads.Add(user);
-                    }
+                    Developers.Add(user);
                 }
-
-
+                if (user.Role == Role.TL && user.Team == null)
+                {
+                    TeamLeads.Add(user);
+                }
             }
+
         }
 
         #region fields
@@ -152,21 +154,42 @@ namespace Client.ViewModel
 
         private void Save(object param)
         {
-            using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
+            if (team.Name == null)
             {
-                if (Team.Developers == null)
-                {
-                    Team.Developers = new List<OcUser>();
-                }
-                foreach (var developer in teamDevelopers)
-                {
-                    Team.Developers.Add(developer);
-                }
-                Team.TeamLead = TeamLead;
-                bool success = proxy.AddTeam(Team);
+                MessageBox.Show("Please enter the name of Team");
+                return;
             }
+
+            if (Team.Developers == null)
+            {
+                Team.Developers = new List<OcUser>();
+            }
+            Team.Developers.Clear();
+            foreach (var developer in teamDevelopers)
+            {
+                Team.Developers.Add(developer);
+            }
+            Team.TeamLead = TeamLead;
+
+            if (team.TeamLead == null)
+            {
+                MessageBox.Show("TeamLead must be seleceted");
+                return;
+            }
+
+            if (IsEditing)
+            {
+                proxy.UpdateTeam(Team);
+            }
+            else
+            {
+                proxy.AddTeam(Team);
+            }
+
             (param as Window).Close();
         }
         #endregion
+
+        public bool IsEditing { get; set; }
     }
 }

@@ -27,18 +27,28 @@ namespace Common.Entities
         {
             get
             {
-                return Developers.FirstOrDefault(x => x.Role == Role.TL);
+                if (Developers != null)
+                {
+                    return Developers.FirstOrDefault(x => x.Role == Role.TL);
+                }
+                else
+                {
+                    return null;
+                }
             }
             set
             {
                 if (value.Role == Role.TL)
                 {
-                    var currentTL = Developers.FirstOrDefault(x => x.Role == Role.TL);
-                    if (currentTL != null)
+                    if (Developers != null)
                     {
-                        Developers.Remove(currentTL);
+                        var currentTL = Developers.FirstOrDefault(x => x.Role == Role.TL);
+                        if (currentTL != null)
+                        {
+                            Developers.Remove(currentTL);
+                        }
+                        Developers.Add(value);
                     }
-                    Developers.Add(value);
                 }
             }
         }

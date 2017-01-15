@@ -18,8 +18,10 @@ namespace Client
 	public partial class App : Application
 	{
         public readonly string HostAddress = "net.tcp://localhost:4000/IHiringContract";
+        public CompanyType CompanyType = CompanyType.HIRING;
         public static IHiringContract Proxy;
         private User loggedUser;
+
 
         public User LoggedUser
         {

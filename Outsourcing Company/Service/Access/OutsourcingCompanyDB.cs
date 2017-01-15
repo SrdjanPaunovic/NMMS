@@ -78,6 +78,7 @@ namespace Service.Access
         {
             using (var context = new AccessDB())
             {
+
                 context.Projects.Add(project);
                 int count = context.SaveChanges();
                 if (count > 0)
@@ -366,7 +367,14 @@ namespace Service.Access
         {
             using (AccessDB context = new AccessDB())
             {
-                List<OcProject> projects = context.Projects.ToList();
+                List<OcProject> projects = context.Projects.Include("Team").ToList();
+                
+                foreach(var proj in projects){
+                    if (proj.Team != null)
+                    {
+                        proj.Team.Projects = null;
+                    }
+                }
                 LogHelper.GetLogger().Info("GetAllProjects method succeeded. Returned list of projects.");
 
                 return projects;
@@ -469,8 +477,17 @@ namespace Service.Access
                             proj.UserStories.Add(us);
                         }
                     }
-                    proj.IsAccepted = project.IsAccepted;
-                    proj.DevelopCompany = project.DevelopCompany;
+                    if (project.DevelopCompany != null)
+                    {
+                        var devComp = context.Companies.FirstOrDefault(x => x.Name == project.DevelopCompany.Name);
+                        proj.DevelopCompany = devComp;
+                    }
+                    if (project.Team != null)
+                    {
+                        var team = context.Teams.FirstOrDefault(x => x.Id == project.Team.Id);
+                        proj.Team = team;
+                    }
+
                     context.Entry(proj).State = System.Data.Entity.EntityState.Modified;
                     context.SaveChanges();
                     LogHelper.GetLogger().Info(" UpdateProject method succeeded. Returned true.");
@@ -519,7 +536,6 @@ namespace Service.Access
                 return false;
             }
         }
-
 
         public List<UserStory> GetUserStoryFromProject(OcProject project)
         {
@@ -606,6 +622,57 @@ namespace Service.Access
                 return stories;
             }
            
+        }
+
+
+        public bool UpdateTeam(Team team)
+        {
+            using (var context = new AccessDB())
+            {
+
+                var t = context.Teams.Include("Developers").FirstOrDefault(x => x.Id == team.Id);
+                if (t.Developers != null)
+                {
+                    for (int i = 0; i < team.Developers.Count; i++)
+                    {
+                        OcUser developer = team.Developers[i];
+                        OcUser d = context.Users.FirstOrDefault((x) => x.Id == developer.Id);
+                        if (t.Developers.ToList().Exists(x => x.Id == d.Id))
+                        {
+                            continue;
+                        }
+                        t.Developers.Add(d);
+                    }
+
+                    for (int i = 0; i < t.Developers.Count; i++)
+                    {
+                        OcUser developer = t.Developers[i];
+                        if (team.Developers.ToList().Exists(x => x.Id == developer.Id))
+                        {
+                            continue;
+                        }
+                        t.Developers.Remove(developer);
+                        i--;
+                        //developer.Team = null;
+                        //context.Entry(developer).State = System.Data.Entity.EntityState.Modified;
+
+                    }
+                }
+                context.Entry(t).State = System.Data.Entity.EntityState.Modified;
+
+                int count = context.SaveChanges();
+                if (count > 0)
+                {
+                    LogHelper.GetLogger().Info(" AddTeam method succeeded. Returned true.");
+                    return true;
+                }
+                else
+                {
+                    LogHelper.GetLogger().Info("AddTeam method returned false.");
+
+                    return false;
+                }
+            }
         }
     }
 }

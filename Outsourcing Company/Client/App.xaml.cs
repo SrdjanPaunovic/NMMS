@@ -20,6 +20,7 @@ namespace Client
 		public readonly string HostAddress = "net.tcp://localhost:5000/IOutSourceContract";
 		private OcUser loggedUser;
 		private OutSClientProxy proxy;
+        public CompanyType CompanyType = CompanyType.OUTSOURCING;
 
 		public App()
 		{

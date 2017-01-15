@@ -62,7 +62,7 @@ namespace Client
 			while (true)
 			{
 				viewModel.UpdateData();
-				Thread.Sleep(3800);
+				Thread.Sleep(5000);
 			}
 		}
 
