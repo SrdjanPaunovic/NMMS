@@ -14,11 +14,12 @@ namespace Common.Entities
     public class UserStory
     {
         public UserStory()
-		{
-			StartTime = DateTime.Now;
-			EndTime = DateTime.Now;
-            Tasks = new ObservableCollection<Task>();
-		}
+        {
+            StartTime = DateTime.Now;
+            EndTime = DateTime.Now;
+            Tasks = new AsyncObservableCollection<Task>();
+            IsUserStorySent = false;
+        }
 
         [DataMember]
         [Key]
@@ -49,8 +50,17 @@ namespace Common.Entities
         [DataMember]
         public ObservableCollection<Task> Tasks { get; set; }
 
-		[DataMember]
-		public bool IsUserStoryAccepted { get; set; }
+        [DataMember]
+        public bool IsUserStoryAccepted { get; set; }
+
+        [DataMember]
+        public bool IsUserStorySent { get; set; }
+
+        [DataMember]
+        public string ProjectName { get; set; }
+
+        [DataMember]
+        public string DevComp { get; set; }
 
         public void UpdateProperties(UserStory userStory)
         {
@@ -60,6 +70,11 @@ namespace Common.Entities
             this.StoryPoints = userStory.StoryPoints;
             this.EndTime = userStory.EndTime;
             this.AcceptanceCriteria = userStory.AcceptanceCriteria;
+            this.IsUserStoryAccepted = userStory.IsUserStoryAccepted;
+            this.IsUserStorySent = userStory.IsUserStorySent;
+            this.ProjectName = userStory.ProjectName;
+            this.DevComp = userStory.DevComp;
+            
         }
     }
 }

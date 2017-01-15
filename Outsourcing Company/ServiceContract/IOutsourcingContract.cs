@@ -94,5 +94,8 @@ namespace ServiceContract
 
         [OperationContract]
         bool UpdateUserStory(UserStory UserStory);
+
+        [OperationContract]
+        List<UserStory> GetAllUserStories();
 	}
 }

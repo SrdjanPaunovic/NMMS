@@ -559,6 +559,13 @@ namespace Service.Access
                             us.Tasks.Add(t);
                         }
                     }
+                    if (us.Project != null)
+                    {
+                        var v = context.Projects.FirstOrDefault<Project>(x => x.Name == us.Project.Name);
+                        us.Project = v;
+                    }
+                    us.IsUserStorySent = userStory.IsUserStorySent;
+                    us.IsUserStoryAccepted = userStory.IsUserStoryAccepted;
                     context.Entry(us).State = System.Data.Entity.EntityState.Modified;
                     context.SaveChanges();
                     return true;
@@ -566,6 +573,19 @@ namespace Service.Access
 
                 return false;
             }
+        }
+
+
+        public List<UserStory> GetAllUserStory()
+        {
+            using (AccessDB context = new AccessDB())
+            {
+                List<UserStory> stories = context.UserStories.ToList();
+                LogHelper.GetLogger().Info("GetAllUserStories method succeeded. Returned list of all UserStoryes.");
+
+                return stories;
+            }
+           
         }
     }
 }

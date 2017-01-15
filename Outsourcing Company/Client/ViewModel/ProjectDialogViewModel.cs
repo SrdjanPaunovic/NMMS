@@ -159,7 +159,8 @@ namespace Client.ViewModel
 
             UserStory us = new UserStory
             {
-                Name = name
+                Name = name,
+                ProjectName = Project.Name
             };
             Project.UserStories.Add(us);
         }
