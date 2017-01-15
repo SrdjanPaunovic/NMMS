@@ -29,16 +29,22 @@ namespace Common
 
 		}
 				
-		private  void SendMail(string address, string messageContent)
+        public MailHelper(){ }
+
+
+
+		public  void SendMail(string address, string messageContent)
 		{
 			using (SmtpClient smtpClient = new SmtpClient())
 			{
+               
 				using (MailMessage message = new MailMessage())
 				{
 					message.Subject = "Test";
 					message.Body = messageContent;
 					message.To.Add(new MailAddress(address));
 					message.IsBodyHtml = false;
+                    
 					try
 					{
 						smtpClient.Send(message);
@@ -86,7 +92,7 @@ namespace Common
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+           
 		}
 	}
 }
