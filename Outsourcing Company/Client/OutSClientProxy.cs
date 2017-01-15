@@ -504,6 +504,25 @@ namespace Client
 
             return result;
         }
+
+
+        public List<UserStory> GetAllUserStories()
+        {
+            List<UserStory> result = null;
+
+            try
+            {
+                result = this.factory.GetAllUserStories();
+
+                LogHelper.GetLogger().Info("GetAllStory method succeeded.");
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("GetAllStory method failed. ", e);
+            }
+
+            return result;
+        }
     }
 }
 

@@ -85,6 +85,9 @@ namespace Client.ViewModel
         private ObservableCollection<Team> teams = new AsyncObservableCollection<Team>();
         private ObservableCollection<OcProject> acceptedProjects = new AsyncObservableCollection<OcProject>();
         private ObservableCollection<OcUser> allEmployees = new AsyncObservableCollection<OcUser>();
+        private ObservableCollection<UserStory> nonSentUS = new AsyncObservableCollection<UserStory>();
+
+
 
 
 
@@ -111,6 +114,11 @@ namespace Client.ViewModel
         private ICommand editUserProfileCommand;
         private ICommand deleteUserCommand;
         private ICommand addUserCommand;
+        private ICommand userStoryRequestCommand;
+
+
+
+
 
         #endregion Fields
 
@@ -161,6 +169,12 @@ namespace Client.ViewModel
         {
             get { return acceptedProjects; }
             set { acceptedProjects = value; }
+        }
+
+        public ObservableCollection<UserStory> NonSentUS
+        {
+            get { return nonSentUS; }
+            set { nonSentUS = value; }
         }
 
         public ICommand LoginCommand
@@ -342,6 +356,21 @@ namespace Client.ViewModel
                 return addUserCommand ?? (addUserCommand = new RelayCommand(param => this.AddUser(param)));
             }
         }
+
+        public ICommand UserStoryRequestCommand
+        {
+            get
+            {
+                return userStoryRequestCommand ?? (userStoryRequestCommand = new RelayCommand(param => this.SendUserStory(param)));
+            }
+
+        }
+
+
+
+
+
+
         #endregion Properties
 
         #region Methods
@@ -483,9 +512,11 @@ namespace Client.ViewModel
 
         void FetchProjects()
         {
+            FetchAcceptedProjects();
             List<OcProject> result = proxy.GetAllProjects();
             Projects.Clear();
             acceptedProjects.Clear();
+
             if (result != null)
             {
                 foreach (var proj in result)
@@ -502,22 +533,50 @@ namespace Client.ViewModel
             }
 
         }
+        void FatchUserStories()
+        {
+            NonSentUS.Clear();
+            List<UserStory> result = proxy.GetAllUserStories();
+            if (result != null)
+            {
+                foreach (UserStory us in result)
+                {
+                    if (us.IsUserStorySent)
+                        NonSentUS.Add(us);
+                }
+            }
+
+        }
 
         void FetchAcceptedProjects()
         {
-            FetchProjects();
-
             List<OcProject> result = proxy.GetAllProjects();
             AcceptedProjects.Clear();
             if (result != null)
             {
-                foreach (var proj in result)
+                foreach (OcProject proj in result)
                 {
+
                     if (proj.IsAccepted)
                         AcceptedProjects.Add(proj);
                 }
             }
+            FetchUserStories();
 
+        }
+
+        void FetchUserStories()
+        {
+            NonSentUS.Clear();
+            List<UserStory> result = proxy.GetAllUserStories();
+            if (result != null)
+            {
+                foreach (UserStory us in result)
+                {
+                    if (!us.IsUserStorySent)
+                        NonSentUS.Add(us);
+                }
+            }
         }
 
 
@@ -525,9 +584,12 @@ namespace Client.ViewModel
         {
             List<Team> result = proxy.GetAllTeams();
             Teams.Clear();
-            foreach (var proj in result)
+            if (result != null)
             {
-                Teams.Add(proj);
+                foreach (var proj in result)
+                {
+                    Teams.Add(proj);
+                }
             }
         }
 
@@ -588,7 +650,7 @@ namespace Client.ViewModel
             project.IsProjectRequestSent = true;
             bool success = proxy.AnswerToProject(company, project);
             proxy.UpdateProject(OcProject);
-            FetchAcceptedProjects();
+            FetchProjects();
         }
 
 
@@ -610,7 +672,7 @@ namespace Client.ViewModel
             project.IsProjectRequestSent = false;
             bool success = proxy.AnswerToProject(company, project);
             proxy.RemoveProject(OcProject);
-            FetchAcceptedProjects();
+            FetchProjects();
 
         }
 
@@ -679,6 +741,31 @@ namespace Client.ViewModel
             }
 
 
+        }
+
+        private void SendUserStory(object param)
+        {
+            LogHelper.GetLogger().Info("SendUsRequest called.");
+
+            if (param == null)
+            {
+                LogHelper.GetLogger().Warn("SendUsRequest Command parameters has NULL value.");
+                return;
+            }
+            UserStory userStory = param as UserStory;
+            userStory.IsUserStorySent = true;
+            OcProject proj = proxy.GetProjectFromUserStory(userStory);
+            Project p = new Project(proj);
+            Company comp = new Company(p.HiringCompany);
+            if (userStory == null)
+            {
+                LogHelper.GetLogger().Warn("SendUsRequest Command parameter has Wrong type value.");
+                return;
+            }
+
+            bool success = proxy.SendUserStory(comp, userStory, p);
+            proxy.UpdateUserStory(userStory);
+            FetchProjects();
         }
         #endregion Methods
 

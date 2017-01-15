@@ -54,7 +54,7 @@ namespace HiringCompanyService
         public bool AddProject(Project project)
         {
             LogHelper.GetLogger().Info("Call AddProject method.");
-			project.HiringCompany = Program.myHiringCompany.Name;
+            project.HiringCompany = Program.myHiringCompany.Name;
             return HiringCompanyDB.Instance.AddProject(project);
         }
 
@@ -64,12 +64,12 @@ namespace HiringCompanyService
 
             return HiringCompanyDB.Instance.GetAllProjects();
         }
-		
+
         public bool SendRequest(Company company)
         {
-            
 
-			bool success = HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
+
+            bool success = HiringCompanyDB.Instance.ChangeCompanyState(company, State.CompanyState.Requested);
             if (success)
             {
                 try
@@ -79,8 +79,8 @@ namespace HiringCompanyService
                 }
                 catch (Exception e)
                 {
-					LogHelper.GetLogger().Error("SendRequest failed. ", e);
-					return false;
+                    LogHelper.GetLogger().Error("SendRequest failed. ", e);
+                    return false;
                 }
             }
             else
@@ -117,15 +117,17 @@ namespace HiringCompanyService
             try
             {
                 // salje napravljen i odobren projekat
+                bool result = HiringCompanyDB.Instance.UpdateProject(project);
                 Service.Hiring2OutSCompanyService.companies[company.Name].SendProject(Program.myHiringCompany, project);
-				project.IsProjectRequestSent = true;
-				return HiringCompanyDB.Instance.UpdateProject(project);
+                project.IsProjectRequestSent = true;
+                return result;
+
             }
             catch (Exception e)
             {
 
-				LogHelper.GetLogger().Error("SendProject failed. ", e);
-				return false;
+                LogHelper.GetLogger().Error("SendProject failed. ", e);
+                return false;
             }
         }
 
@@ -137,14 +139,14 @@ namespace HiringCompanyService
             try
             {
                 // odgovara na zahtev za US
-                Service.Hiring2OutSCompanyService.companies[company.Name].AnswerToUserStory(Program.myHiringCompany, userStory, project);
+                Service.Hiring2OutSCompanyService.companies[userStory.DevComp].AnswerToUserStory(Program.myHiringCompany, userStory, project);
                 return true;
             }
             catch (Exception e)
             {
 
-				LogHelper.GetLogger().Error("SendProject failed. ", e);
-				return false;
+                LogHelper.GetLogger().Error("SendProject failed. ", e);
+                return false;
             }
         }
 
@@ -161,7 +163,7 @@ namespace HiringCompanyService
 
             return HiringCompanyDB.Instance.GetProjectFromUserStory(userStory);
         }
-        
+
         public bool ModifyCompany(Company company)
         {
             LogHelper.GetLogger().Info("Call ModifyCompany method.");
@@ -178,15 +180,29 @@ namespace HiringCompanyService
 
         public bool RemoveUser(User user)
         {
-			LogHelper.GetLogger().Info("Call RemoveUser method.");
+            LogHelper.GetLogger().Info("Call RemoveUser method.");
 
-			return HiringCompanyDB.Instance.RemoveUser(user);
+            return HiringCompanyDB.Instance.RemoveUser(user);
         }
 
-		public bool AddUser(User user)
-		{
+        public bool AddUser(User user)
+        {
             LogHelper.GetLogger().Info("Call AddUser method.");
-			return HiringCompanyDB.Instance.AddUser(user);
-		}
-	}
+            return HiringCompanyDB.Instance.AddUser(user);
+        }
+
+
+        public bool RemoveUS(UserStory userStory)
+        {
+            LogHelper.GetLogger().Info("Call AddUser method.");
+            return HiringCompanyDB.Instance.RemoveUS(userStory);
+        }
+
+
+        public List<UserStory> GetAllUserStories()
+        {
+            LogHelper.GetLogger().Info("Call GetAllUserStories method.");
+            return HiringCompanyDB.Instance.GetAllUserStoryes();
+        }
+    }
 }

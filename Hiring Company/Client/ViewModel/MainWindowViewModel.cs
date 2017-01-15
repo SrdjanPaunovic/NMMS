@@ -81,6 +81,7 @@ namespace Client.ViewModel
         private ObservableCollection<User> allEmployees = new AsyncObservableCollection<User>();
         private ObservableCollection<Project> acceptedProjects = new AsyncObservableCollection<Project>();
         private ObservableCollection<Project> nonSentProjects = new AsyncObservableCollection<Project>();
+        private ObservableCollection<UserStory> answerToUS = new AsyncObservableCollection<UserStory>();
 
 
 
@@ -105,6 +106,11 @@ namespace Client.ViewModel
         private ICommand deleteUserCommand;
         private ICommand addUserCommand;
         private ICommand sendProjectRequestCommand;
+        private ICommand acceptUSCommand;
+        private ICommand rejectUSCommand;
+
+
+
 
 
         #endregion Fields
@@ -159,6 +165,14 @@ namespace Client.ViewModel
             get { return nonSentProjects; }
             set { nonSentProjects = value; }
         }
+
+        public ObservableCollection<UserStory> AnswerToUS
+        {
+            get { return answerToUS; }
+            set { answerToUS = value; }
+        }
+
+
 
 
         public ICommand LoginCommand
@@ -296,6 +310,28 @@ namespace Client.ViewModel
             }
 
         }
+
+        public ICommand AcceptUSCommand
+        {
+            get
+            {
+                return acceptUSCommand ?? (acceptUSCommand = new RelayCommand(param => this.AcceptUS(param)));
+            }
+
+        }
+
+        public ICommand RejectUSCommand
+        {
+            get
+            {
+                return rejectUSCommand ?? (rejectUSCommand = new RelayCommand(param => this.RejectUS(param)));
+            }
+
+        }
+
+
+
+
 
 
 
@@ -466,13 +502,16 @@ namespace Client.ViewModel
             LogHelper.GetLogger().Info("FetchProjects called.");
 
             List<Project> result = proxy.GetAllProjects();
+
             Projects.Clear();
             AcceptedProjects.Clear();
             NonSentProjects.Clear();
             if (result != null)
             {
-                foreach (var proj in result)
+                foreach (Project proj in result)
                 {
+
+
                     Projects.Add(proj);
                     if (proj.IsAccepted)
                     {
@@ -482,14 +521,27 @@ namespace Client.ViewModel
                     {
                         NonSentProjects.Add(proj);
                     }
+
                 }
             }
-
-            /*Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Approved" });
-
-            Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Disapproved" });
-            */
+            FetchUserStories();
         }
+
+        void FetchUserStories()
+        {
+            AnswerToUS.Clear();
+            List<UserStory> result = proxy.GetAllUserStories();
+            if (result != null)
+            {
+                foreach (UserStory us in result)
+                {
+                    if (us.IsUserStorySent)
+                        AnswerToUS.Add(us);
+                }
+            }
+        }
+
+
 
         private void SendCompanyRequest(object param)
         {
@@ -601,6 +653,43 @@ namespace Client.ViewModel
             FetchCompanies();
 
 
+        }
+        private void AcceptUS(object param)
+        {
+            LogHelper.GetLogger().Info("AcceptUS called.");
+
+            if (param == null)
+            {
+                LogHelper.GetLogger().Warn("[AcceptUS] Command parameters has NULL value");
+            }
+            UserStory us = param as UserStory;
+            Project proj = proxy.GetProjectFromUserStory(us);
+            Company company = new Company();
+            // us.Project = new Project();
+            us.IsUserStoryAccepted = true;
+            us.IsUserStorySent = false;
+            bool success = proxy.AnswerToUserStory(company, proj, us);
+            proxy.UpdateUserStory(us);
+            FetchProjects();
+        }
+
+        private void RejectUS(object param)
+        {
+            LogHelper.GetLogger().Info("RejectUS called.");
+
+            if (param == null)
+            {
+                LogHelper.GetLogger().Warn("[RejectUS] Command parameters has NULL value");
+            }
+            UserStory us = param as UserStory;
+            //     us.Project = new Project();
+            Project proj = proxy.GetProjectFromUserStory(us);
+            Company company = new Company();
+            us.IsUserStorySent = false;
+            us.IsUserStoryAccepted = false;
+            bool success = proxy.AnswerToUserStory(company, proj, us);
+            proxy.UpdateUserStory(us);
+            FetchProjects();
         }
 
         #endregion Methods
