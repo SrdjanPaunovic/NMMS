@@ -8,30 +8,44 @@ using Common.Entities;
 
 namespace CommonTest.EntitiesTest
 {
-	[TestFixture]
-	public class ProjectTest
-	{
-		private Project projectUnderTest;
+    [TestFixture]
+    public class ProjectTest
+    {
+        private Project projectUnderTest;
+        private OcProject ocProj;
 
-		[OneTimeSetUp]
-		public void SetupTest()
-		{
-			projectUnderTest = new Project();
-		}
+        [OneTimeSetUp]
+        public void SetupTest()
+        {
+            projectUnderTest = new Project();
+            ocProj = new OcProject();
+        }
 
-		[Test]
-		public void ConstructorTest()
-		{
-			Assert.DoesNotThrow(() => new Project());
-		}
+        [Test]
+        public void ConstructorTest()
+        {
+            Assert.DoesNotThrow(() => new Project());
+        }
 
-		[Test]
-		public void IdPropertyTest()
-		{
-			int id = 1;
-			projectUnderTest.Id = id;
-			Assert.AreEqual(id, projectUnderTest.Id);
-		}
+        [Test]
+        public void ConstructorTestWithParams1()
+        {
+            Assert.DoesNotThrow(() => new Project(ocProj));
+        }
+
+        [Test]
+        public void ConstructorTestWithParams2()
+        {
+            Assert.DoesNotThrow(() => new Project(projectUnderTest));
+        }
+
+        [Test]
+        public void IdPropertyTest()
+        {
+            int id = 1;
+            projectUnderTest.Id = id;
+            Assert.AreEqual(id, projectUnderTest.Id);
+        }
         [Test]
         public void ProductOwnerPropertyTest()
         {
@@ -87,14 +101,54 @@ namespace CommonTest.EntitiesTest
             List<UserStory> userStories = new List<UserStory>();
             userStories.Add(new UserStory());
             userStories.Add(new UserStory());
-            foreach(var us in userStories)
+            foreach (var us in userStories)
             {
                 projectUnderTest.UserStories.Add(us);
 
             }
             Assert.AreEqual(userStories, projectUnderTest.UserStories);
         }
-		
 
-	}
+        [Test]
+        public void IsApprovedPropertyTest()
+        {
+            bool pom = true;
+            projectUnderTest.IsAproved = pom;
+            Assert.AreEqual(pom, projectUnderTest.IsAproved);
+        }
+
+        [Test]
+        public void IsAcceptedPropertyTest()
+        {
+            bool pom = true;
+            projectUnderTest.IsAccepted = pom;
+            Assert.AreEqual(pom, projectUnderTest.IsAccepted);
+        }
+
+        [Test]
+        public void HiringCompPropertyTest()
+        {
+            string hc = "HC";
+            projectUnderTest.HiringCompany = hc;
+            Assert.AreEqual(hc, projectUnderTest.HiringCompany);
+        }
+
+        [Test]
+        public void IsProjectRequestSentPropertyTest()
+        {
+            bool pom = true;
+            projectUnderTest.IsProjectRequestSent = pom;
+            Assert.AreEqual(pom, projectUnderTest.IsProjectRequestSent);
+        }
+
+        [Test]
+        public void UpdateProjectTest()
+        {
+            Project p = new Project();
+            Assert.DoesNotThrow(() => projectUnderTest.UpdateProperties(p));
+        }
+
+
+
+    }
 }
