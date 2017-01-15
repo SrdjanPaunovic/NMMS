@@ -29,18 +29,18 @@ namespace Client.View
             Initialized += ProfileDialog_Initialized;
 
             InitializeComponent();
-        }        
-
-        public ProfileDialog(string LoggedUsername)
-        {
-            DataContext = new ProfileDialogViewModel(LoggedUsername);
-            Initialized += ProfileDialog_Initialized;
-
-            InitializeComponent();
-
         }
 
-        void ProfileDialog_Initialized(object sender, EventArgs e)
+		public ProfileDialog(OcUser user)
+		{
+			DataContext = new ProfileDialogViewModel(user);
+			Initialized += ProfileDialog_Initialized;
+
+			InitializeComponent();
+
+		}
+
+		void ProfileDialog_Initialized(object sender, EventArgs e)
         {
             var viewModel = DataContext as ProfileDialogViewModel;
 

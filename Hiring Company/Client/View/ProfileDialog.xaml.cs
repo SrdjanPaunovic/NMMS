@@ -35,9 +35,9 @@ namespace Client.View
             InitializeComponent();
         }        
 
-        public ProfileDialog(string LoggedUsername)
+        public ProfileDialog(User user)
         {
-            DataContext = new ProfileDialogViewModel(LoggedUsername);
+            DataContext = new ProfileDialogViewModel(user);
             Initialized += ProfileDialog_Initialized;
 
             InitializeComponent();

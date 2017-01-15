@@ -25,21 +25,21 @@ namespace Client.ViewModel
             LogHelper.GetLogger().Info("Profile Dialog initialized.");
         }
 
-        public ProfileDialogViewModel(string LoggedUsername)
-        {
+		public ProfileDialogViewModel(OcUser user)
+		{
 
-            User = proxy.GetUser(LoggedUsername);
+			User = user;
 
-            if (User == null)
-            {
-                LogHelper.GetLogger().Error("Error while loading ProfileDialog, User = NULL");
-            }
+			if (User == null)
+			{
+				LogHelper.GetLogger().Error("Error while loading ProfileDialog, User = NULL");
+			}
 
-            LogHelper.GetLogger().Info("Profile Dialog initialized.");
-        }
+			LogHelper.GetLogger().Info("Profile Dialog initialized.");
+		}
 
-        #region Commands
-        private ICommand cancelCommand;
+		#region Commands
+		private ICommand cancelCommand;
         private ICommand saveCommand;
 
         public ICommand CancelCommand
@@ -92,11 +92,14 @@ namespace Client.ViewModel
 
             if (success)
             {
-                LogHelper.GetLogger().Info("Profile Dialog closed.");
-                parentWindow.DialogResult = true;
-                parentWindow.Tag = User.Username;
-                parentWindow.Close();
-            }
+				LogHelper.GetLogger().Info("Profile Dialog closed.");
+				parentWindow.DialogResult = true;
+				if (((App)App.Current).LoggedUser.Id == User.Id)
+				{
+					parentWindow.Tag = User;
+				}
+				parentWindow.Close();
+			}
             else
             {
                 LogHelper.GetLogger().Warn("Profile Dialog UpdateUser failed.");

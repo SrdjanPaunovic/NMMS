@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Entities;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -17,6 +18,7 @@ namespace Client
 	public partial class App : Application
 	{
 		public readonly string HostAddress = "net.tcp://localhost:5000/IOutSourceContract";
+		private OcUser loggedUser;
 		private OutSClientProxy proxy;
 
 		public App()
@@ -24,6 +26,19 @@ namespace Client
 			proxy = new OutSClientProxy(new NetTcpBinding(), HostAddress);
 			log4net.Config.XmlConfigurator.Configure();
 
+		}
+
+		public OcUser LoggedUser
+		{
+			get
+			{
+				return loggedUser;
+			}
+
+			set
+			{
+				loggedUser = value;
+			}
 		}
 
 		public OutSClientProxy Proxy

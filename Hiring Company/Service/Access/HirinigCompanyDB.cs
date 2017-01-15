@@ -167,305 +167,310 @@ namespace Service.Access
         //    }
         //}
 
-        public List<Company> GetAllCompanies()
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                var result = from company in context.Companies select company;
-                List<Company> companies = result.ToList();
-                LogHelper.GetLogger().Info("GetAllCompanies method succeeded. Returned list of all companies.");
+		public List<Company> GetAllCompanies()
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				var result = from company in context.Companies select company;
+				List<Company> companies = result.ToList();
+				LogHelper.GetLogger().Info("GetAllCompanies method succeeded. Returned list of all companies.");
 
-                return companies;
-            }
-        }
+				return companies;
+			}
+		}
 
-        public bool UpdateUser(User user)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                var result = from i in context.Users
-                             where i.Id == user.Id
-                             select i;
-                User us = result.ToList<User>().FirstOrDefault();
-                if (us != null)
-                {
-                    if (us.Username != user.Username)
-                    {
-                        var res = from j in context.Users
-                                  where j.Username == user.Username
-                                  select j;
-                        List<User> users = res.ToList<User>();
-                        if (users.Count == 0)
-                        {
-                            us.UpdateProperties(user);
-                            context.Entry(us).State = System.Data.Entity.EntityState.Modified;
-                            context.SaveChanges();
-                            LogHelper.GetLogger().Info(" UpdateUser method succeeded.");
+		public bool UpdateUser(User user)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				var result = from i in context.Users
+							 where i.Id == user.Id
+							 select i;
+				User us = result.ToList<User>().FirstOrDefault();
+				if (us != null)
+				{
+					if (us.Username != user.Username)
+					{
+						var res = from j in context.Users
+								  where j.Username == user.Username
+								  select j;
+						List<User> users = res.ToList<User>();
+						if (users.Count == 0)
+						{
+							us.UpdateProperties(user);
+							context.Entry(us).State = System.Data.Entity.EntityState.Modified;
+							context.SaveChanges();
+							LogHelper.GetLogger().Info(" UpdateUser method succeeded.");
 
-                        }
-                        else
-                        {
-                            LogHelper.GetLogger().Info("UpdateUser method returned false.");
+						}
+						else
+						{
+							LogHelper.GetLogger().Info("UpdateUser method returned false.");
 
-                            return false;
-                        }
+							return false;
+						}
 
-                    }
-                    else
-                    {
-                        us.UpdateProperties(user);
-                        context.Entry(us).State = System.Data.Entity.EntityState.Modified;
-                        context.SaveChanges();
-                    }
-                    LogHelper.GetLogger().Info(" UpdateUser method succeeded. Returned true.");
+					}
+					else
+					{
+						us.UpdateProperties(user);
+						context.Entry(us).State = System.Data.Entity.EntityState.Modified;
+						context.SaveChanges();
+					}
+					LogHelper.GetLogger().Info(" UpdateUser method succeeded. Returned true.");
 
-                    return true;
-                }
-            }
-            LogHelper.GetLogger().Info(" UpdateUser method returned false.");
+					return true;
+				}
+			}
+			LogHelper.GetLogger().Info(" UpdateUser method returned false.");
 
-            return false;
-        }
+			return false;
+		}
 
-        public User GetUser(string username)
-        {
-            using (AccessDB context = new AccessDB())
-            {
+		public User GetUser(string username)
+		{
+			using (AccessDB context = new AccessDB())
+			{
 
-                User user = context.Users.FirstOrDefault((x) => x.Username == username);
-                if (user != null)
-                {
-                    LogHelper.GetLogger().Info("GetUser method succeeded.");
+				User user = context.Users.FirstOrDefault((x) => x.Username == username);
+				if (user != null)
+				{
+					LogHelper.GetLogger().Info("GetUser method succeeded.");
 
-                    return user;
-                }
-            }
-            LogHelper.GetLogger().Info(" GetUser returned null.");
+					return user;
+				}
+			}
+			LogHelper.GetLogger().Info(" GetUser returned null.");
 
-            return null;
-        }
+			return null;
+		}
 
-        public bool AddProject(Project project)
-        {
-            using (var db = new AccessDB())
-            {
-                db.Projects.Add(project);
-                int i = db.SaveChanges();
-                if (i > 0)
-                {
-                    LogHelper.GetLogger().Info("AddProject method succeeded. Returned true.");
+		public bool AddProject(Project project)
+		{
+			using (var db = new AccessDB())
+			{
+				User prodOw = null;
+				if (project.ProductOwner != null)
+				{
+					prodOw = db.Users.FirstOrDefault<User>(x => x.Id == project.ProductOwner.Id);
+				}
+				project.ProductOwner = prodOw;
+				db.Projects.Add(project);
 
-                    return true;
-                }
-                LogHelper.GetLogger().Info(" AddProject method returned false.");
+				int i = db.SaveChanges();
+				if (i > 0)
+				{
+					LogHelper.GetLogger().Info("AddProject method succeeded. Returned true.");
 
-                return false;
+					return true;
+				}
+				LogHelper.GetLogger().Info(" AddProject method returned false.");
 
-            }
-        }
+				return false;
 
-        public bool UpdateProject(Project project)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                Project proj = context.Projects.FirstOrDefault<Project>((x) => x.Name == project.Name);
+			}
+		}
 
-                if (proj != null)
-                {
+		public bool UpdateProject(Project project)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				Project proj = context.Projects.FirstOrDefault<Project>((x) => x.Name == project.Name);
 
-                    proj.UpdateProperties(project);
-                    List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
-                    foreach (var us in userStories)
-                    {
-                        if (project.UserStories.ToList().Exists((x) => x.Id == us.Id))
-                        {
-                            continue;
-                        }
+				if (proj != null)
+				{
 
-                        context.Entry(us).State = System.Data.Entity.EntityState.Deleted;
-                    }
+					proj.UpdateProperties(project);
+					List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
+					foreach (var us in userStories)
+					{
+						if (project.UserStories.ToList().Exists((x) => x.Id == us.Id))
+						{
+							continue;
+						}
 
-                    foreach (var us in project.UserStories)
-                    {
-                        if (us.Id == 0)
-                        {
-                            proj.UserStories.Add(us);
-                        }
-                    }
-                    proj.IsAccepted = project.IsAccepted;
-                    proj.IsProjectRequestSent = project.IsProjectRequestSent;
-                    if (project.DevelopCompany != null)
-                    {
-                        var v = context.Companies.FirstOrDefault<Company>(x => x.Name == project.DevelopCompany.Name);
-                        proj.DevelopCompany = v;
-                    }
-                    context.Entry(proj).State = System.Data.Entity.EntityState.Modified;
-                    context.SaveChanges();
-                    LogHelper.GetLogger().Info(" UpdateProject method succeeded. Returned true.");
+						context.Entry(us).State = System.Data.Entity.EntityState.Deleted;
+					}
 
-                    return true;
-                }
-                LogHelper.GetLogger().Info("UpdateProject method returned false.");
+					foreach (var us in project.UserStories)
+					{
+						if (us.Id == 0)
+						{
+							proj.UserStories.Add(us);
+						}
+					}
+					proj.IsAccepted = project.IsAccepted;
+					proj.IsProjectRequestSent = project.IsProjectRequestSent;
+					if (project.DevelopCompany != null)
+					{
+						var v = context.Companies.FirstOrDefault<Company>(x => x.Name == project.DevelopCompany.Name);
+						proj.DevelopCompany = v;
+					}
+					context.Entry(proj).State = System.Data.Entity.EntityState.Modified;
+					context.SaveChanges();
+					LogHelper.GetLogger().Info(" UpdateProject method succeeded. Returned true.");
 
-                return false;
-            }
-        }
+					return true;
+				}
+				LogHelper.GetLogger().Info("UpdateProject method returned false.");
 
-        public List<Project> GetAllProjects()
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                List<Project> projects = context.Projects.Include("DevelopCompany").ToList();
+				return false;
+			}
+		}
 
-                foreach (var proj in projects)
-                {
-                    if (proj.DevelopCompany != null)
-                    {
-                        //todo reference in company
-                    }
-                }
+		public List<Project> GetAllProjects()
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				List<Project> projects = context.Projects.Include("DevelopCompany").Include("ProductOwner").ToList();
 
-                LogHelper.GetLogger().Info("GetAllProjects method succeeded. Returned list of projects.");
+				foreach (var proj in projects)
+				{
+					if (proj.ProductOwner != null)
+					{
+					}
+				}
 
-                return projects;
-            }
-        }
+				LogHelper.GetLogger().Info("GetAllProjects method succeeded. Returned list of projects.");
 
-        public List<UserStory> GetUserStoryFromProject(Project project)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Name == project.Name).ToList();
-                LogHelper.GetLogger().Info("GetUserStoryFromProject method succeeded. Returned list of user stories.");
-                return userStories;
-            }
-        }
+				return projects;
+			}
+		}
 
-        public bool UpdateUserStory(UserStory userStory)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                UserStory us = context.UserStories.FirstOrDefault<UserStory>((x) => x.Id == userStory.Id);
+		public List<UserStory> GetUserStoryFromProject(Project project)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				List<UserStory> userStories = context.UserStories.Where<UserStory>((x) => x.Project.Id == project.Id).ToList();
+				LogHelper.GetLogger().Info("GetUserStoryFromProject method succeeded. Returned list of user stories.");
+				return userStories;
+			}
+		}
 
-                if (us != null)
-                {
-                    us.UpdateProperties(userStory);
-                    List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
-                    foreach (var t in tasks)
-                    {
-                        if (userStory.Tasks.ToList().Exists((x) => x.Id == t.Id))
-                        {
-                            continue;
-                        }
+		public bool UpdateUserStory(UserStory userStory)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				UserStory us = context.UserStories.FirstOrDefault<UserStory>((x) => x.Id == userStory.Id);
 
-                        context.Entry(t).State = System.Data.Entity.EntityState.Deleted;
-                    }
+				if (us != null)
+				{
+					us.UpdateProperties(userStory);
+					List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
+					foreach (var t in tasks)
+					{
+						if (userStory.Tasks.ToList().Exists((x) => x.Id == t.Id))
+						{
+							continue;
+						}
 
-                    foreach (var t in userStory.Tasks)
-                    {
-                        if (t.Id == 0)
-                        {
-                            us.Tasks.Add(t);
-                        }
-                    }
-                    context.Entry(us).State = System.Data.Entity.EntityState.Modified;
-                    context.SaveChanges();
-                    return true;
-                }
+						context.Entry(t).State = System.Data.Entity.EntityState.Deleted;
+					}
 
-                return false;
-            }
-        }
+					foreach (var t in userStory.Tasks)
+					{
+						if (t.Id == 0)
+						{
+							us.Tasks.Add(t);
+						}
+					}
+					context.Entry(us).State = System.Data.Entity.EntityState.Modified;
+					context.SaveChanges();
+					return true;
+				}
 
-        public bool RemoveCompany(Company company)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                Company c = context.Companies.FirstOrDefault<Company>((x) => x.Name.Equals(company.Name));
-                if (c == null)
-                {
-                    return false;
-                }
-                context.Companies.Remove(c);
-                context.Entry(c).State = System.Data.Entity.EntityState.Deleted;
-                context.SaveChanges();
-            }
-            return true;
-        }
+				return false;
+			}
+		}
 
-        public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
+		public bool RemoveCompany(Company company)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				Company c = context.Companies.FirstOrDefault<Company>((x) => x.Name.Equals(company.Name));
+				if (c == null)
+				{
+					return false;
+				}
+				context.Companies.Remove(c);
+				context.Entry(c).State = System.Data.Entity.EntityState.Deleted;
+				context.SaveChanges();
+			}
+			return true;
+		}
 
-                return tasks;
-            }
-        }
+		public List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				List<Common.Entities.Task> tasks = context.Tasks.Where<Common.Entities.Task>((x) => x.UserStory.Id == userStory.Id).ToList();
 
-        public Project GetProjectFromUserStory(UserStory userStory)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                UserStory us = context.UserStories.Include("Project").FirstOrDefault<UserStory>((x) => x.Name == userStory.Name);
-                Project proj = context.Entry(us).Reference("Project").CurrentValue as Project;
-                proj.UserStories = null; //because of circular reference
-                return proj;
-            }
-        }
+				return tasks;
+			}
+		}
 
-        public bool ModifyCompanyToPartner(Company company)
-        {
-            using (AccessDB context = new AccessDB())
-            {
+		public Project GetProjectFromUserStory(UserStory userStory)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				UserStory us = context.UserStories.Include("Project").FirstOrDefault<UserStory>((x) => x.Id == userStory.Id);
+				Project proj = context.Entry(us).Reference("Project").CurrentValue as Project;
+				proj.UserStories = null; //because of circular reference
+				return proj;
+			}
+		}
 
-                Company com = context.Companies.FirstOrDefault((x) => x.Name == company.Name);
-                if (com != null)
-                {
-                    com.State = State.CompanyState.Partner;
-                    context.Entry(com).State = System.Data.Entity.EntityState.Modified;
-                    context.SaveChanges();
-                    return true;
-                }
-            }
-            return false;
-        }
+		public bool ModifyCompanyToPartner(Company company)
+		{
+			using (AccessDB context = new AccessDB())
+			{
 
-        public List<User> GetAllUsers()
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                List<User> users = context.Users.ToList();
+				Company com = context.Companies.FirstOrDefault((x) => x.Name == company.Name);
+				if (com != null)
+				{
+					com.State = State.CompanyState.Partner;
+					context.Entry(com).State = System.Data.Entity.EntityState.Modified;
+					context.SaveChanges();
+					return true;
+				}
+			}
+			return false;
+		}
 
-                LogHelper.GetLogger().Info("GetAllUsers method succeeded. Returned list of users.");
+		public List<User> GetAllUsers()
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				List<User> users = context.Users.ToList();
 
-                return users;
-            }
-        }
+				LogHelper.GetLogger().Info("GetAllUsers method succeeded. Returned list of users.");
+
+				return users;
+			}
+		}
 
 
-        public bool RemoveUser(User user)
-        {
-            using (AccessDB context = new AccessDB())
-            {
-                User us = context.Users.FirstOrDefault<User>((x) => x.Id == user.Id);
+		public bool RemoveUser(User user)
+		{
+			using (AccessDB context = new AccessDB())
+			{
+				User us = context.Users.FirstOrDefault<User>((x) => x.Id == user.Id);
 
-                if (us != null)
-                {
+				if (us != null)
+				{
 
-                    context.Entry(us).State = System.Data.Entity.EntityState.Deleted;
-                    context.SaveChanges();
-                    LogHelper.GetLogger().Info(" RemoveUser method succeeded. Returned true.");
+					context.Entry(us).State = System.Data.Entity.EntityState.Deleted;
+					context.SaveChanges();
+					LogHelper.GetLogger().Info(" RemoveUser method succeeded. Returned true.");
 
-                    return true;
-                }
-                LogHelper.GetLogger().Info("RemoveUser method returned false.");
+					return true;
+				}
+				LogHelper.GetLogger().Info("RemoveUser method returned false.");
 
-                return false;
-            }
+				return false;
+			}
 
-        }
-
+		}
 
         public bool ChangeCompanyState(Company company, State.CompanyState companyState)
         {

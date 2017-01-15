@@ -24,8 +24,9 @@ namespace Client.ViewModel
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+		private static object _syncLock = new object();
 
-        public IHiringContract proxy;
+		public IHiringContract proxy = ((App)App.Current).Proxy;
         public MainWindowViewModel()
         {
             string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -33,38 +34,31 @@ namespace Client.ViewModel
             path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
-            proxy = ((App)App.Current).Proxy;
+			BindingOperations.EnableCollectionSynchronization(allEmployees, _syncLock);
 
-            Thread updateThread = new Thread(() => UpdateData(this));
-            updateThread.Start();
-        }
+		}
 
-        private void UpdateData(MainWindowViewModel viewModel)
+		public void UpdateData()
         {
-            if (viewModel != null)
-            {
-                while (true)
-                {
-                    switch (viewModel.CurrentState)
-                    {
-                        case Common.Entities.WindowState.LOGIN:
-                            break;
-                        case Common.Entities.WindowState.EMPLOYEES:
-                            viewModel.ShowEmployeesCommand.Execute(null);
-                            break;
-                        case Common.Entities.WindowState.COMPANIES:
-                            viewModel.DisplayCompaniesCommand.Execute(null);
-                            break;
-                        case Common.Entities.WindowState.PROJECTS:
-                            viewModel.DisplayProjectsCommand.Execute(null);
-                            break;
-                        default:
-                            break;
-                    }
-                    Thread.Sleep(3800);
-                }
-            }
-
+			lock (_syncLock)
+			{
+				switch (CurrentState)
+				{
+					case Common.Entities.WindowState.LOGIN:
+						break;
+					case Common.Entities.WindowState.EMPLOYEES:
+						ShowEmployeesCommand.Execute(null);
+						break;
+					case Common.Entities.WindowState.COMPANIES:
+						DisplayCompaniesCommand.Execute(null);
+						break;
+					case Common.Entities.WindowState.PROJECTS:
+						DisplayProjectsCommand.Execute(null);
+						break;
+					default:
+						break;
+				}
+			}
         }
         public MainWindowViewModel(string test)
         {
@@ -72,9 +66,6 @@ namespace Client.ViewModel
         }
         #region Fields
 
-
-
-        private string loggedUsername = "";
         private ObservableCollection<Company> partnerCompanies = new AsyncObservableCollection<Company>();
         private ObservableCollection<Company> nonPartnerCompanies = new AsyncObservableCollection<Company>();
         private ObservableCollection<Project> projects = new AsyncObservableCollection<Project>();
@@ -82,11 +73,6 @@ namespace Client.ViewModel
         private ObservableCollection<Project> acceptedProjects = new AsyncObservableCollection<Project>();
         private ObservableCollection<Project> nonSentProjects = new AsyncObservableCollection<Project>();
         private ObservableCollection<UserStory> answerToUS = new AsyncObservableCollection<UserStory>();
-
-
-
-
-
 
         private Common.Entities.WindowState currentState = Common.Entities.WindowState.LOGIN;
         private NetTcpBinding netTcpBinding = new NetTcpBinding();
@@ -239,20 +225,6 @@ namespace Client.ViewModel
             }
         }
 
-        public string LoggedUsername
-        {
-            get
-            {
-                return loggedUsername;
-            }
-
-            set
-            {
-                loggedUsername = value;
-                OnPropertyChanged("LoggedUsername");
-            }
-        }
-
         public ICommand LogOutCommand
         {
             get
@@ -311,34 +283,42 @@ namespace Client.ViewModel
 
         }
 
-        public ICommand AcceptUSCommand
-        {
-            get
-            {
-                return acceptUSCommand ?? (acceptUSCommand = new RelayCommand(param => this.AcceptUS(param)));
-            }
+		public User LoggedUser
+		{
+			get
+			{
+				return ((App)App.Current).LoggedUser;
+			}
+  		set
+			{
+				((App)App.Current).LoggedUser = value;
+				OnPropertyChanged("LoggedUser");
 
+			}
+		}
+
+     public ICommand AcceptUSCommand
+    {
+        get
+        {
+            return acceptUSCommand ?? (acceptUSCommand = new RelayCommand(param => this.AcceptUS(param)));
         }
 
-        public ICommand RejectUSCommand
-        {
-            get
-            {
-                return rejectUSCommand ?? (rejectUSCommand = new RelayCommand(param => this.RejectUS(param)));
-            }
+    }
 
+    public ICommand RejectUSCommand
+    {
+        get
+        {
+            return rejectUSCommand ?? (rejectUSCommand = new RelayCommand(param => this.RejectUS(param)));
         }
 
+    }
 
+		#endregion Properties
 
-
-
-
-
-        #endregion Properties
-
-        #region Methods
-        private void LoginClick(object param)
+		#region Methods
+		private void LoginClick(object param)
         {
             LogHelper.GetLogger().Info("LoginClick occurred.");
 
@@ -363,7 +343,7 @@ namespace Client.ViewModel
 
             if (success)
             {
-                LoggedUsername = username;
+				LoggedUser = proxy.GetUser(username);
                 CurrentState = Common.Entities.WindowState.PROJECTS;
             }
 
@@ -371,18 +351,8 @@ namespace Client.ViewModel
 
         private void ShowProfile()
         {
-            //TODO
             LogHelper.GetLogger().Info("ShowProfile called.");
-
-            ProfileDialog profileDialog = new ProfileDialog(LoggedUsername);
-            var res = profileDialog.ShowDialog();
-            if (res == true)
-            {
-                if (profileDialog.Tag != null)
-                {
-                    LoggedUsername = profileDialog.Tag.ToString();
-                }
-            }
+			EditUserProfile(LoggedUser);
         }
 
         private void ShowEmployees()
@@ -430,11 +400,12 @@ namespace Client.ViewModel
         {
             LogHelper.GetLogger().Info("LogOut called.");
 
-            bool success = proxy.LogOut(LoggedUsername);
+            bool success = proxy.LogOut(LoggedUser.Username);
 
             if (success)
             {
-                LoggedUsername = "";
+				LoggedUser.Username = "";
+				LoggedUser = null;
                 CurrentState = Common.Entities.WindowState.LOGIN;
             }
             else
@@ -576,16 +547,21 @@ namespace Client.ViewModel
             }
             LogHelper.GetLogger().Info("ShowProfile params ok.");
 
-            ProfileDialog profileDialog = new ProfileDialog(user.Username);
+            ProfileDialog profileDialog = new ProfileDialog(user);
             var res = profileDialog.ShowDialog();
             if (res == true)
             {
                 if (profileDialog.Tag != null)
                 {
-                    LoggedUsername = profileDialog.Tag.ToString();
+                    LoggedUser = profileDialog.Tag as User;
                 }
-            }
-        }
+				
+			}
+
+			//if was clicked Cancel need to return to old User data
+			//or if was clicked Save need to return new User data
+			LoggedUser = proxy.GetUser(LoggedUser.Username);
+		}
 
         private void DeleteUser(object param)
         {
@@ -630,7 +606,8 @@ namespace Client.ViewModel
 
 
         }
-        private void SendProjectRequest(object param)
+
+		private void SendProjectRequest(object param)
         {
             LogHelper.GetLogger().Info("SendProjectRequest called.");
 
