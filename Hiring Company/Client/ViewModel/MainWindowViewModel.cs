@@ -287,7 +287,6 @@ namespace Client.ViewModel
 				LoggedUsername = username;
 				CurrentState = Common.Entities.WindowState.PROJECTS;
 			}
-
 		}
 
 		private void ShowProfile()

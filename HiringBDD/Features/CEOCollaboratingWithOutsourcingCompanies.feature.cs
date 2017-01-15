@@ -69,8 +69,6 @@ namespace HiringBDD.Features
 #line 6
 #line 7
  testRunner.Given("CEO exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 8
- testRunner.And("CEO is logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
         
@@ -79,10 +77,12 @@ namespace HiringBDD.Features
         public virtual void CEOSendRequestToOSCompany()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CEO send request to OS company", ((string[])(null)));
-#line 10
+#line 9
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
+#line 10
+ testRunner.Given("Non-partner company exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11
  testRunner.Given("CEO get list of non-partner companies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 12
@@ -108,21 +108,6 @@ this.FeatureBackground();
  testRunner.When("CEO approve project", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 18
  testRunner.Then("Project should be successfully approved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("CEO can see all projects with user stories")]
-        public virtual void CEOCanSeeAllProjectsWithUserStories()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CEO can see all projects with user stories", ((string[])(null)));
-#line 20
-this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
-#line 21
- testRunner.Then("CEO should see all projects", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

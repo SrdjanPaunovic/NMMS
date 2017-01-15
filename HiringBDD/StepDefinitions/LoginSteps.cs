@@ -20,10 +20,12 @@ namespace HiringBDD.StepDefinitions
 		{
 			HiringClientProxy proxy = new HiringClientProxy(new NetTcpBinding(), "net.tcp://localhost:4000/IHiringContract");
 			User admin = proxy.GetUser("admin");
-			if(admin != null)
+			if (admin != null)
 			{
 				proxy.AddUser(new User("admin", "admin", Role.developer));
 			}
+			admin = proxy.GetUser("admin");
+			Assert.AreNotEqual(null, admin);
 		}
 
 		[Given(@"I enter valid ""(.*)"" or ""(.*)""")]

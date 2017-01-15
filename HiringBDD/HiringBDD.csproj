@@ -48,6 +48,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\..\..\Desktop\Git\NSubstitute-1.4.3.0\lib\NET40\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -124,6 +127,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepDefinitions\CEOCollaboratingWithOutsourcingCompaniesSteps.cs" />
     <Compile Include="StepDefinitions\ChangeProfileSteps.cs" />
+    <Compile Include="StepDefinitions\EmployeeWorkTimeSteps.cs" />
     <Compile Include="StepDefinitions\LoginSteps.cs" />
     <Compile Include="StepDefinitions\LogoutSteps.cs" />
   </ItemGroup>
