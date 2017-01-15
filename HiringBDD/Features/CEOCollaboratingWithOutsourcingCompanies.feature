@@ -17,5 +17,5 @@ Scenario: CEO approve project
 	When CEO approve project
 	Then Project should be successfully approved
 
-Scenario: CEO can see all project with user stories
+Scenario: CEO can see all projects with user stories
 	Then CEO should see all projects

@@ -24,7 +24,7 @@ namespace HiringBDD.Features
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "ListCompanies.feature"
+#line 1 "CEOCollaboratingWithOutsourcingCompanies.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]
@@ -113,10 +113,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("CEO can see all project with user stories")]
-        public virtual void CEOCanSeeAllProjectWithUserStories()
+        [NUnit.Framework.DescriptionAttribute("CEO can see all projects with user stories")]
+        public virtual void CEOCanSeeAllProjectsWithUserStories()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CEO can see all project with user stories", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CEO can see all projects with user stories", ((string[])(null)));
 #line 20
 this.ScenarioSetup(scenarioInfo);
 #line 6

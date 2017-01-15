@@ -66,10 +66,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Features\ListCompanies.feature.cs">
+    <Compile Include="Features\CEOCollaboratingWithOutsourcingCompanies.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ListCompanies.feature</DependentUpon>
+      <DependentUpon>CEOCollaboratingWithOutsourcingCompanies.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\ChangeProfile.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChangeProfile.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\EmployeeLateForWork.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmployeeLateForWork.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\EmployeeWorkTime.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmployeeWorkTime.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\HR.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HR.feature</DependentUpon>
     </Compile>
     <Compile Include="Features\Login.feature.cs">
       <AutoGen>True</AutoGen>
@@ -81,15 +101,52 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Logout.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\PasswordChange.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PasswordChange.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\POManageProject.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>POManageProject.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\SMsupervising.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SMsupervising.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\UsersOverview.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UsersOverview.feature</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepDefinitions\CEOCollaboratingWithOutsourcingCompaniesSteps.cs" />
+    <Compile Include="StepDefinitions\ChangeProfileSteps.cs" />
     <Compile Include="StepDefinitions\LoginSteps.cs" />
     <Compile Include="StepDefinitions\LogoutSteps.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Features\ListCompanies.feature">
+    <None Include="Features\CEOCollaboratingWithOutsourcingCompanies.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ListCompanies.feature.cs</LastGenOutput>
+      <LastGenOutput>CEOCollaboratingWithOutsourcingCompanies.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\ChangeProfile.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ChangeProfile.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\EmployeeLateForWork.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>EmployeeLateForWork.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\EmployeeWorkTime.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>EmployeeWorkTime.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\HR.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>HR.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\Login.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -98,6 +155,22 @@
     <None Include="Features\Logout.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Logout.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\PasswordChange.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PasswordChange.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\POManageProject.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>POManageProject.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\SMsupervising.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SMsupervising.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\UsersOverview.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>UsersOverview.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -109,6 +182,10 @@
     <ProjectReference Include="..\Hiring Company\Client\HiringClient.csproj">
       <Project>{3e84e861-6ca7-4da8-ad27-6bac51782fbd}</Project>
       <Name>HiringClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hiring Company\ServiceContract\HiringServiceContract.csproj">
+      <Project>{42adaa43-a6cb-45d2-a5dd-6495b3a3ccac}</Project>
+      <Name>HiringServiceContract</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hiring Company\Service\HiringService.csproj">
       <Project>{de353fa5-6d5c-4482-b26a-35d6fc5e423b}</Project>
