@@ -17,17 +17,17 @@ namespace Client.ViewModel
 
         public User User { get; set; }
 
-        private IHiringContract proxy = ((App)App.Current).Proxy;
+        public IHiringContract proxy;
         public ProfileDialogViewModel()
         {
-
             User = new User();
-
+            proxy = App.Proxy;
             LogHelper.GetLogger().Info("Profile Dialog initialized.");
         }
 
         public ProfileDialogViewModel(string LoggedUsername)
         {
+            proxy = App.Proxy;
 
             User = proxy.GetUser(LoggedUsername);
 

@@ -33,7 +33,7 @@ namespace Client.ViewModel
             path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
-            proxy = ((App)App.Current).Proxy;
+            proxy =App.Proxy;
 
             Thread updateThread = new Thread(() => UpdateData(this));
             updateThread.Start();

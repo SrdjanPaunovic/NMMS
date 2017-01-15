@@ -19,13 +19,13 @@ using System.Net.Sockets;
 
 namespace HiringCompanyService
 {
-	class Program
+ class Program
 	{
 
 		private static ServiceHost host;
 		private static ServiceHost hostForOutS;
 		public static string baseAddress;
-		public static Company myHiringCompany;
+		public static Company myHiringCompany=new Company("test_name");
 		public static string companyName;
 		public static Thread checkTimeThread;
 		public static Thread checkPasswordThread;

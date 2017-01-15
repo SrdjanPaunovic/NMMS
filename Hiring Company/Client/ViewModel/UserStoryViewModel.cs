@@ -19,7 +19,9 @@ namespace Client.ViewModel
     {
 
         private UserStory userStory;
-        private IHiringContract proxy = ((App)App.Current).Proxy;
+        public static IHiringContract proxy = App.Proxy;
+
+       
 
         public UserStoryViewModel(UserStory userStory)
         {

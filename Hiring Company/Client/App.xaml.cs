@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceContract;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -16,23 +17,25 @@ namespace Client
 	public partial class App : Application
 	{
         public readonly string HostAddress = "net.tcp://localhost:4000/IHiringContract";
-        private HiringClientProxy proxy;
+        public static IHiringContract Proxy;
 
-        public App()
+        public  App()
         {
-            proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
+            Proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
 
 			log4net.Config.XmlConfigurator.Configure();
 			Exit += App_Exit;
         }
 		public void App_Exit(object sender, ExitEventArgs e)
 		{
-			proxy.Close();
+           
+              //Proxy.Close();
+            
 		}
 
         public App(string test) { }
 
-		public HiringClientProxy Proxy
+       /* public static IHiringContract Proxy
         {
             get
             {
@@ -46,6 +49,6 @@ namespace Client
             {
                 proxy = value;
             }
-        }
+        }*/
     }
 }

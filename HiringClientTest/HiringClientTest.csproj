@@ -73,6 +73,12 @@
     <Compile Include="MainWindowTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelTest\MainWindowViewModelTest.cs" />
+    <Compile Include="ViewModelTest\ProfileDialogModelViewTest.cs" />
+    <Compile Include="ViewModelTest\ProjectDialogViewModelTest.cs" />
+    <Compile Include="ViewModelTest\UserStoryViewModelTest.cs" />
+    <Compile Include="ViewTest\ProfileDialogTest.cs" />
+    <Compile Include="ViewTest\ProjectViewDialogTest.cs" />
+    <Compile Include="ViewTest\UserStoryViewDialogTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
