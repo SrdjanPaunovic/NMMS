@@ -540,7 +540,7 @@ namespace Client
              }
              return result;
         }
-    }
+    
 		public bool RemoveAllCompanies()
 		{
 			bool result = false;

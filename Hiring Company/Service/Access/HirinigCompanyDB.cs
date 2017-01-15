@@ -519,9 +519,7 @@ namespace Service.Access
                 return stories;
             }
         }
-    }
 
-		
 		public bool RemoveAllCompanies()
 		{
 			using (AccessDB context = new AccessDB())
