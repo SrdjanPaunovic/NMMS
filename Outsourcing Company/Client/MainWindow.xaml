@@ -10,7 +10,7 @@
         xmlns:viewModel ="clr-namespace:Client.ViewModel"
         mc:Ignorable="d"
         Closing="Window_Closing"
-        Title="MainWindow" Height="350" Width="600">
+        Title="Outsourcing Company" Height="450" Width="650">
     <Window.DataContext>
         <viewModel:MainWindowViewModel x:Name="viewModel" />
     </Window.DataContext>
@@ -175,8 +175,8 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </Grid.Style>
-                                    <Button Name="company_btn2" Command="{Binding ElementName=viewModel, Path=RejectCompanyRequestCommand}" CommandParameter="{Binding ElementName=company_btn2,Path=DataContext}">Reject Request
-                                    </Button>
+                                        <Button Name="company_btn2" Command="{Binding ElementName=viewModel, Path=RejectCompanyRequestCommand}" CommandParameter="{Binding ElementName=company_btn2,Path=DataContext}">Reject Request
+                                        </Button>
                                     </Grid>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -380,6 +380,18 @@
                     <GridView>
                         <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
                         <GridViewColumn Header="Team lead" Width="120" DisplayMemberBinding="{Binding TeamLead.Name}" />
+                        <GridViewColumn >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Name="grid">
+                                        <userControls:ImageButton NormalImage="{Binding ElementName=viewModel,Path=ViewIcon}"
+                                                                  Command="{Binding ElementName=viewModel,Path=EditTeamCommand}"
+                                                                  CommandParameter="{Binding ElementName=grid,Path=DataContext}"
+                                                                  Width="24" Height="24"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -430,7 +442,7 @@
                       HorizontalContentAlignment="Center"
                       HorizontalGridLinesBrush="LightGray"
                       Name="Employees_listView" ItemsSource="{Binding AllEmployees}">
-                <!--<DataGrid.Columns>
+                <DataGrid.Columns>
                     <DataGridTemplateColumn  Header="" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -456,7 +468,7 @@
                     <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Role" Binding="{Binding Role}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Mail address" Binding="{Binding MailAddress}" IsReadOnly="True"/>
-                    --><!--<DataGridTextColumn Header="Team" Binding="{Binding Team}" IsReadOnly="True"/>--><!--
+                    <DataGridTextColumn Header="Team" Binding="{Binding Team}" IsReadOnly="True"/>
                     <DataGridTemplateColumn Header="Actions">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -465,7 +477,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    --><!--<Grid Grid.Column="0">
+                                    <Grid Grid.Column="0">
                                         <Grid.Style>
                                             <Style TargetType="Grid">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -492,8 +504,8 @@
                                                                   Command="{Binding ElementName=viewModel,Path=EditUserProfileCommand}"
                                                                   CommandParameter="{Binding ElementName=grid,Path=DataContext}"
                                                                   Width="24" Height="24"/>
-                                    </Grid>-->
-                                    <!--<Grid Grid.Column="1">
+                                    </Grid>
+                                    <Grid Grid.Column="1">
                                         <Grid.Style>
                                             <Style TargetType="Grid">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -511,12 +523,12 @@
                                                                   Command="{Binding ElementName=viewModel,Path=DeleteUserCommand}"
                                                                   CommandParameter="{Binding ElementName=grid,Path=DataContext}"
                                                                   Width="24" Height="24"/>
-                                    </Grid>--><!--
+                                    </Grid>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                </DataGrid.Columns>-->
+                </DataGrid.Columns>
             </DataGrid>
         </Grid>
 

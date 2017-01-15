@@ -7,7 +7,7 @@
         xmlns:userctrl="clr-namespace:Common.UserControls;assembly=Common"
         xmlns:viewModel="clr-namespace:Client.ViewModel"
         mc:Ignorable="d"
-        Title="ProjectViewDialog" Height="400" Width="400"
+        Title="ProjectViewDialog" Height="400" Width="500"
         Name="root">
     <Grid>
         <userctrl:CreateProjectView EditStoryCommand="{Binding EditStoryCommand}" DeleteStoryCommand="{Binding DeleteStoryCommand}"/>

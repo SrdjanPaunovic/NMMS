@@ -19,6 +19,7 @@ namespace Service.Access
         bool RemoveUser(OcUser user);
 
         bool AddTeam(Team team);
+        bool UpdateTeam(Team team);
         bool LogIn(string username, string password);
         bool LogOut(string username);
 

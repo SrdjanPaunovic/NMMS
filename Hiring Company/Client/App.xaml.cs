@@ -19,6 +19,8 @@ namespace Client
         public readonly string HostAddress = "net.tcp://localhost:4000/IHiringContract";
         private HiringClientProxy proxy;
 		private User loggedUser;
+        public CompanyType CompanyType = CompanyType.HIRING;
+
 
 		public App()
         {

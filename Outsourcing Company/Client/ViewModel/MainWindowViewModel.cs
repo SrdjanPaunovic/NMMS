@@ -28,7 +28,7 @@ namespace Client.ViewModel
             TEAMS
         }
 
-        public IOutsourcingContract proxy;
+        public IOutsourcingContract proxy = ((App)App.Current).Proxy;
 
         public MainWindowViewModel()
         {
@@ -37,7 +37,8 @@ namespace Client.ViewModel
             path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
-            proxy = ((App)App.Current).Proxy;
+            ViewIcon = new BitmapImage(new Uri(path + "/Images/viewIcon.png"));
+
         }
 
         public void UpdateData()
@@ -47,7 +48,7 @@ namespace Client.ViewModel
                 case WindowState.LOGIN:
                     break;
                 case WindowState.EMPLOYEES:
-                    ShowEmployeesCommand.Execute(null);
+                    //ShowEmployeesCommand.Execute(null);
                     break;
                 case WindowState.COMPANIES:
                     DisplayCompaniesCommand.Execute(null);
@@ -104,15 +105,13 @@ namespace Client.ViewModel
         private ICommand deleteUserCommand;
         private ICommand addUserCommand;
         private ICommand userStoryRequestCommand;
-
-
-
-
+        private ICommand editTeamCommand;
 
         #endregion Fields
 
         #region Properties
         public BitmapImage EditIcon { get; set; }
+        public BitmapImage ViewIcon { get; set; }
         public BitmapImage RemoveIcon { get; set; }
 
 		public OcUser LoggedUser
@@ -303,6 +302,14 @@ namespace Client.ViewModel
             get
             {
                 return newTeamCommand ?? (newTeamCommand = new RelayCommand((param) => this.NewTeam()));
+            }
+        }
+
+        public ICommand EditTeamCommand
+        {
+            get
+            {
+                return editTeamCommand ?? (editTeamCommand = new RelayCommand((param) => this.EditTeam(param)));
             }
         }
 
@@ -573,8 +580,8 @@ namespace Client.ViewModel
 
         void FetchTeams()
         {
-            List<Team> result = proxy.GetAllTeams();
             Teams.Clear();
+            List<Team> result = proxy.GetAllTeams();
             if (result != null)
             {
                 foreach (var proj in result)
@@ -623,6 +630,26 @@ namespace Client.ViewModel
             TeamViewDialog teamDialog = new TeamViewDialog();
             teamDialog.ShowDialog();
         }
+
+        private void EditTeam(object param)
+        {
+            LogHelper.GetLogger().Info("EditTeam called.");
+
+            var team = param as Team;
+
+            if (team != null)
+            {
+                TeamViewDialog teamDialog = new TeamViewDialog(team);
+                teamDialog.ShowDialog();
+            }
+            else
+            {
+                LogHelper.GetLogger().Warn("[EditTeam] param = NULL");
+
+            }
+            
+        }
+
 
         private void AcceptProjectRequest(object param)
         {
