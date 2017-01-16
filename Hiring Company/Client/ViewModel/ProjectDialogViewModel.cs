@@ -1,6 +1,7 @@
 ﻿using Client.View;
 using Common;
 using Common.Entities;
+using ServiceContract;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,12 +21,15 @@ namespace Client.ViewModel
 		#region Fields
 		//TODO: INTGR change classes
 		private Project project;
-		private bool isEditing;
-		private HiringClientProxy proxy = ((App)App.Current).Proxy;
+        private bool isEditing;
+
+      
+        public static IHiringContract proxy;
 		#endregion Fields
 
 		public ProjectDialogViewModel()
 		{
+            proxy = App.Proxy;
 			isEditing = false;
 			Project = new Project()
 			{
@@ -213,5 +217,10 @@ namespace Client.ViewModel
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		#endregion
+        public bool IsEditing
+        {
+            get { return isEditing; }
+            set { isEditing = value; }
+        }
 	}
 }

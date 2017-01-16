@@ -72,7 +72,7 @@ namespace HiringServiceTest
 			Company company = new Company();
 			UserStory userStory=new UserStory();
 			bool result = serviceUnderTest.AnswerToUserStory(company, project, userStory);
-			Assert.IsTrue(result);
+			Assert.IsFalse(result);
 		}
 
 		[Test]
@@ -81,7 +81,7 @@ namespace HiringServiceTest
 			Project project=new Project();
 			Company company=new Company();
 			bool result = serviceUnderTest.SendProject(company, project);
-			Assert.IsTrue(result);
+			Assert.IsFalse(result);
 		}
 
 		[Test]

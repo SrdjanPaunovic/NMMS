@@ -51,7 +51,9 @@ namespace CommonTest.EntitiesTest
         [Test]
         public void TeamLeadPropertyTest()
         {
-            OcUser teamlead = new OcUser();
+            OcUser teamlead = new OcUser() { Role = Role.TL };
+            teamTest.Developers =new List<OcUser>();
+            teamTest.Developers.Add(teamlead);
             teamTest.TeamLead = teamlead;
             Assert.AreEqual(teamlead, teamTest.TeamLead);
         }
