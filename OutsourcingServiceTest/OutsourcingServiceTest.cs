@@ -157,13 +157,13 @@ namespace OutsourcingServiceTest
             bool result = serviceUnderTest.AnswerToProject(new Company(), new Project());
             Assert.IsFalse(result);
         }
-
+        /*
         [Test]
         public void SendUserStoryTest()
         {
             bool result = serviceUnderTest.SendUserStory(new Company(), new UserStory(), new Project());
             Assert.IsTrue(result);
-        }
+        }*/
         [Test]
         public void AnswerToRequestTest1()
         {
@@ -295,7 +295,7 @@ namespace OutsourcingServiceTest
         [Test]
         public void LogInTestException()
         {
-            Assert.DoesNotThrow(() => serviceUnderTest.LogIn("ex", "ex"));
+            Assert.Throws<Exception>(() => serviceUnderTest.LogIn("ex", "ex"));
         }
 
         [Test]

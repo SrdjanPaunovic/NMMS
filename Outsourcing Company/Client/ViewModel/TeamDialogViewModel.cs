@@ -187,7 +187,7 @@ namespace Client.ViewModel
 
             if (IsEditing)
             {
-                Proxy.UpdateTeam(Team);
+               // Proxy.UpdateTeam(Team);
             }
             else
             {
