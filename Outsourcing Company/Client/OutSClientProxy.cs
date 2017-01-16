@@ -532,6 +532,24 @@ namespace Client
 
             return result;
         }
+
+
+        public bool UpdateTeam(Team team)
+        {
+            bool result = false;
+            try
+            {
+                result = factory.UpdateTeam(team);
+                LogHelper.GetLogger().Info("UpdateTeam method succeeded.");
+
+            }
+            catch (Exception e)
+            {
+                LogHelper.GetLogger().Error("UpdateTeam method failed. " + e.ToString());
+
+            }
+            return result;
+        }
     }
 }
 

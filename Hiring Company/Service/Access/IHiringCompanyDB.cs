@@ -17,40 +17,41 @@ namespace Service.Access
         bool UpdateUser(User user);
         bool RemoveUser(User user);
 		bool AddUserStory(UserStory userStory);
-        User GetUser(string username);
+		User GetUser(string username);
 
         //List<User> LoginUsersOverview();
         List<User> GetAllUsers();
 
-        bool AddCompany(Company company);
-        List<Company> GetAllCompanies();
+		bool AddCompany(Company company);
+		List<Company> GetAllCompanies();
 
-        bool AddProject(Project project);
-        List<Project> GetAllProjects();
-        bool UpdateProject(Project project);
+		bool AddProject(Project project);
+		List<Project> GetAllProjects();
+		bool UpdateProject(Project project);
 
 		bool ModifyCompanyToPartner(Company company);
 		bool RemoveCompany(Company company);
+		bool RemoveAllCompanies();
 
 		List<UserStory> GetUserStoryFromProject(Project project);
 
-        bool UpdateUserStory(UserStory userStory);
+		bool UpdateUserStory(UserStory userStory);
 
         //bool UpdateTask(Common.Entities.Task task);
 
-        List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
-        Project GetProjectFromUserStory(UserStory userStory);
+		List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
+		Project GetProjectFromUserStory(UserStory userStory);
 
         bool ChangeCompanyState(Company company, State.CompanyState companyState);
         bool RemoveUS(UserStory userStory);
         List<UserStory> GetAllUserStoryes();
         // double PasswordAge();
 
-        // jos treba funkcija za provjeru koliko je user storija zavrseno od nekog projekta.
+		// jos treba funkcija za provjeru koliko je user storija zavrseno od nekog projekta.
 
 
 
 
-      
-    }
+
+	}
 }

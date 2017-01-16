@@ -21,9 +21,9 @@ namespace Client.View
 	/// </summary>
 	public partial class TeamViewDialog : Window
 	{
-		public TeamViewDialog()
+		public TeamViewDialog(Team team=null)
 		{
-			DataContext = new TeamDialogViewModel();
+            DataContext = new TeamDialogViewModel(team);
 			InitializeComponent();
 		}
 

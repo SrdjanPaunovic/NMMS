@@ -33,6 +33,9 @@ namespace ServiceContract
         bool AddTeam(Team team);
 
         [OperationContract]
+        bool UpdateTeam(Team team);
+
+        [OperationContract]
         bool LogIn(string username, string password);
 
         [OperationContract]

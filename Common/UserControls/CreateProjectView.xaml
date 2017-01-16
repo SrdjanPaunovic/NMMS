@@ -16,11 +16,22 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!--Name, StartTime and DeadLine-->
         <Grid Grid.Row="0">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="IsEnabled" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CompanyType}" Value="OUTSOURCING">
+                            <Setter Property="IsEnabled" Value="False"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -38,6 +49,16 @@
         </Grid>
         <!--Short description-->
         <Grid Grid.Row="1">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="IsEnabled" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CompanyType}" Value="OUTSOURCING">
+                            <Setter Property="IsEnabled" Value="False"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
             <GroupBox Grid.Row="0" Header="Short Description" BorderThickness="2" Margin="5" VerticalContentAlignment="Center">
                 <ScrollViewer Grid.Row="0" 
                            Margin="5" 
@@ -50,10 +71,65 @@
                 </ScrollViewer>
             </GroupBox>
         </Grid>
-        <!--User stories-->
+        <!--Team-->
         <Grid Grid.Row="2">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CompanyType}" Value="HIRING">
+                            <Setter Property="Visibility" Value="Collapsed"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="IsEnabled" Value="False"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding LoggedUser.Role}" Value="CEO">
+                                <Setter Property="IsEnabled" Value="True"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <GroupBox Header="Team" BorderThickness="2" Margin="5" VerticalContentAlignment="Center">
+                <ComboBox Name="Teams_CB" ItemsSource="{Binding AllTeams}" SelectedItem="{Binding Project.Team}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </GroupBox>
+            </Grid>
+            <GroupBox Grid.Column="1" Header="Team Lead" BorderThickness="2" Margin="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" 
+                           Text="{Binding ElementName=Teams_CB,Path=SelectedItem.TeamLead.Name}"></TextBlock>
+            </GroupBox>
+
+        </Grid>
+
+        <!--User stories-->
+        <Grid Grid.Row="3">
             <GroupBox Header="User stories" BorderThickness="2" Margin="5" VerticalContentAlignment="Center">
                 <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="IsEnabled" Value="True"/>
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CompanyType}" Value="HIRING">
+                                    <Setter Property="IsEnabled" Value="False"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -115,7 +191,7 @@
             </GroupBox>
         </Grid>
         <!--Action buttons-->
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

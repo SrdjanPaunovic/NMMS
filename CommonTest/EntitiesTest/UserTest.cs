@@ -133,6 +133,7 @@ namespace CommonTest.EntitiesTest
             Assert.AreEqual(endTime, userUnderTest.EndTime);
         }
 
+        [Test]
         public void MailProperyTest()
         {
             string mail = "mail@mail.com";

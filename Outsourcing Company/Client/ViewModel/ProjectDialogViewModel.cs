@@ -45,6 +45,13 @@ namespace Client.ViewModel
 
             Project.UserStories = new ObservableCollection<UserStory>(userStories);
 
+            AllTeams = proxy.GetAllTeams();
+            if (project.Team != null)
+            {
+                Team team = AllTeams.FirstOrDefault(x => x.Id == project.Team.Id);
+                Project.Team = team;
+            }
+
             isEditing = true;
         }
 
@@ -97,6 +104,48 @@ namespace Client.ViewModel
         #endregion Commands
 
         #region Properties
+        public List<Team> AllTeams
+        {
+            get
+            {
+                return allTeams;
+            }
+            set
+            {
+                allTeams = value;
+                OnPropertyChanged("AllTeams");
+            }
+        }
+
+        public OcUser LoggedUser
+        {
+            get
+            {
+                return ((App)App.Current).LoggedUser;
+            }
+
+            set
+            {
+                ((App)App.Current).LoggedUser = value;
+                OnPropertyChanged("LoggedUser");
+
+            }
+        }
+
+        public CompanyType CompanyType
+        {
+            get
+            {
+                return ((App)App.Current).CompanyType;
+            }
+
+            set
+            {
+                ((App)App.Current).CompanyType = value;
+                OnPropertyChanged("CompanyType");
+
+            }
+        }
         public OcProject Project
         {
             get
@@ -198,6 +247,8 @@ namespace Client.ViewModel
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        private List<Team> allTeams;
         #endregion
+
     }
 }

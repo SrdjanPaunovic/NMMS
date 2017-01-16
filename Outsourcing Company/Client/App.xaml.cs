@@ -19,8 +19,13 @@ namespace Client
 	public partial class App : Application
 	{
 		public readonly string HostAddress = "net.tcp://localhost:5000/IOutSourceContract";
+
 		private static OcUser loggedUser;
-        public static IOutsourcingContract proxy;
+    public static IOutsourcingContract proxy;
+
+		
+        public CompanyType CompanyType = CompanyType.OUTSOURCING;
+
 
 		public App()
 		{
