@@ -22,7 +22,7 @@ namespace HiringServiceTest.Access
 		{
 			this.contextUnderTest = new AccessDB();
 		}
-
+        /*
 		[Test]
 		public void UserPropertyTest()
 		{
@@ -53,6 +53,6 @@ namespace HiringServiceTest.Access
 
 		}
 		
-
+        */
 	}
 }

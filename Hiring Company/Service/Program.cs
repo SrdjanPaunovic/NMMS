@@ -19,7 +19,7 @@ using System.Net.Sockets;
 
 namespace HiringCompanyService
 {
- class Program
+ public class Program
 	{
 
 		private static ServiceHost host;
@@ -30,17 +30,17 @@ namespace HiringCompanyService
 		public static Thread checkTimeThread;
 		public static Thread checkPasswordThread;
 
-		static void Main(string[] args)
+		public static void Main(string[] args)
 		{
 			log4net.Config.XmlConfigurator.Configure();
 
 			Start();
 
-			//StartCheckingTimeTherad();
-			//StartCheckingPasswordThread();
+			StartCheckingTimeTherad();
+			StartCheckingPasswordThread();
 			Console.ReadKey(true);
-			//StopCheckingTimeTherad();
-			//StopCheckingPasswordThread();
+			StopCheckingTimeTherad();
+			StopCheckingPasswordThread();
 			Stop();
 		}
 

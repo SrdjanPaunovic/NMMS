@@ -24,8 +24,9 @@ namespace HiringClientTest.ViewTest
         [OneTimeSetUp]
         public void SetupTest()
         {
-            UserStoryViewModel.proxy = Substitute.For<IHiringContract>();
-            UserStoryViewModel.proxy.GetTasksFromUserStory(new UserStory()).ReturnsForAnyArgs(new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "task1" } });
+            App.Proxy = Substitute.For<IHiringContract>();
+            App.Proxy.GetTasksFromUserStory(new UserStory()).ReturnsForAnyArgs(new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "task1" } });
+     
         }
 
         [Test]

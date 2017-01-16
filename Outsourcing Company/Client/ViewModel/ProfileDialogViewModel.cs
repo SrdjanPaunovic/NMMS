@@ -16,19 +16,21 @@ namespace Client.ViewModel
     {
         public OcUser User { get; set; }
 
-        private IOutsourcingContract proxy = ((App)App.Current).Proxy;
+        public IOutsourcingContract proxy;
         public ProfileDialogViewModel()
         {
 
             User = new OcUser();
-
+            proxy = App.proxy;
             LogHelper.GetLogger().Info("Profile Dialog initialized.");
         }
 
 		public ProfileDialogViewModel(OcUser user)
-		{
+        {
 
-			User = user;
+            proxy = App.proxy;
+
+            User = user;
 
 			if (User == null)
 			{
@@ -94,7 +96,7 @@ namespace Client.ViewModel
             {
 				LogHelper.GetLogger().Info("Profile Dialog closed.");
 				parentWindow.DialogResult = true;
-				if (((App)App.Current).LoggedUser.Id == User.Id)
+				if (App.LoggedUser.Id == User.Id)
 				{
 					parentWindow.Tag = User;
 				}

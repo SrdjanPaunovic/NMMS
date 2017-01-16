@@ -37,7 +37,7 @@ namespace Client.ViewModel
             path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
-            proxy = ((App)App.Current).Proxy;
+            proxy = App.proxy;
         }
 
         public void UpdateData()
@@ -119,12 +119,12 @@ namespace Client.ViewModel
 		{
 			get
 			{
-				return ((App)App.Current).LoggedUser;
+				return App.LoggedUser;
 			}
 
 			set
 			{
-				((App)App.Current).LoggedUser = value;
+				App.LoggedUser = value;
 				OnPropertyChanged("LoggedUser");
 
 			}
@@ -375,7 +375,9 @@ namespace Client.ViewModel
             {
                 LogHelper.GetLogger().Error("Command parameters has NULL value.");
 
-                throw new Exception("[LoginCommnad] Command parameters has NULL value");
+                throw new ArgumentNullException();
+
+                //throw new Exception("[LoginCommnad] Command parameters has NULL value");
             }
 
             string username = parameters[0].ToString();

@@ -17,7 +17,7 @@ namespace Client.ViewModel
 {
     public class ProjectDialogViewModel : INotifyPropertyChanged
     {
-        public IOutsourcingContract proxy = ((App)App.Current).Proxy;
+        public static IOutsourcingContract proxy ;
 
         #region Fields
         //TODO: INTGR change classes
@@ -28,6 +28,7 @@ namespace Client.ViewModel
 
         public ProjectDialogViewModel()
         {
+            proxy = App.proxy;
             isEditing = false;
             Project = new OcProject()
             {
@@ -37,6 +38,7 @@ namespace Client.ViewModel
 
         public ProjectDialogViewModel(OcProject project)
         {
+            proxy = App.proxy;
             Project = project;
 
             List<UserStory> userStories = proxy.GetUserStoryFromProject(project);

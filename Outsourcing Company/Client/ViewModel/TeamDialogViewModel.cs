@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.Entities;
+using ServiceContract;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,8 +14,12 @@ namespace Client.ViewModel
 {
     public class TeamDialogViewModel
     {
+        public IOutsourcingContract proxy;
+
         public TeamDialogViewModel(Team t = null)
         {
+            proxy = App.proxy;
+
             if (team == null)
             {
                 Team = new Team();
@@ -37,8 +42,7 @@ namespace Client.ViewModel
                 }
             }
 
-            using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
-            {
+          
                 List<OcUser> users = proxy.GetAllUsersWithoutTeam();
                 foreach (OcUser user in users)
                 {
@@ -53,7 +57,7 @@ namespace Client.ViewModel
                 }
 
 
-            }
+            
         }
 
         #region fields
@@ -152,8 +156,7 @@ namespace Client.ViewModel
 
         private void Save(object param)
         {
-            using (OutSClientProxy proxy = ((App)Application.Current).Proxy)
-            {
+           
                 if (Team.Developers == null)
                 {
                     Team.Developers = new List<OcUser>();
@@ -164,7 +167,7 @@ namespace Client.ViewModel
                 }
                 Team.TeamLead = TeamLead;
                 bool success = proxy.AddTeam(Team);
-            }
+            
             (param as Window).Close();
         }
         #endregion
