@@ -25,9 +25,9 @@ namespace HiringClientTest.ViewTest
         [OneTimeSetUp]
         public void SetupTest()
         {
-            ProjectDialogViewModel.proxy = Substitute.For<IHiringContract>();
+            ProjectDialogViewModel.Proxy = Substitute.For<IHiringContract>();
 
-            ProjectDialogViewModel.proxy.GetUserStoryFromProject(new Project()).ReturnsForAnyArgs(new List<UserStory>());
+            ProjectDialogViewModel.Proxy.GetUserStoryFromProject(new Project()).ReturnsForAnyArgs(new List<UserStory>());
 
         }
         [Test, RequiresSTA]

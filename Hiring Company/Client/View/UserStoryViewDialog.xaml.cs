@@ -26,7 +26,7 @@ namespace Client.View
         {
             DataContext = new UserStoryViewModel(userStory);
             InitializeComponent();
-			LogHelper.GetLogger().Info(" User Story dialog initialized for ."+userStory.Name);
+            LogHelper.GetLogger().Info(" User Story dialog initialized for ." + userStory.Name);
 
         }
     }

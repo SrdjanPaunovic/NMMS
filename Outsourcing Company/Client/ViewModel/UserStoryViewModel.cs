@@ -24,16 +24,16 @@ namespace Client.ViewModel
         {
             proxy = App.Proxy;
             this.UserStory = userStory;
-			OcProject ocProj = proxy.GetProjectFromUserStory(UserStory);
-			Project proj = new Project(ocProj);
-			proj.Id = ocProj.Id;
-			UserStory.Project = proj;
+            OcProject ocProj = proxy.GetProjectFromUserStory(UserStory);
+            Project proj = new Project(ocProj);
+            proj.Id = ocProj.Id;
+            UserStory.Project = proj;
 
             List<Common.Entities.Task> tasks = proxy.GetTasksFromUserStory(UserStory);
-			if (tasks != null)
-			{
-				UserStory.Tasks = new AsyncObservableCollection<Common.Entities.Task>(tasks);
-			}
+            if (tasks != null)
+            {
+                UserStory.Tasks = new AsyncObservableCollection<Common.Entities.Task>(tasks);
+            }
         }
 
         #region Commands
@@ -106,9 +106,9 @@ namespace Client.ViewModel
             if (UserStory.Id != 0)
             {
                 //copy of project because OcProject cant pass in typecased Project
-               /* Project copyProj = new Project();
-                copyProj.UpdateProperties(UserStory.Project);
-                copyProj.Id = UserStory.Project.Id;*/
+                /* Project copyProj = new Project();
+                 copyProj.UpdateProperties(UserStory.Project);
+                 copyProj.Id = UserStory.Project.Id;*/
                 UserStory.Project = null;
                 success = proxy.UpdateUserStory(UserStory);
             }

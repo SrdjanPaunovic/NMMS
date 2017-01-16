@@ -18,12 +18,12 @@ using Common.UserControls;
 
 namespace Client.View
 {
-	/// <summary>
-	/// Interaction logic for ProfileDialog.xaml
-	/// </summary>
-	public partial class ProfileDialog : Window
-	{
-		public ProfileDialog()
+    /// <summary>
+    /// Interaction logic for ProfileDialog.xaml
+    /// </summary>
+    public partial class ProfileDialog : Window
+    {
+        public ProfileDialog()
         {
             DataContext = new ProfileDialogViewModel();
             Initialized += ProfileDialog_Initialized;
@@ -31,16 +31,16 @@ namespace Client.View
             InitializeComponent();
         }
 
-		public ProfileDialog(OcUser user)
-		{
-			DataContext = new ProfileDialogViewModel(user);
-			Initialized += ProfileDialog_Initialized;
+        public ProfileDialog(OcUser user)
+        {
+            DataContext = new ProfileDialogViewModel(user);
+            Initialized += ProfileDialog_Initialized;
 
-			InitializeComponent();
+            InitializeComponent();
 
-		}
+        }
 
-		void ProfileDialog_Initialized(object sender, EventArgs e)
+        internal void ProfileDialog_Initialized(object sender, EventArgs e)
         {
             var viewModel = DataContext as ProfileDialogViewModel;
 
@@ -65,5 +65,5 @@ namespace Client.View
             LogHelper.GetLogger().Info("Profile Dialog initialized.");
 
         }
-	}
+    }
 }

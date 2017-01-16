@@ -26,8 +26,8 @@ namespace OutsourcingClientTest.ViewModelTest
         public void SetupTest()
         {
             profileDialogUnderTest = new ProfileDialogViewModel();
-            profileDialogUnderTest.proxy = Substitute.For<IOutsourcingContract>();
-            profileDialogUnderTest.proxy.AddUser(new OcUser()).ReturnsForAnyArgs(true);
+            profileDialogUnderTest.Proxy = Substitute.For<IOutsourcingContract>();
+            profileDialogUnderTest.Proxy.AddUser(new OcUser()).ReturnsForAnyArgs(true);
             App.Proxy = Substitute.For<IOutsourcingContract>();
 
         }

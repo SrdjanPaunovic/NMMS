@@ -8,62 +8,62 @@ using Common.Entities;
 
 namespace ServiceContract
 {
-	[ServiceContract]
-	public interface IHiringContract
-	{
-		[OperationContract]
-		bool LogIn(string username, string password);
+    [ServiceContract]
+    public interface IHiringContract
+    {
+        [OperationContract]
+        bool LogIn(string username, string password);
 
-		[OperationContract]
-		bool LogOut(string username);
+        [OperationContract]
+        bool LogOut(string username);
 
-		[OperationContract]
-		User GetUser(string username);
+        [OperationContract]
+        User GetUser(string username);
 
-		[OperationContract]
-		bool AddUser(User user);
+        [OperationContract]
+        bool AddUser(User user);
 
-		[OperationContract]
-		bool UpdateUser(User user);
+        [OperationContract]
+        bool UpdateUser(User user);
 
-		[OperationContract]
-		bool RemoveUser(User user);
+        [OperationContract]
+        bool RemoveUser(User user);
 
-		[OperationContract]
-		bool AddProject(Project project);
+        [OperationContract]
+        bool AddProject(Project project);
 
-		[OperationContract]
-		bool UpdateProject(Project project);
+        [OperationContract]
+        bool UpdateProject(Project project);
 
-		[OperationContract]
-		List<User> GetAllUsers();
+        [OperationContract]
+        List<User> GetAllUsers();
 
-		[OperationContract]
-		List<Project> GetAllProjects();
+        [OperationContract]
+        List<Project> GetAllProjects();
 
-		[OperationContract]
-		bool SendRequest(Company company);
+        [OperationContract]
+        bool SendRequest(Company company);
 
-		[OperationContract]
-		List<UserStory> GetUserStoryFromProject(Project project);
+        [OperationContract]
+        List<UserStory> GetUserStoryFromProject(Project project);
 
-		[OperationContract]
-		List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
+        [OperationContract]
+        List<Common.Entities.Task> GetTasksFromUserStory(UserStory userStory);
 
-		[OperationContract]
-		Project GetProjectFromUserStory(UserStory userStory);
+        [OperationContract]
+        Project GetProjectFromUserStory(UserStory userStory);
 
-		[OperationContract]
-		bool UpdateUserStory(UserStory UserStory);
+        [OperationContract]
+        bool UpdateUserStory(UserStory userStory);
 
-		[OperationContract]
-		List<Company> GetAllCompanies();
+        [OperationContract]
+        List<Company> GetAllCompanies();
 
-		[OperationContract]
-		bool SendProject(Company company, Project project);
+        [OperationContract]
+        bool SendProject(Company company, Project project);
 
-		[OperationContract]
-		bool AnswerToUserStory(Company company, Project project, UserStory userStory);
+        [OperationContract]
+        bool AnswerToUserStory(Company company, Project project, UserStory userStory);
 
         [OperationContract]
         bool ModifyCompany(Company company);
@@ -75,7 +75,7 @@ namespace ServiceContract
         List<UserStory> GetAllUserStories();
 
 
-		[OperationContract]
-		bool RemoveAllCompanies();
-	}
+        [OperationContract]
+        bool RemoveAllCompanies();
+    }
 }

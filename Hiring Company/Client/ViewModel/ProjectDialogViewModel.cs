@@ -15,212 +15,225 @@ using System.Windows.Input;
 
 namespace Client.ViewModel
 {
-	public class ProjectDialogViewModel : INotifyPropertyChanged
-	{
+    public class ProjectDialogViewModel : INotifyPropertyChanged
+    {
 
-		#region Fields
-		//TODO: INTGR change classes
-		private Project project;
+        #region Fields
+        //TODO: INTGR change classes
+        private Project project;
         private bool isEditing;
 
-      
-        public static IHiringContract proxy;
-		#endregion Fields
 
-		public ProjectDialogViewModel()
-		{
-            proxy = App.Proxy;
-			isEditing = false;
-			Project = new Project()
-			{
-				Name = "New Project",
-				ProductOwner = ((App)App.Current).LoggedUser
-			};
-		}
+        private static IHiringContract proxy;
+        #endregion Fields
 
-		public ProjectDialogViewModel(Project project)
-		{
-			Project = project;
+        public ProjectDialogViewModel()
+        {
+            Proxy = App.Proxy;
+            isEditing = false;
+            Project = new Project()
+            {
+                Name = "New Project",
+                ProductOwner = ((App)App.Current).LoggedUser
+            };
+        }
 
-			List<UserStory> userStories = proxy.GetUserStoryFromProject(project);
-			Project.UserStories = new AsyncObservableCollection<UserStory>(userStories);
+        public ProjectDialogViewModel(Project project)
+        {
+            Project = project;
 
-			isEditing = true;
-		}
+            List<UserStory> userStories = Proxy.GetUserStoryFromProject(project);
+            Project.UserStories = new AsyncObservableCollection<UserStory>(userStories);
 
-		#region Commands
-		private ICommand addStoryCommand;
-		private ICommand cancelCommand;
-		private ICommand saveCommand;
-		private ICommand editStoryCommand;
-		private ICommand deleteStoryCommand;
+            isEditing = true;
+        }
 
-		public ICommand CancelCommand
-		{
-			get
-			{
-				return cancelCommand ?? (cancelCommand = new RelayCommand((param) => this.CancelClick(param)));
-			}
-		}
+        #region Commands
+        private ICommand addStoryCommand;
+        private ICommand cancelCommand;
+        private ICommand saveCommand;
+        private ICommand editStoryCommand;
+        private ICommand deleteStoryCommand;
 
-		public ICommand SaveCommand
-		{
-			get
-			{
-				return saveCommand ?? (saveCommand = new RelayCommand((param) => this.SaveClick(param)));
-			}
-		}
+        public ICommand CancelCommand
+        {
+            get
+            {
+                return cancelCommand ?? (cancelCommand = new RelayCommand((param) => this.CancelClick(param)));
+            }
+        }
 
-		public ICommand AddStoryCommand
-		{
-			get
-			{
-				return addStoryCommand ?? (addStoryCommand = new RelayCommand((param) => this.AddStoryClick(param)));
-			}
-		}
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return saveCommand ?? (saveCommand = new RelayCommand((param) => this.SaveClick(param)));
+            }
+        }
 
-		public ICommand EditStoryCommand
-		{
-			get
-			{
-				return editStoryCommand ?? (editStoryCommand = new RelayCommand((param) => this.EditStoryClick(param)));
-			}
-		}
+        public ICommand AddStoryCommand
+        {
+            get
+            {
+                return addStoryCommand ?? (addStoryCommand = new RelayCommand((param) => this.AddStoryClick(param)));
+            }
+        }
 
-		public ICommand DeleteStoryCommand
-		{
-			get
-			{
-				return deleteStoryCommand ?? (deleteStoryCommand = new RelayCommand((param) => this.DeleteStoryClick(param)));
-			}
-		}
-		#endregion Commands
+        public ICommand EditStoryCommand
+        {
+            get
+            {
+                return editStoryCommand ?? (editStoryCommand = new RelayCommand((param) => this.EditStoryClick(param)));
+            }
+        }
 
-		#region Properties
-		public Project Project
-		{
-			get
-			{
-				return project;
-			}
+        public ICommand DeleteStoryCommand
+        {
+            get
+            {
+                return deleteStoryCommand ?? (deleteStoryCommand = new RelayCommand((param) => this.DeleteStoryClick(param)));
+            }
+        }
+        #endregion Commands
 
-			set
-			{
-				project = value;
-				OnPropertyChanged("Project");
-			}
-		}
+        #region Properties
+        public Project Project
+        {
+            get
+            {
+                return project;
+            }
 
-		public User LoggedUser
-		{
-			get
-			{
-				return ((App)App.Current).LoggedUser;
-			}
+            set
+            {
+                project = value;
+                OnPropertyChanged("Project");
+            }
+        }
 
-			set
-			{
-				((App)App.Current).LoggedUser = value;
-				OnPropertyChanged("LoggedUser");
+        public User LoggedUser
+        {
+            get
+            {
+                return ((App)App.Current).LoggedUser;
+            }
 
-			}
-		}
-		#endregion Properties
+            set
+            {
+                ((App)App.Current).LoggedUser = value;
+                OnPropertyChanged("LoggedUser");
 
-		#region Methods
+            }
+        }
+        #endregion Properties
 
-		private void CancelClick(object param)
-		{
-			LogHelper.GetLogger().Info("Cancel click occurred.");
+        #region Methods
 
-			var userControl = param as UserControl;
-			Window parentWindow = Window.GetWindow(userControl);
-			LogHelper.GetLogger().Info(parentWindow.Name + " closed.");
-			parentWindow.Close();
-		}
+        private void CancelClick(object param)
+        {
+            LogHelper.GetLogger().Info("Cancel click occurred.");
 
-		private void SaveClick(object param)
-		{
-			LogHelper.GetLogger().Info("Save click occurred.");
+            var userControl = param as UserControl;
+            Window parentWindow = Window.GetWindow(userControl);
+            LogHelper.GetLogger().Info(parentWindow.Name + " closed.");
+            parentWindow.Close();
+        }
 
-			var userControl = param as UserControl;
-			Window parentWindow = Window.GetWindow(userControl);
-           // Project.ProductOwner = proxy.GetUser();   // set Product owner
-			bool success = false;
-			if (isEditing)
-			{
-				success = proxy.UpdateProject(Project);
-			}
-			else
-			{
-				success = proxy.AddProject(Project);
-			}
+        private void SaveClick(object param)
+        {
+            LogHelper.GetLogger().Info("Save click occurred.");
 
-			if (success)
-			{
-				parentWindow.Close();
-				LogHelper.GetLogger().Info(parentWindow.Name + " closed.");
-			}
-			else
-			{
-				LogHelper.GetLogger().Warn("AddProject failed.");
-			}
-		}
+            var userControl = param as UserControl;
+            Window parentWindow = Window.GetWindow(userControl);
+            // Project.ProductOwner = Proxy.GetUser();   // set Product owner
+            bool success = false;
+            if (isEditing)
+            {
+                success = Proxy.UpdateProject(Project);
+            }
+            else
+            {
+                success = Proxy.AddProject(Project);
+            }
 
-		private void AddStoryClick(object param)
-		{
-			LogHelper.GetLogger().Info("AddStoryClick called.");
+            if (success)
+            {
+                parentWindow.Close();
+                LogHelper.GetLogger().Info(parentWindow.Name + " closed.");
+            }
+            else
+            {
+                LogHelper.GetLogger().Warn("AddProject failed.");
+            }
+        }
 
-			var name = param as string;
-			if (name == String.Empty)
-			{
-				return;
-			}
+        private void AddStoryClick(object param)
+        {
+            LogHelper.GetLogger().Info("AddStoryClick called.");
 
-			UserStory us = new UserStory
-			{
-				Name = name,
-                Project= Project
-			};
-			Project.UserStories.Add(us);
-		}
+            var name = param as string;
+            if (name == String.Empty)
+            {
+                return;
+            }
 
-		private void EditStoryClick(object param)
-		{
-			LogHelper.GetLogger().Info("EditStoryClick called.");
+            UserStory us = new UserStory
+            {
+                Name = name,
+                Project = Project
+            };
+            Project.UserStories.Add(us);
+        }
 
-			var story = param as UserStory;
+        private void EditStoryClick(object param)
+        {
+            LogHelper.GetLogger().Info("EditStoryClick called.");
 
-			UserStoryViewDialog usDialog = new UserStoryViewDialog(story);
-			usDialog.ShowDialog();
-			LogHelper.GetLogger().Info(usDialog.Name + "shown");
+            var story = param as UserStory;
 
-		}
+            UserStoryViewDialog usDialog = new UserStoryViewDialog(story);
+            usDialog.ShowDialog();
+            LogHelper.GetLogger().Info(usDialog.Name + "shown");
 
-		private void DeleteStoryClick(object param)
-		{
-			LogHelper.GetLogger().Info("DeleteStoryClick called.");
-			var story = param as UserStory;
-			Project.UserStories.Remove(story);
+        }
 
-		}
-		#endregion Methods
+        private void DeleteStoryClick(object param)
+        {
+            LogHelper.GetLogger().Info("DeleteStoryClick called.");
+            var story = param as UserStory;
+            Project.UserStories.Remove(story);
 
-		#region PropertyChangedNotifier
-		protected virtual void OnPropertyChanged(string name)
-		{
-			if (PropertyChanged != null)
-			{
-				PropertyChanged(this, new PropertyChangedEventArgs(name));
-			}
-		}
+        }
+        #endregion Methods
 
-		public event PropertyChangedEventHandler PropertyChanged;
-		#endregion
+        #region PropertyChangedNotifier
+        protected virtual void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
         public bool IsEditing
         {
             get { return isEditing; }
             set { isEditing = value; }
         }
-	}
+
+        public static IHiringContract Proxy
+        {
+            get
+            {
+                return proxy;
+            }
+
+            set
+            {
+                proxy = value;
+            }
+        }
+    }
 }
