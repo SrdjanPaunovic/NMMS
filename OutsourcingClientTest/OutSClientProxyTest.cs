@@ -126,9 +126,14 @@ namespace OutsourcingClientTest
 
 
         [Test]
-        public void ModifyCompanyTest()
+        public void ModifyCompanyTesFault()
         {
-            Assert.DoesNotThrow(() => clientUnderTest.ModifyCompany(new Company() { Name = "dms" }));
+            Assert.IsFalse(clientUnderTest.ModifyCompany(new Company() { Name = "ex" }));
+        }
+        [Test]
+        public void ModifyCompanyTesException()
+        {
+            Assert.Throws<Exception>(()=>clientUnderTest.ModifyCompany(new Company() { Name = "dms" }));
         }
 
         [Test]
@@ -298,12 +303,7 @@ namespace OutsourcingClientTest
 
 
 
-        [Test]
-        public void ModifyCompanyTestException()
-        {
-            Company company = new Company();
-            Assert.Throws<NotImplementedException>(() => clientUnderTest.ModifyCompany(company));
-        }
+    
 
         [Test]
         public void GetUserTest()

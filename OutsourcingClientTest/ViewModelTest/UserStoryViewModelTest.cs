@@ -32,6 +32,7 @@ namespace OutsourcingClientTest.ViewModelTest
             App.Proxy.GetTasksFromUserStory(new UserStory()).ReturnsForAnyArgs(new List<Common.Entities.Task>());
             App.Proxy.UpdateUserStory(new UserStory()).ReturnsForAnyArgs(true);
             App.Proxy.GetProjectFromUserStory(new UserStory()).ReturnsForAnyArgs(new OcProject());
+            App.Proxy.GetTasksFromUserStory(new UserStory()).ReturnsForAnyArgs(new List<Common.Entities.Task>(){new Common.Entities.Task()});
             UserStory userStory = new UserStory() { Name = "testUs" };
             taks = new Common.Entities.Task();
             userStory.Tasks.Add(taks);

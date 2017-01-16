@@ -27,12 +27,12 @@ namespace HiringClientTest.ViewModelTest
         [OneTimeSetUp]
         public void SetupTest()
         {
-            ProjectDialogViewModel.Proxy = Substitute.For<IHiringContract>();
-            ProjectDialogViewModel.Proxy.AddUser(new User()).ReturnsForAnyArgs(true);
-            ProjectDialogViewModel.Proxy.GetUserStoryFromProject(new Project()).ReturnsForAnyArgs(new List<UserStory>());
             App.Proxy = Substitute.For<IHiringContract>();
             App.Proxy.UpdateProject(new Project()).ReturnsForAnyArgs(true);
             App.Proxy.AddProject(new Project()).ReturnsForAnyArgs(false);
+            App.Proxy.GetUserStoryFromProject(new Project()).ReturnsForAnyArgs(new List<UserStory>());
+            App.Proxy.GetTasksFromUserStory(new UserStory()).ReturnsForAnyArgs(new List<Common.Entities.Task>() { new Common.Entities.Task() });
+            App.Proxy.AddUser(new User()).ReturnsForAnyArgs(true);
 
             project = new Project();
             userStory = new UserStory();

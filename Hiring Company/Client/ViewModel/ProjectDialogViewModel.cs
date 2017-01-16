@@ -25,6 +25,8 @@ namespace Client.ViewModel
 
 
         private static IHiringContract proxy;
+
+       
         #endregion Fields
 
         public ProjectDialogViewModel()
@@ -40,11 +42,10 @@ namespace Client.ViewModel
 
         public ProjectDialogViewModel(Project project)
         {
+            Proxy = App.Proxy;
             Project = project;
-
             List<UserStory> userStories = Proxy.GetUserStoryFromProject(project);
             Project.UserStories = new AsyncObservableCollection<UserStory>(userStories);
-
             isEditing = true;
         }
 

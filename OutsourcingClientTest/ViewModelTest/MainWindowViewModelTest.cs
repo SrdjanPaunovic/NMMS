@@ -33,6 +33,7 @@ namespace OutsourcingClientTest.ViewModelTest
             clientViewModelUnderTest.LoggedUser = new OcUser() { Username = "slobo", Password = "slobo", Name = "Slobo", Surname = "Milosevic" };
             clientViewModelUnderTest.Proxy.AnswerToRequest(new Company()).ReturnsForAnyArgs(true);
             clientViewModelUnderTest.Proxy.GetProjectFromUserStory(new UserStory()).ReturnsForAnyArgs(new OcProject());
+            clientViewModelUnderTest.Proxy.GetAllUsersWithoutTeam().ReturnsForAnyArgs(new List<OcUser>() { new OcUser() });
             //App.proxy = Substitute.For<IOutsourcingContract>();
             App.LoggedUser = new OcUser() { Username = "slobo", Password = "slobo", Name = "Slobo", Surname = "Milosevic" };
             
@@ -126,11 +127,6 @@ namespace OutsourcingClientTest.ViewModelTest
         }
 
 
-        [Test]
-        public void NewTeamCommandCommandTest()
-        {
-            Assert.DoesNotThrow(() => clientViewModelUnderTest.NewTeamCommand.Execute(new Object()));
-        }
         //****
         [Test]
         public void AcceptProjectRequestCommandTest()
