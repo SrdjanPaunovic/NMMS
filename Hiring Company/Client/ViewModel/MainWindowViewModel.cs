@@ -24,7 +24,7 @@ namespace Client.ViewModel
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-
+        private static object _syncLock = new object();
         public IHiringContract proxy;
         public MainWindowViewModel()
         {
@@ -33,38 +33,30 @@ namespace Client.ViewModel
             path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
-            proxy =App.Proxy;
-
-            Thread updateThread = new Thread(() => UpdateData(this));
-            updateThread.Start();
+            
         }
 
-        private void UpdateData(MainWindowViewModel viewModel)
+        public void UpdateData()
         {
-            if (viewModel != null)
+            lock (_syncLock)
             {
-                while (true)
+                switch (CurrentState)
                 {
-                    switch (viewModel.CurrentState)
-                    {
-                        case Common.Entities.WindowState.LOGIN:
-                            break;
-                        case Common.Entities.WindowState.EMPLOYEES:
-                            viewModel.ShowEmployeesCommand.Execute(null);
-                            break;
-                        case Common.Entities.WindowState.COMPANIES:
-                            viewModel.DisplayCompaniesCommand.Execute(null);
-                            break;
-                        case Common.Entities.WindowState.PROJECTS:
-                            viewModel.DisplayProjectsCommand.Execute(null);
-                            break;
-                        default:
-                            break;
-                    }
-                    Thread.Sleep(3800);
+                    case Common.Entities.WindowState.LOGIN:
+                        break;
+                    case Common.Entities.WindowState.EMPLOYEES:
+                        ShowEmployeesCommand.Execute(null);
+                        break;
+                    case Common.Entities.WindowState.COMPANIES:
+                        DisplayCompaniesCommand.Execute(null);
+                        break;
+                    case Common.Entities.WindowState.PROJECTS:
+                        DisplayProjectsCommand.Execute(null);
+                        break;
+                    default:
+                        break;
                 }
             }
-
         }
         public MainWindowViewModel(string test)
         {
@@ -338,7 +330,7 @@ namespace Client.ViewModel
             //TODO
             LogHelper.GetLogger().Info("ShowProfile called.");
 
-            ProfileDialog profileDialog = new ProfileDialog(LoggedUsername);
+            ProfileDialog profileDialog = new ProfileDialog(LoggedUser);
             var res = profileDialog.ShowDialog();
             if (res == true)
             {
@@ -524,7 +516,7 @@ namespace Client.ViewModel
             }
             LogHelper.GetLogger().Info("ShowProfile params ok.");
 
-            ProfileDialog profileDialog = new ProfileDialog(user.Username);
+            ProfileDialog profileDialog = new ProfileDialog(LoggedUser);
             var res = profileDialog.ShowDialog();
             if (res == true)
             {
@@ -617,6 +609,18 @@ namespace Client.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
+        public User LoggedUser
+        {
+            get
+            {
+                return ((App)App.Current).LoggedUser;
+            }
+            set
+            {
+                ((App)App.Current).LoggedUser = value;
+                OnPropertyChanged("LoggedUser");
+            }
+        }
     }
 
 }

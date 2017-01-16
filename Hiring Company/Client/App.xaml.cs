@@ -1,4 +1,5 @@
-﻿using ServiceContract;
+﻿using Common.Entities;
+using ServiceContract;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,7 +19,13 @@ namespace Client
 	{
         public readonly string HostAddress = "net.tcp://localhost:4000/IHiringContract";
         public static IHiringContract Proxy;
+        private User loggedUser;
 
+        public User LoggedUser
+        {
+            get { return loggedUser; }
+            set { loggedUser = value; }
+        }
         public  App()
         {
             Proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
