@@ -122,7 +122,6 @@
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Setter Property="IsEnabled" Value="True"/>
-                            <Setter Property="Visibility" Value="Visible"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding CompanyType}" Value="HIRING">
                                     <Setter Property="IsEnabled" Value="False"></Setter>

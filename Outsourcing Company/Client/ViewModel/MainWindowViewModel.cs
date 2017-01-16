@@ -28,7 +28,7 @@ namespace Client.ViewModel
             TEAMS
         }
 
-        private IOutsourcingContract proxy = App.Proxy;
+        private IOutsourcingContract proxy = ((App)App.Current).Proxy;
 
         public MainWindowViewModel()
         {
@@ -37,8 +37,6 @@ namespace Client.ViewModel
             path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
-
-            Proxy = App.Proxy;
 
             ViewIcon = new BitmapImage(new Uri(path + "/Images/viewIcon.png"));
 
@@ -122,12 +120,12 @@ namespace Client.ViewModel
         {
             get
             {
-                return App.LoggedUser;
+                return ((App)App.Current).LoggedUser;
             }
 
             set
             {
-                App.LoggedUser = value;
+                ((App)App.Current).LoggedUser = value;
                 OnPropertyChanged("LoggedUser");
 
             }
@@ -380,12 +378,6 @@ namespace Client.ViewModel
                 proxy = value;
             }
         }
-
-
-
-
-
-
         #endregion Properties
 
         #region Methods

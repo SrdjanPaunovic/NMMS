@@ -21,13 +21,13 @@ namespace Client.ViewModel
         public ProfileDialogViewModel()
         {
             User = new User();
-            Proxy = App.Proxy;
+            Proxy = ((App)App.Current).Proxy;
             LogHelper.GetLogger().Info("Profile Dialog initialized.");
         }
 
         public ProfileDialogViewModel(User user)
         {
-            Proxy = App.Proxy;
+            Proxy = ((App)App.Current).Proxy;
 
             User = user;
 

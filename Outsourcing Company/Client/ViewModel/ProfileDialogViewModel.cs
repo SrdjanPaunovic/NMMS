@@ -21,15 +21,13 @@ namespace Client.ViewModel
         {
 
             User = new OcUser();
-            Proxy = App.Proxy;
+            Proxy = ((App)App.Current).Proxy;
             LogHelper.GetLogger().Info("Profile Dialog initialized.");
         }
 
         public ProfileDialogViewModel(OcUser user)
         {
-
-            Proxy = App.Proxy;
-
+            Proxy = ((App)App.Current).Proxy;
             User = user;
 
             if (User == null)
@@ -110,7 +108,7 @@ namespace Client.ViewModel
             {
                 LogHelper.GetLogger().Info("Profile Dialog closed.");
                 parentWindow.DialogResult = true;
-                if (App.LoggedUser.Id == User.Id)
+                if (((App)App.Current).LoggedUser.Id == User.Id)
                 {
                     parentWindow.Tag = User;
                 }
