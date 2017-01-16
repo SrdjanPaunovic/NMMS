@@ -134,10 +134,15 @@ namespace HiringCompanyService
 
                 //  HirinigCompanyDB.Instance.AddCompany(company);
 */
-            //User user = new User("admin", "admin", Role.CEO);
-            //user.Name = "savo";
-            //user.Surname = "oroz";
-            //HiringCompanyDB.Instance.AddUser(user);
+            User user = new User("admin", "admin", Role.CEO);
+            user.Name = "savo";
+            user.Surname = "oroz";
+            HiringCompanyDB.Instance.AddUser(user);
+
+            User user1 = new User("po", "po", Role.PO);
+            user1.Name = "savo";
+            user1.Surname = "oroz";
+            HiringCompanyDB.Instance.AddUser(user1);
 
             //Company c1 = new Company("C1");
             //Company c2 = new Company();

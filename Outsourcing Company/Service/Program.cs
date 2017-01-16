@@ -145,7 +145,7 @@
                                          MailAddress = "gagovicmilosgagovic@gmail.com"
                                      };
             OcProject project = new OcProject() { Name = "NMMS", EndTime = DateTime.Now };
-            OutsourcingCompanyDB.Instance.AddProject(project);
+            //OutsourcingCompanyDB.Instance.AddProject(project);
             OutsourcingCompanyDB.Instance.AddUser(scrumMaster);
 
             try
