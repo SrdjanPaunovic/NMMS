@@ -1,4 +1,5 @@
 ﻿using Common.Entities;
+using ServiceContract;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,9 +19,13 @@ namespace Client
 	public partial class App : Application
 	{
 		public readonly string HostAddress = "net.tcp://localhost:5000/IOutSourceContract";
-		private OcUser loggedUser;
-		private OutSClientProxy proxy;
+
+		private static OcUser loggedUser;
+    public static IOutsourcingContract proxy;
+
+		
         public CompanyType CompanyType = CompanyType.OUTSOURCING;
+
 
 		public App()
 		{
@@ -29,7 +34,7 @@ namespace Client
 
 		}
 
-		public OcUser LoggedUser
+		public static OcUser LoggedUser
 		{
 			get
 			{
@@ -41,7 +46,7 @@ namespace Client
 				loggedUser = value;
 			}
 		}
-
+        /*
 		public OutSClientProxy Proxy
 		{
 			get
@@ -52,6 +57,6 @@ namespace Client
 				}
 				return proxy;
 			}
-		}  
+		}  */
 	}
 }

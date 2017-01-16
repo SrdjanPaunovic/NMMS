@@ -19,12 +19,14 @@ namespace Client.ViewModel
     {
 
         private UserStory userStory;
-        public static IHiringContract proxy = App.Proxy;
+        public static IHiringContract proxy;
 
        
 
         public UserStoryViewModel(UserStory userStory)
         {
+            proxy = App.Proxy;
+
             this.UserStory = userStory;
 
             List<Common.Entities.Task> tasks = proxy.GetTasksFromUserStory(UserStory);

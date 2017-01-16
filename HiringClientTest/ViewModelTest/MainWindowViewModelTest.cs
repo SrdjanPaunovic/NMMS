@@ -341,15 +341,7 @@ namespace HiringClientTest.ViewModelTest
         }
 
 
-		/*
-		[Test]
-		public void LoginClickTest()
-		{
-			string[] array = { "voja", "seselj" };
-			clientViewModelUnderTest.LoginCommand.Execute(array);
-
-		}
-		*/
+	
         
 		[Test]
 		public void ShowProfileTest()

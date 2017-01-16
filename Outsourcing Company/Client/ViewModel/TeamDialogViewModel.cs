@@ -14,11 +14,15 @@ namespace Client.ViewModel
 {
     public class TeamDialogViewModel
     {
-        public IOutsourcingContract proxy = ((App)App.Current).Proxy;
+
+        public IOutsourcingContract proxy;
 
         public TeamDialogViewModel(Team t = null)
         {
-            if (t == null)
+            proxy = App.proxy;
+
+            if (team == null)
+     
             {
                 Team = new Team();
                 IsEditing = false;
@@ -43,10 +47,13 @@ namespace Client.ViewModel
             }
 
 
+
+
             List<OcUser> users = proxy.GetAllUsersWithoutTeam();
             foreach (OcUser user in users)
             {
                 if (user.Role == Role.developer && user.Team == null)
+
                 {
                     Developers.Add(user);
                 }
@@ -54,9 +61,10 @@ namespace Client.ViewModel
                 {
                     TeamLeads.Add(user);
                 }
-            }
 
-        }
+
+
+           }
 
         #region fields
         private Team team;
@@ -154,6 +162,7 @@ namespace Client.ViewModel
 
         private void Save(object param)
         {
+
             if (team.Name == null)
             {
                 MessageBox.Show("Please enter the name of Team");
@@ -185,6 +194,7 @@ namespace Client.ViewModel
             {
                 proxy.AddTeam(Team);
             }
+
 
             (param as Window).Close();
         }

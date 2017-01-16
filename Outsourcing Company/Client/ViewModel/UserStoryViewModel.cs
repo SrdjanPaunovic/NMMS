@@ -13,15 +13,16 @@ using System.Windows.Input;
 
 namespace Client.ViewModel
 {
-    class UserStoryViewModel
+    public class UserStoryViewModel
     {
         private UserStory userStory;
-        private IOutsourcingContract proxy = ((App)App.Current).Proxy;
+        private IOutsourcingContract proxy;
 
 
 
         public UserStoryViewModel(UserStory userStory)
         {
+            proxy = App.proxy;
             this.UserStory = userStory;
 			OcProject ocProj = proxy.GetProjectFromUserStory(UserStory);
 			Project proj = new Project(ocProj);

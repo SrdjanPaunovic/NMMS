@@ -12,12 +12,21 @@ namespace Client
 {
     public class OutSClientProxy : ChannelFactory<IOutsourcingContract>, IOutsourcingContract
     {
-        IOutsourcingContract factory;
+        private IOutsourcingContract factory;
+
+        public IOutsourcingContract Factory
+        {
+            get { return factory; }
+            set { factory = value; }
+        }
+
         public OutSClientProxy(NetTcpBinding binding, string address)
             : base(binding, address)
         {
             factory = this.CreateChannel();
         }
+        public OutSClientProxy() { }
+
 
         public OutSClientProxy(NetTcpBinding binding, EndpointAddress address)
             : base(binding, address)
