@@ -8,10 +8,10 @@ using Common.Entities;
 
 namespace ServiceContract
 {
-	[ServiceContract]
-	public interface IOutsourcingContract
-	{
-        [OperationContract ]
+    [ServiceContract]
+    public interface IOutsourcingContract
+    {
+        [OperationContract]
         bool AddUser(OcUser user);
 
         [OperationContract]
@@ -47,8 +47,8 @@ namespace ServiceContract
         [OperationContract]
         List<Company> GetAllCompanies();
 
-		[OperationContract]
-		List<OcProject> GetAllProjects();
+        [OperationContract]
+        List<OcProject> GetAllProjects();
 
         [OperationContract]
         List<OcUser> GetAllUsers();
@@ -56,26 +56,26 @@ namespace ServiceContract
         [OperationContract]
         List<OcUser> GetAllUsersWithoutTeam();
 
-		[OperationContract]
-		OcUser GetUser(string username);
+        [OperationContract]
+        OcUser GetUser(string username);
 
-		[OperationContract]
-		bool UpdateUser(OcUser user);
+        [OperationContract]
+        bool UpdateUser(OcUser user);
 
         [OperationContract]
         bool ModifyCompany(Company company);
 
         [OperationContract]
         bool ChangeCompanyState(Company company, State.CompanyState state);
- 
+
         [OperationContract]
         bool RemoveCompany(Company company);
 
-		[OperationContract]
-		bool SendUserStory(Company company, UserStory userStrory, Project project);
-		
         [OperationContract]
-		bool AnswerToProject(Company company, Project project);
+        bool SendUserStory(Company company, UserStory userStrory, Project project);
+
+        [OperationContract]
+        bool AnswerToProject(Company company, Project project);
 
         [OperationContract]
         List<Team> GetAllTeams();
@@ -96,9 +96,9 @@ namespace ServiceContract
         OcProject GetProjectFromUserStory(UserStory userStory);
 
         [OperationContract]
-        bool UpdateUserStory(UserStory UserStory);
+        bool UpdateUserStory(UserStory userStory);
 
         [OperationContract]
         List<UserStory> GetAllUserStories();
-	}
+    }
 }

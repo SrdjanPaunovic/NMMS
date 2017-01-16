@@ -14,13 +14,14 @@ namespace Common.Entities
     public class User
     {
 
-        public User() {
+        public User()
+        {
             StartTime = DateTime.Now;
             EndTime = DateTime.Now;
             Password_changed = DateTime.Now;
         }
 
-        public User(string username, string password, Role role):this()
+        public User(string username, string password, Role role) : this()
         {
             Username = username;
             Password = password;
@@ -38,9 +39,9 @@ namespace Common.Entities
         [DataMember]
         public DateTime StartTime { get; set; }
 
-		[DataMember]
-		public string MailAddress { get; set; }
-        
+        [DataMember]
+        public string MailAddress { get; set; }
+
         [DataMember]
         public DateTime EndTime { get; set; }
 
@@ -62,23 +63,24 @@ namespace Common.Entities
         [DataMember]
         public string Password { get; set; }
 
-        public void PasswordChange(string new_password){
-            Password=new_password;
-            Password_changed =DateTime.Now;
+        public void PasswordChange(string new_password)
+        {
+            Password = new_password;
+            Password_changed = DateTime.Now;
         }
 
-		public void UpdateProperties(User user)
-		{
-			this.Name = user.Name;
-			this.Role = user.Role;
-			this.Password = user.Password;
-			this.StartTime = user.StartTime;
-			this.EndTime = user.EndTime;
-			this.IsAuthenticated = user.IsAuthenticated;
-			this.Surname = user.Surname;
-			this.Username = user.Username;
-			this.Password_changed = user.Password_changed;
+        public void UpdateProperties(User user)
+        {
+            this.Name = user.Name;
+            this.Role = user.Role;
+            this.Password = user.Password;
+            this.StartTime = user.StartTime;
+            this.EndTime = user.EndTime;
+            this.IsAuthenticated = user.IsAuthenticated;
+            this.Surname = user.Surname;
+            this.Username = user.Username;
+            this.Password_changed = user.Password_changed;
             this.MailAddress = user.MailAddress;
-		}
+        }
     }
 }

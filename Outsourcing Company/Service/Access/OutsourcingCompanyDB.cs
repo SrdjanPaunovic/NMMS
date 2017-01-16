@@ -19,14 +19,18 @@ namespace Service.Access
             get
             {
                 if (myDB == null)
+                {
                     myDB = new OutsourcingCompanyDB();
+                }
 
                 return myDB;
             }
             set
             {
                 if (myDB == null)
+                {
                     myDB = value;
+                }
             }
         }
 
@@ -368,8 +372,9 @@ namespace Service.Access
             using (AccessDB context = new AccessDB())
             {
                 List<OcProject> projects = context.Projects.Include("Team").ToList();
-                
-                foreach(var proj in projects){
+
+                foreach (var proj in projects)
+                {
                     if (proj.Team != null)
                     {
                         proj.Team.Projects = null;
@@ -621,7 +626,7 @@ namespace Service.Access
 
                 return stories;
             }
-           
+
         }
 
 

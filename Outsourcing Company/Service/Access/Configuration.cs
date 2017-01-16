@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Service.Access
 {
-	public class Configuration : DbMigrationsConfiguration<AccessDB>
-	{
-		public Configuration()
-		{
-			AutomaticMigrationsEnabled = true;
-			AutomaticMigrationDataLossAllowed = true;
-			ContextKey = "OutSourceDB";
-			LogHelper.GetLogger().Info("Configuration initialized");
-		}
-	}
+    public class Configuration : DbMigrationsConfiguration<AccessDB>
+    {
+        public Configuration()
+        {
+            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
+            ContextKey = "OutSourceDB";
+            LogHelper.GetLogger().Info("Configuration initialized");
+        }
+    }
 }
