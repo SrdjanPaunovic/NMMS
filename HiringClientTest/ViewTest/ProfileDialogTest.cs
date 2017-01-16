@@ -27,7 +27,7 @@ namespace HiringClientTest.ViewTest
         [Test]
         public void ConstructorTest2()
         {
-            Assert.DoesNotThrow(() => dialogUnderTest = new ProfileDialog("username"));
+            Assert.DoesNotThrow(() => dialogUnderTest = new ProfileDialog(new User() { Name = "Slobo" }));
         }
 
     }

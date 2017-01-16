@@ -19,6 +19,7 @@ namespace Common.Entities
         {
 
         }
+
         public OcUser(string username, string password, Role role)
             : base(username, password, role)
         {

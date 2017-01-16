@@ -31,7 +31,7 @@ namespace HiringClientTest.ViewModelTest
             clientViewModelUnderTest.proxy.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "adms" } });
             clientViewModelUnderTest.proxy.SendProject(new Company(),new Project()).ReturnsForAnyArgs(true);
             clientViewModelUnderTest.proxy.SendRequest(new Company()).ReturnsForAnyArgs(true);
-        }   ;
+        }   
 
 
         [Test]
