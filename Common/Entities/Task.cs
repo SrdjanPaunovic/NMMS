@@ -14,8 +14,8 @@ namespace Common.Entities
     {
 
         public Task()
-		{
-		}
+        {
+        }
 
         [DataMember]
         [Key]

@@ -14,45 +14,113 @@
 
     using ServiceContract;
 
-    class Program
+    public class Program
     {
-        public static string baseAddress;
+        private static string baseAddress;
 
-        public static string companyName;
+        private static string companyName;
 
-        public static DuplexChannelFactory<IHiring2OutSourceContract> factory;
+        private static DuplexChannelFactory<IHiring2OutSourceContract> factory;
 
-        public static InstanceContext instanceContext = new InstanceContext(new OutSurce2HiringProxy());
+        private static InstanceContext instanceContext = new InstanceContext(new OutSurce2HiringProxy());
 
-        public static Company myOutSourceCompany;
-        private static  Thread checkProjectsThread;
+        private static Company myOutSourceCompany;
+        private static Thread checkProjectsThread;
         private static Thread checkTimeThread;
         private static Thread checkPasswordThread;
-        private  static IHiring2OutSourceContract proxy ;
-        private static  ServiceHost host ;
+        private static IHiring2OutSourceContract proxy;
+        private static ServiceHost host;
 
-        private static void StartCheckingProjectsThread(){
-            checkProjectsThread=new Thread(new ThreadStart(CheckingProjects));
+        public static string BaseAddress
+        {
+            get
+            {
+                return baseAddress;
+            }
+
+            set
+            {
+                baseAddress = value;
+            }
+        }
+
+        public static string CompanyName
+        {
+            get
+            {
+                return companyName;
+            }
+
+            set
+            {
+                companyName = value;
+            }
+        }
+
+        public static DuplexChannelFactory<IHiring2OutSourceContract> Factory
+        {
+            get
+            {
+                return factory;
+            }
+
+            set
+            {
+                factory = value;
+            }
+        }
+
+        public static InstanceContext InstanceContext
+        {
+            get
+            {
+                return instanceContext;
+            }
+
+            set
+            {
+                instanceContext = value;
+            }
+        }
+
+        public static Company MyOutSourceCompany
+        {
+            get
+            {
+                return myOutSourceCompany;
+            }
+
+            set
+            {
+                myOutSourceCompany = value;
+            }
+        }
+
+        private static void StartCheckingProjectsThread()
+        {
+            checkProjectsThread = new Thread(new ThreadStart(CheckingProjects));
             checkProjectsThread.Start();
-			LogHelper.GetLogger().Info("Checking projects thread started.");
+            LogHelper.GetLogger().Info("Checking projects thread started.");
 
         }
 
-        private static void  StopCheckingProjectsThread(){
+        private static void StopCheckingProjectsThread()
+        {
 
             checkProjectsThread.Abort();
-			LogHelper.GetLogger().Info("Checking projects thread started.");
+            LogHelper.GetLogger().Info("Checking projects thread started.");
 
         }
 
-        private static void Start(){
-            
+        private static void Start()
+        {
+
             NetTcpBinding binding = new NetTcpBinding();
             binding.Security.Mode = SecurityMode.Transport;
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
 
             string address = "net.tcp://localhost:5000/IOutSourceContract";
-             host = new ServiceHost(typeof(OutsourcingCompanyService));
+            host = new ServiceHost(typeof(OutsourcingCompanyService));
             host.AddServiceEndpoint(typeof(IOutsourcingContract), binding, address);
 
             host.Description.Behaviors.Remove(typeof(ServiceDebugBehavior));
@@ -69,7 +137,7 @@
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AccessDB, Configuration>());
 
             Console.WriteLine("Enter company name:");
-            companyName = Console.ReadLine();
+            CompanyName = Console.ReadLine();
 
             //OcUser user1 = new OcUser("admin1", "admin1", Role.developer);
             //user1.Name = "savo1";
@@ -121,47 +189,48 @@
             d3.Surname = "d3";
             OutsourcingCompanyDB.Instance.AddUser(d3);
 
-            myOutSourceCompany = new Company(companyName);
+            MyOutSourceCompany = new Company(CompanyName);
 
             Console.WriteLine("Enter Hiring Company IP adress");
             string insertAdress = Console.ReadLine();
             Console.WriteLine("WCFService service is started.");
             Console.WriteLine("Press <enter> to stop service...");
 
-            baseAddress = "net.tcp://" + insertAdress + ":8000/Service";
-            factory = new DuplexChannelFactory<IHiring2OutSourceContract>(
-                instanceContext,
+            BaseAddress = "net.tcp://" + insertAdress + ":8000/Service";
+            Factory = new DuplexChannelFactory<IHiring2OutSourceContract>(
+                InstanceContext,
                 new NetTcpBinding(SecurityMode.None),
-                new EndpointAddress(baseAddress));
-            proxy = factory.CreateChannel();
+                new EndpointAddress(BaseAddress));
+            proxy = Factory.CreateChannel();
 
             OcUser scrumMaster = new OcUser()
-                                     {
-                                         Name = "Slobo",
-                                         Surname = "Milosevic",
-                                         Username = "slobo",
-                                         Password = "slobo",
-                                         Role = Role.SM,
-                                         MailAddress = "gagovicmilosgagovic@gmail.com"
-                                     };
+            {
+                Name = "Slobo",
+                Surname = "Milosevic",
+                Username = "slobo",
+                Password = "slobo",
+                Role = Role.SM,
+                MailAddress = "gagovicmilosgagovic@gmail.com"
+            };
             OcProject project = new OcProject() { Name = "NMMS", EndTime = DateTime.Now };
             OutsourcingCompanyDB.Instance.AddProject(project);
             OutsourcingCompanyDB.Instance.AddUser(scrumMaster);
 
             try
             {
-                proxy.Introduce(new Company(companyName));
+                proxy.Introduce(new Company(CompanyName));
             }
             catch (Exception e)
             {
-                LogHelper.GetLogger().Error("Couldn't introduce to hiring company."+e.ToString());
+                LogHelper.GetLogger().Error("Couldn't introduce to hiring company." + e.ToString());
             }
         }
 
-        private static void Stop(){
+        private static void Stop()
+        {
 
-             
-            proxy.CloseCompany(myOutSourceCompany);
+
+            proxy.CloseCompany(MyOutSourceCompany);
 
             host.Close();
 
@@ -197,7 +266,7 @@
                             // TODO salji mejl
                             using (MailHelper helper = new MailHelper())
                             {
-                                helper.SendMail(scrumMaster.MailAddress, "Warning! The project  "+project.Name+"  may not be completed ! ");
+                                helper.SendMail(scrumMaster.MailAddress, "Warning! The project  " + project.Name + "  may not be completed ! ");
                             }
                         }
                         else
@@ -205,17 +274,17 @@
                             float result = (countStories / 100) * closedStories;
                             if (result < 80)
                             {
-                              using (MailHelper helper = new MailHelper())
-                              {
-                                 helper.SendMail(scrumMaster.MailAddress, "Warning! The project"+project.Name+" may not be completed !");
-                              }
+                                using (MailHelper helper = new MailHelper())
+                                {
+                                    helper.SendMail(scrumMaster.MailAddress, "Warning! The project" + project.Name + " may not be completed !");
+                                }
+                            }
                         }
                     }
+                    var sleepTime = DateTime.Today.AddDays(1).AddHours(1).Subtract(DateTime.Now); // jednom dnevno
+                    Thread.Sleep(sleepTime); // svaki dan provjerava;
                 }
-                var sleepTime = DateTime.Today.AddDays(1).AddHours(1).Subtract(DateTime.Now); // jednom dnevno
-                Thread.Sleep(sleepTime); // svaki dan provjerava;
             }
-         }
         }
 
         public static void CheckingWorkingTime()
@@ -224,7 +293,7 @@
             while (true)
             {
                 Thread.Sleep(600000);
-                List<OcUser> result =OutsourcingCompanyDB.Instance.GetAllUsers() ;
+                List<OcUser> result = OutsourcingCompanyDB.Instance.GetAllUsers();
                 List<User> users = new List<User>();
                 foreach (var user in result)
                 {
@@ -291,20 +360,20 @@
 
         }
 
-         static void Main(string[] args)
-         {
-             Start();
-             StartCheckingProjectsThread();
-             StartCheckingTimeTherad();
-             StartCheckingPasswordThread();
-             Console.WriteLine("Pres any key to shut down service.");
-             Console.ReadLine();
-             StopCheckingProjectsThread();
-             StopCheckingTimeTherad();
-             StopCheckingPasswordThread();
-             Stop();
+        public static void Main(string[] args)
+        {
+            Start();
+            StartCheckingProjectsThread();
+            StartCheckingTimeTherad();
+            StartCheckingPasswordThread();
+            Console.WriteLine("Pres any key to shut down service.");
+            Console.ReadLine();
+            StopCheckingProjectsThread();
+            StopCheckingTimeTherad();
+            StopCheckingPasswordThread();
+            Stop();
 
-         }
-       
+        }
+
     }
 }

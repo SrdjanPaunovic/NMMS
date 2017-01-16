@@ -9,88 +9,89 @@ using Common.Entities;
 
 namespace Common
 {
-	public class MailHelper:IDisposable
-	{
+    public class MailHelper : IDisposable
+    {
 
-		Dictionary<User, bool> usersWorkingTimeCheck = new Dictionary<User, bool>();
-		Dictionary<User, bool> usersPasswordCheck = new Dictionary<User, bool>();
+        private Dictionary<User, bool> usersWorkingTimeCheck = new Dictionary<User, bool>();
+        private Dictionary<User, bool> usersPasswordCheck = new Dictionary<User, bool>();
 
-		DateTime currentTime;
+        private DateTime currentTime;
 
-		public MailHelper(List<User> allUsers)
-		{
-			foreach (var user in allUsers)
-			{
-				usersWorkingTimeCheck.Add(user, false);
-				usersPasswordCheck.Add(user, false);
-			}
+        public MailHelper(List<User> allUsers)
+        {
+            foreach (var user in allUsers)
+            {
+                usersWorkingTimeCheck.Add(user, false);
+                usersPasswordCheck.Add(user, false);
+            }
 
-		}
-				
-        public MailHelper(){ }
+        }
+
+        public MailHelper() { }
 
 
 
-		public  void SendMail(string address, string messageContent)
-		{
-			using (SmtpClient smtpClient = new SmtpClient())
-			{
-               
-				using (MailMessage message = new MailMessage())
-				{
-					message.Subject = "Test";
-					message.Body = messageContent;
-					message.To.Add(new MailAddress(address));
-					message.IsBodyHtml = false;
-                    
-					try
-					{
-						smtpClient.Send(message);
-					}
-					catch (Exception ex)
-					{
-						Console.WriteLine(ex);
-					}
+        public void SendMail(string address, string messageContent)
+        {
+            using (SmtpClient smtpClient = new SmtpClient())
+            {
 
-				}
-			}
-			Console.WriteLine("Mail sent");
-		}
+                using (MailMessage message = new MailMessage())
+                {
+                    message.Subject = "Test";
+                    message.Body = messageContent;
+                    message.To.Add(new MailAddress(address));
+                    message.IsBodyHtml = false;
 
-		public  void CheckWorkingTime()
-		{
-			currentTime = DateTime.Now;
-			foreach (var user in usersWorkingTimeCheck.Keys)
-			{
-				if (user.StartTime < currentTime && user.IsAuthenticated == false && usersWorkingTimeCheck[user] == false)
-				{
-					string message = " Kasnjenje ";// TODO prosiriti malo
-					SendMail(user.MailAddress, message); 
-					usersWorkingTimeCheck[user] = true;
-				}				
-			}
-		}
+                    try
+                    {
+                        smtpClient.Send(message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
 
-		public void CheckPassword()
-		{
-			currentTime = DateTime.Now;
+                }
+            }
+            Console.WriteLine("Mail sent");
+        }
 
-			foreach (var user in usersPasswordCheck.Keys)
-			{
+        public void CheckWorkingTime()
+        {
+            currentTime = DateTime.Now;
+            foreach (var user in usersWorkingTimeCheck.Keys)
+            {
+                if (user.StartTime < currentTime && user.IsAuthenticated == false && usersWorkingTimeCheck[user] == false)
+                {
+                    // TODO prosiriti malo
+                    string message = " Kasnjenje ";
+                    SendMail(user.MailAddress, message);
+                    usersWorkingTimeCheck[user] = true;
+                }
+            }
+        }
 
-				var distance = (currentTime - user.Password_changed).TotalDays;
-				string message="Password last time chanded "+user.Password_changed.ToString();
-				if (distance > 180 && usersPasswordCheck[user] == false)
-				{
-					SendMail(user.MailAddress, message);
-					usersPasswordCheck[user] = true;
-				}
-			}
-		}
+        public void CheckPassword()
+        {
+            currentTime = DateTime.Now;
 
-		public void Dispose()
-		{
-           
-		}
-	}
+            foreach (var user in usersPasswordCheck.Keys)
+            {
+
+                var distance = (currentTime - user.Password_changed).TotalDays;
+                string message = "Password last time chanded " + user.Password_changed.ToString();
+                if (distance > 180 && usersPasswordCheck[user] == false)
+                {
+                    SendMail(user.MailAddress, message);
+                    usersPasswordCheck[user] = true;
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+
+        }
+    }
 }

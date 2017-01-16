@@ -68,16 +68,16 @@ namespace Service
             LogHelper.GetLogger().Info("Call GetAllCompanies method.");
             return OutsourcingCompanyDB.Instance.GetAllCompanies();
         }
-        
+
         public bool AnswerToRequest(Company company)
         {
             try
             {
-                string ipAdress = OutSurce2HiringProxy.hiringAdress[company.Name];
-                Program.factory = new DuplexChannelFactory<IHiring2OutSourceContract>(Program.instanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(ipAdress));
-                IHiring2OutSourceContract proxy1 = Program.factory.CreateChannel();
-                Program.myOutSourceCompany.State = company.State;
-                proxy1.AnswerToRequest(Program.myOutSourceCompany);
+                string ipAdress = OutSurce2HiringProxy.HiringAdress[company.Name];
+                Program.Factory = new DuplexChannelFactory<IHiring2OutSourceContract>(Program.InstanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(ipAdress));
+                IHiring2OutSourceContract proxy1 = Program.Factory.CreateChannel();
+                Program.MyOutSourceCompany.State = company.State;
+                proxy1.AnswerToRequest(Program.MyOutSourceCompany);
                 return true;
             }
             catch
@@ -86,7 +86,7 @@ namespace Service
             }
 
         }
-        
+
         public List<OcProject> GetAllProjects()
         {
             LogHelper.GetLogger().Info("Call GetAllProjects method.");
@@ -108,32 +108,32 @@ namespace Service
         public bool SendUserStory(Company company, UserStory userStrory, Project project)
         {
             //return OutsourcingCompanyDB.Instance.AddUserStory(userStrory); 
-            userStrory.DevComp = Program.myOutSourceCompany.Name;
-            string ipAdress = OutSurce2HiringProxy.hiringAdress[company.Name];
-            Program.factory = new DuplexChannelFactory<IHiring2OutSourceContract>(Program.instanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(ipAdress));
-            IHiring2OutSourceContract proxy1 = Program.factory.CreateChannel();
+            userStrory.DevComp = Program.MyOutSourceCompany.Name;
+            string ipAdress = OutSurce2HiringProxy.HiringAdress[company.Name];
+            Program.Factory = new DuplexChannelFactory<IHiring2OutSourceContract>(Program.InstanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(ipAdress));
+            IHiring2OutSourceContract proxy1 = Program.Factory.CreateChannel();
             proxy1.SendUserStory(company, userStrory, project);
             return true;
         }
 
-		public bool AnswerToProject(Company company, Project project)
-		{
-			try
-			{
-				
-				if (project.IsAccepted)
-				{
-					project.DevelopCompany = Program.myOutSourceCompany;
-				}
-				else
-				{
-					project.DevelopCompany = null;
-				}
-				string ipAdress = OutSurce2HiringProxy.hiringAdress[company.Name];
-				Program.factory = new DuplexChannelFactory<IHiring2OutSourceContract>(Program.instanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(ipAdress));
-				IHiring2OutSourceContract proxy1 = Program.factory.CreateChannel();
-				proxy1.AnswerToProject(Program.myOutSourceCompany, project);
-				return true;
+        public bool AnswerToProject(Company company, Project project)
+        {
+            try
+            {
+
+                if (project.IsAccepted)
+                {
+                    project.DevelopCompany = Program.MyOutSourceCompany;
+                }
+                else
+                {
+                    project.DevelopCompany = null;
+                }
+                string ipAdress = OutSurce2HiringProxy.HiringAdress[company.Name];
+                Program.Factory = new DuplexChannelFactory<IHiring2OutSourceContract>(Program.InstanceContext, new NetTcpBinding(SecurityMode.None), new EndpointAddress(ipAdress));
+                IHiring2OutSourceContract proxy1 = Program.Factory.CreateChannel();
+                proxy1.AnswerToProject(Program.MyOutSourceCompany, project);
+                return true;
 
             }
             catch (Exception)

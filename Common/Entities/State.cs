@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Common.Entities
 {
-	public class State
-	{
-		public enum CompanyState
-		{
-			NoPartner=0,
-			Requested=1,
-			Partner=2
-		}
-	}
+    public class State
+    {
+        public enum CompanyState
+        {
+            NoPartner = 0,
+            Requested = 1,
+            Partner = 2
+        }
+    }
 }

@@ -15,53 +15,54 @@ using System.Windows.Shapes;
 
 namespace Common.UserControls
 {
-	/// <summary>
-	/// Interaction logic for LoginView.xaml
-	/// </summary>
-	public partial class LoginView : UserControl
-	{
-		public LoginView()
-		{
-			DataContext = this;
-			InitializeComponent();
-		}
+    /// <summary>
+    /// Interaction logic for LoginView.xaml
+    /// </summary>
+    public partial class LoginView : UserControl
+    {
+        public LoginView()
+        {
+            DataContext = this;
+            InitializeComponent();
+        }
 
-		public static readonly DependencyProperty LoginCommandProperty =
-		DependencyProperty.Register(
-			"LoginCommand",
-			typeof(ICommand),
-			typeof(LoginView),
-			new UIPropertyMetadata(null));
+        public static readonly DependencyProperty LoginCommandProperty =
+        DependencyProperty.Register(
+            "LoginCommand",
+            typeof(ICommand),
+            typeof(LoginView),
+            new UIPropertyMetadata(null));
 
-		public static readonly DependencyProperty UsernameProperty =
-		DependencyProperty.Register(
-			"Username",
-			typeof(string),
-			typeof(LoginView),
-			new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty UsernameProperty =
+        DependencyProperty.Register(
+            "Username",
+            typeof(string),
+            typeof(LoginView),
+            new PropertyMetadata(string.Empty));
 
-		public ICommand LoginCommand
-		{
-			get { return (ICommand)GetValue(LoginCommandProperty); }
-			set { SetValue(LoginCommandProperty, value); }
-		}
+        public ICommand LoginCommand
+        {
+            get { return (ICommand)GetValue(LoginCommandProperty); }
+            set { SetValue(LoginCommandProperty, value); }
+        }
 
-		public string Username
-		{
-			get { return (string)GetValue(UsernameProperty); }
-			set { SetValue(UsernameProperty, value); }
-		}
+        public string Username
+        {
+            get { return (string)GetValue(UsernameProperty); }
+            set { SetValue(UsernameProperty, value); }
+        }
 
-		private void Username_TB_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			if(Username.Trim() == "")
-				Password_TB.Password = "";
-		}
+        private void Username_TB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (Username.Trim() == "")
+            {
+                Password_TB.Password = "";
+            }
+        }
 
         private void Password_TB_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            var Password_Tb = Password_TB;
             Password_TB.Tag = Password_TB.Password;
         }
-	}
+    }
 }

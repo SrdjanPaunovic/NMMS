@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 namespace Common.Entities
 {
     [DataContract]
-    public class OcProject:Project
+    public class OcProject : Project
     {
         [DataMember]
         public Team Team { get; set; }
 
-		public OcProject()
-		{
+        public OcProject()
+        {
 
-		}
-		public OcProject(Project proj):base(proj)
-		{
-			
-		} 
-	
+        }
+        public OcProject(Project proj) : base(proj)
+        {
+
+        }
+
     }
 }

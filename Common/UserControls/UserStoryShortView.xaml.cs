@@ -16,40 +16,41 @@ using System.Windows.Shapes;
 
 namespace Common.UserControls
 {
-	/// <summary>
-	/// Interaction logic for UserStoryShortView.xaml
-	/// </summary>
-	public partial class UserStoryShortView : UserControl
-	{
-		public UserStoryShortView()
-		{
-			InitializeComponent();
-			//DataContext = this;
+    /// <summary>
+    /// Interaction logic for UserStoryShortView.xaml
+    /// </summary>
+    public partial class UserStoryShortView : UserControl
+    {
+        public UserStoryShortView()
+        {
+            InitializeComponent();
+            //DataContext = this;
 
-			string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
-			string path = System.IO.Path.GetDirectoryName(executable);
-			path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
-			Edit_btn.NormalImage = new BitmapImage(new Uri(path+"/Images/edit.png"));
-			Delete_btn.NormalImage = new BitmapImage(new Uri(path+"/Images/delete.png"));
+            string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string path = System.IO.Path.GetDirectoryName(executable);
+            path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
+            Edit_btn.NormalImage = new BitmapImage(new Uri(path + "/Images/edit.png"));
+            Delete_btn.NormalImage = new BitmapImage(new Uri(path + "/Images/delete.png"));
 
-		}
+        }
 
-		public event EventHandler EditClicked;
-		public event EventHandler DeleteClicked;
+        public event EventHandler EditClicked;
+        public event EventHandler DeleteClicked;
 
-		private void Edit_Click(object sender, RoutedEventArgs e)
-		{
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
             if (EditClicked != null)
             {
                 EditClicked.Invoke(DataContext, null);
             }
-		}
+        }
 
-		private void Delete_Click(object sender, RoutedEventArgs e)
-		{
-            if(EditClicked!=null){
-			    DeleteClicked.Invoke(DataContext, null);
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            if (EditClicked != null)
+            {
+                DeleteClicked.Invoke(DataContext, null);
             }
-		}
-	}
+        }
+    }
 }

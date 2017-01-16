@@ -8,22 +8,22 @@ using System.Windows.Data;
 
 namespace Common.Converters
 {
-	public class ProjectNameConverter : IValueConverter
-	{
-		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-		{
-			Project project = value as Project;
+    public class ProjectNameConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Project project = value as Project;
 
-			if (project != null)
-			{
-				return project.Name;
-			}
-			return "";
-		}
+            if (project != null)
+            {
+                return project.Name;
+            }
+            return "";
+        }
 
-		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
