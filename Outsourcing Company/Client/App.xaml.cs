@@ -18,20 +18,15 @@ namespace Client
     /// </summary>
     public partial class App : Application
     {
-        public readonly string HostAddress = "net.tcp://localhost:5000/IOutSourceContract";
+        public readonly static string HostAddress = "net.tcp://localhost:5000/IOutSourceContract";
 
-        private OcUser loggedUser;
-        private IOutsourcingContract proxy;
+        private static OcUser loggedUser;
+        private static IOutsourcingContract proxy;
 
-        public IOutsourcingContract Proxy
+        public static IOutsourcingContract Proxy
         {
             get
             {
-                if (proxy == null)
-                {
-                    proxy = new OutSClientProxy(new NetTcpBinding(), HostAddress);
-                }
-
                 return proxy;
             }
 
@@ -44,15 +39,20 @@ namespace Client
 
         private CompanyType companyType = CompanyType.OUTSOURCING;
 
+        static App()
+        {
+            if (proxy == null)
+            {
+                proxy = new OutSClientProxy(new NetTcpBinding(), HostAddress);
+            }
+        }
 
         public App()
         {
-            proxy = new OutSClientProxy(new NetTcpBinding(), HostAddress);
             log4net.Config.XmlConfigurator.Configure();
-
         }
 
-        public OcUser LoggedUser
+        public static OcUser LoggedUser
         {
             get { return loggedUser; }
             set { loggedUser = value; }

@@ -19,7 +19,7 @@ namespace Client.ViewModel
 
         public TeamDialogViewModel(Team t = null)
         {
-            Proxy = ((App)App.Current).Proxy;
+            Proxy = App.Proxy;
 
             if (team == null)
      

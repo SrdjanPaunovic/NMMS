@@ -22,7 +22,7 @@ namespace Client.ViewModel
 
         public UserStoryViewModel(UserStory userStory)
         {
-            proxy = ((App)App.Current).Proxy;
+            proxy = App.Proxy;
             this.UserStory = userStory;
             OcProject ocProj = proxy.GetProjectFromUserStory(UserStory);
             Project proj = new Project(ocProj);

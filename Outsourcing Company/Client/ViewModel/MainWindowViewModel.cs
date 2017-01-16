@@ -28,7 +28,7 @@ namespace Client.ViewModel
             TEAMS
         }
 
-        private IOutsourcingContract proxy = ((App)App.Current).Proxy;
+        private IOutsourcingContract proxy = App.Proxy;
 
         public MainWindowViewModel()
         {
@@ -120,12 +120,12 @@ namespace Client.ViewModel
         {
             get
             {
-                return ((App)App.Current).LoggedUser;
+                return App.LoggedUser;
             }
 
             set
             {
-                ((App)App.Current).LoggedUser = value;
+                App.LoggedUser = value;
                 OnPropertyChanged("LoggedUser");
 
             }

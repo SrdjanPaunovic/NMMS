@@ -233,7 +233,7 @@
                 MailAddress = "gagovicmilosgagovic@gmail.com"
             };
             OcProject project = new OcProject() { Name = "NMMS", EndTime = DateTime.Now };
-            OutsourcingCompanyDB.Instance.AddProject(project);
+            //OutsourcingCompanyDB.Instance.AddProject(project);
             OutsourcingCompanyDB.Instance.AddUser(scrumMaster);
 
             try
@@ -383,12 +383,12 @@
         public static void Main(string[] args)
         {
             Start();
-            StartCheckingProjectsThread();
+           // StartCheckingProjectsThread();
             StartCheckingTimeTherad();
             StartCheckingPasswordThread();
             Console.WriteLine("Pres any key to shut down service.");
             Console.ReadLine();
-            StopCheckingProjectsThread();
+         //   StopCheckingProjectsThread();
             StopCheckingTimeTherad();
             StopCheckingPasswordThread();
             Stop();

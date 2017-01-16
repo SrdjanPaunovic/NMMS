@@ -17,27 +17,22 @@ namespace Client
     /// </summary>
     public partial class App : Application
     {
-        public readonly string HostAddress = "net.tcp://localhost:4000/IHiringContract";
+        public readonly static string HostAddress = "net.tcp://localhost:4000/IHiringContract";
         private CompanyType companyType = CompanyType.HIRING;
-        private IHiringContract proxy;
-        private User loggedUser;
+        private static IHiringContract proxy;
+        private static User loggedUser;
 
 
-        public User LoggedUser
+        public static User LoggedUser
         {
             get { return loggedUser; }
             set { loggedUser = value; }
         }
 
-        public IHiringContract Proxy
+        public static IHiringContract Proxy
         {
             get
             {
-                if (proxy == null)
-                {
-                    proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
-                }
-
                 return proxy;
             }
 
@@ -59,10 +54,13 @@ namespace Client
                 companyType = value;
             }
         }
+        static App()
+        {
+            Proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
+        }
 
         public App()
         {
-            Proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
 
             log4net.Config.XmlConfigurator.Configure();
             Exit += App_Exit;

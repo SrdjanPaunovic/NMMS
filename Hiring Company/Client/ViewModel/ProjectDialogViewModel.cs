@@ -31,12 +31,12 @@ namespace Client.ViewModel
 
         public ProjectDialogViewModel()
         {
-            Proxy = ((App)App.Current).Proxy;
+            Proxy = App.Proxy;
             isEditing = false;
             Project = new Project()
             {
                 Name = "New Project",
-                ProductOwner = ((App)App.Current).LoggedUser
+                ProductOwner = App.LoggedUser
             };
         }
 
@@ -116,12 +116,12 @@ namespace Client.ViewModel
         {
             get
             {
-                return ((App)App.Current).LoggedUser;
+                return App.LoggedUser;
             }
 
             set
             {
-                ((App)App.Current).LoggedUser = value;
+                App.LoggedUser = value;
                 OnPropertyChanged("LoggedUser");
 
             }

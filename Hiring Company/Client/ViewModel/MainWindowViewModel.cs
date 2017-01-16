@@ -33,7 +33,7 @@ namespace Client.ViewModel
             path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
-            Proxy = ((App)App.Current).Proxy;
+            Proxy = App.Proxy;
 
         }
 
@@ -75,7 +75,13 @@ namespace Client.ViewModel
         private ObservableCollection<Project> acceptedProjects = new AsyncObservableCollection<Project>();
         private ObservableCollection<Project> nonSentProjects = new AsyncObservableCollection<Project>();
 
+        private ObservableCollection<UserStory> answerToUS = new AsyncObservableCollection<UserStory>();
 
+        public ObservableCollection<UserStory> AnswerToUS
+        {
+            get { return answerToUS; }
+            set { answerToUS = value; }
+        }
 
 
 
@@ -98,7 +104,8 @@ namespace Client.ViewModel
         private ICommand deleteUserCommand;
         private ICommand addUserCommand;
         private ICommand sendProjectRequestCommand;
-
+        private ICommand acceptUSCommand;
+        private ICommand rejectUSCommand;
 
         #endregion Fields
 
@@ -290,7 +297,23 @@ namespace Client.ViewModel
 
         }
 
+        public ICommand AcceptUSCommand
+        {
+            get
+            {
+                return acceptUSCommand ?? (acceptUSCommand = new RelayCommand(param => this.AcceptUS(param)));
+            }
 
+        }
+
+        public ICommand RejectUSCommand
+        {
+            get
+            {
+                return rejectUSCommand ?? (rejectUSCommand = new RelayCommand(param => this.RejectUS(param)));
+            }
+
+        }
 
         #endregion Properties
 
@@ -478,12 +501,26 @@ namespace Client.ViewModel
                     }
                 }
             }
-
+            FetchUserStories();
             /*Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Approved" });
 
             Projects.Add(new { Name = "P1", Description = "This is description", StartTime = "Danas", Deadline = "Sutra", Status = "Disapproved" });
             */
         }
+
+        void FetchUserStories()
+         {
+             AnswerToUS.Clear();
+             List<UserStory> result = proxy.GetAllUserStories();
+             if (result != null)
+             {
+                 foreach (UserStory us in result)
+                 {
+                     if (us.IsUserStorySent)
+                         AnswerToUS.Add(us);
+                 }
+             }
+         }
 
         private void SendCompanyRequest(object param)
         {
@@ -597,6 +634,44 @@ namespace Client.ViewModel
 
         }
 
+        private void AcceptUS(object param)
+         {
+             LogHelper.GetLogger().Info("AcceptUS called.");
+ 
+             if (param == null)
+             {
+                 LogHelper.GetLogger().Warn("[AcceptUS] Command parameters has NULL value");
+             }
+             UserStory us = param as UserStory;
+             Project proj = proxy.GetProjectFromUserStory(us);
+             Company company = new Company();
+             // us.Project = new Project();
+             us.IsUserStoryAccepted = true;
+             us.IsUserStorySent = false;
+             bool success = proxy.AnswerToUserStory(company, proj, us);
+             proxy.UpdateUserStory(us);
+             FetchProjects();
+         }
+ 
+         private void RejectUS(object param)
+         {
+             LogHelper.GetLogger().Info("RejectUS called.");
+ 
+             if (param == null)
+             {
+                 LogHelper.GetLogger().Warn("[RejectUS] Command parameters has NULL value");
+             }
+             UserStory us = param as UserStory;
+             //     us.Project = new Project();
+             Project proj = proxy.GetProjectFromUserStory(us);
+             Company company = new Company();
+             us.IsUserStorySent = false;
+             us.IsUserStoryAccepted = false;
+             bool success = proxy.AnswerToUserStory(company, proj, us);
+             proxy.UpdateUserStory(us);
+             FetchProjects();
+         }
+
         #endregion Methods
 
         #region PropertyChangedNotifier
@@ -615,11 +690,11 @@ namespace Client.ViewModel
         {
             get
             {
-                return ((App)App.Current).LoggedUser;
+                return App.LoggedUser;
             }
             set
             {
-                ((App)App.Current).LoggedUser = value;
+                App.LoggedUser = value;
                 OnPropertyChanged("LoggedUser");
             }
         }
