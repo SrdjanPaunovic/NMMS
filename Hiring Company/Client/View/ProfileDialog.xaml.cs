@@ -44,7 +44,7 @@ namespace Client.View
 
         }
 
-        void ProfileDialog_Initialized(object sender, EventArgs e)
+        internal void ProfileDialog_Initialized(object sender, EventArgs e)
         {
             var viewModel = DataContext as ProfileDialogViewModel;
 

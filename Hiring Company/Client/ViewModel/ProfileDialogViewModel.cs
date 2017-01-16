@@ -17,19 +17,19 @@ namespace Client.ViewModel
 
         public User User { get; set; }
 
-        public IHiringContract proxy;
+        private IHiringContract proxy;
         public ProfileDialogViewModel()
         {
             User = new User();
-            proxy = App.Proxy;
+            Proxy = App.Proxy;
             LogHelper.GetLogger().Info("Profile Dialog initialized.");
         }
 
         public ProfileDialogViewModel(User user)
         {
-            proxy = App.Proxy;
+            Proxy = App.Proxy;
 
-			User = user;
+            User = user;
 
             if (User == null)
             {
@@ -58,6 +58,19 @@ namespace Client.ViewModel
                 return saveCommand ?? (saveCommand = new RelayCommand((param) => this.SaveClick(param)));
             }
         }
+
+        public IHiringContract Proxy
+        {
+            get
+            {
+                return proxy;
+            }
+
+            set
+            {
+                proxy = value;
+            }
+        }
         #endregion Commands
 
         #region Methods
@@ -82,24 +95,25 @@ namespace Client.ViewModel
             LogHelper.GetLogger().Info("Save click occurred.");
             bool success = false;
 
-            if (User.Id == 0)   //Add if not exist(Create new User)
+            //Add if not exist(Create new User)
+            if (User.Id == 0)   
             {
-                success = proxy.AddUser(User);
+                success = Proxy.AddUser(User);
             }
             else
             {
-                success = proxy.UpdateUser(User);
+                success = Proxy.UpdateUser(User);
             }
 
             if (success)
             {
                 LogHelper.GetLogger().Info("Profile Dialog closed.");
                 parentWindow.DialogResult = true;
-				if(((App)App.Current).LoggedUser.Id == User.Id)
-				{
-					parentWindow.Tag = User;
-				}
-				parentWindow.Close();
+                if (((App)App.Current).LoggedUser.Id == User.Id)
+                {
+                    parentWindow.Tag = User;
+                }
+                parentWindow.Close();
             }
             else
             {

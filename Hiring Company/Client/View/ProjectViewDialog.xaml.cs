@@ -24,20 +24,20 @@ namespace Client.View
     {
         public ProjectViewDialog()
         {
-			DataContext = new ProjectDialogViewModel();
+            DataContext = new ProjectDialogViewModel();
             InitializeComponent();
-			LogHelper.GetLogger().Info(" Project view dialog initialized.");
+            LogHelper.GetLogger().Info(" Project view dialog initialized.");
 
         }
 
-		public ProjectViewDialog(Project project)
-		{
-			DataContext = new ProjectDialogViewModel(project);
-			InitializeComponent();
-			LogHelper.GetLogger().Info(" Project view dialog initialized.");
-		}
+        public ProjectViewDialog(Project project)
+        {
+            DataContext = new ProjectDialogViewModel(project);
+            InitializeComponent();
+            LogHelper.GetLogger().Info(" Project view dialog initialized.");
+        }
 
 
 
-	}
+    }
 }

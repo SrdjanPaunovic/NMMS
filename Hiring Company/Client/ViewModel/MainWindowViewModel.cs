@@ -25,7 +25,7 @@ namespace Client.ViewModel
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private static object _syncLock = new object();
-        public IHiringContract proxy;
+        private IHiringContract proxy;
         public MainWindowViewModel()
         {
             string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -33,8 +33,8 @@ namespace Client.ViewModel
             path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
-            proxy = App.Proxy;
-            
+            Proxy = App.Proxy;
+
         }
 
         public void UpdateData()
@@ -316,7 +316,7 @@ namespace Client.ViewModel
             string username = parameters[0].ToString();
             string pass = parameters[1].ToString();
 
-            bool success = proxy.LogIn(username, pass);
+            bool success = Proxy.LogIn(username, pass);
 
             if (success)
             {
@@ -350,7 +350,7 @@ namespace Client.ViewModel
 
                 AllEmployees.Clear();
 
-                List<User> result = proxy.GetAllUsers();
+                List<User> result = Proxy.GetAllUsers();
 
                 foreach (var user in result)
                 {
@@ -387,7 +387,7 @@ namespace Client.ViewModel
         {
             LogHelper.GetLogger().Info("LogOut called.");
 
-            bool success = proxy.LogOut(LoggedUsername);
+            bool success = Proxy.LogOut(LoggedUsername);
 
             if (success)
             {
@@ -402,7 +402,7 @@ namespace Client.ViewModel
             }
         }
 
-        void NewProject()
+        private void NewProject()
         {
             LogHelper.GetLogger().Info("NewProject called.");
 
@@ -410,7 +410,7 @@ namespace Client.ViewModel
             projectDialog.ShowDialog();
         }
 
-        void EditProject(Project project)
+        private void EditProject(Project project)
         {
             LogHelper.GetLogger().Info("EditProject called.");
 
@@ -418,7 +418,7 @@ namespace Client.ViewModel
             projectDialog.ShowDialog();
         }
 
-        void FetchCompanies()
+        private void FetchCompanies()
         {
 
             LogHelper.GetLogger().Info("FetchCompanies called.");
@@ -430,7 +430,7 @@ namespace Client.ViewModel
                 NonPartnerCompanies.Clear();
 
 
-                List<Company> result = proxy.GetAllCompanies();
+                List<Company> result = Proxy.GetAllCompanies();
 
                 foreach (Company company in result)
                 {
@@ -454,11 +454,11 @@ namespace Client.ViewModel
 
         }
 
-        void FetchProjects()
+        private void FetchProjects()
         {
             LogHelper.GetLogger().Info("FetchProjects called.");
 
-            List<Project> result = proxy.GetAllProjects();
+            List<Project> result = Proxy.GetAllProjects();
             Projects.Clear();
             AcceptedProjects.Clear();
             NonSentProjects.Clear();
@@ -501,7 +501,7 @@ namespace Client.ViewModel
                 return;
             }
 
-            bool success = proxy.SendRequest(company);
+            bool success = Proxy.SendRequest(company);
             FetchCompanies();
 
         }
@@ -543,7 +543,7 @@ namespace Client.ViewModel
 
             bool success = false;
 
-            success = proxy.RemoveUser(user);
+            success = Proxy.RemoveUser(user);
             if (success)
             {
                 LogHelper.GetLogger().Info("DeleteUser is done successfuly");
@@ -590,7 +590,7 @@ namespace Client.ViewModel
                 return;
             }
 
-            bool success = proxy.SendProject(company, project);
+            bool success = Proxy.SendProject(company, project);
             FetchCompanies();
 
 
@@ -620,6 +620,19 @@ namespace Client.ViewModel
             {
                 ((App)App.Current).LoggedUser = value;
                 OnPropertyChanged("LoggedUser");
+            }
+        }
+
+        public IHiringContract Proxy
+        {
+            get
+            {
+                return proxy;
+            }
+
+            set
+            {
+                proxy = value;
             }
         }
     }

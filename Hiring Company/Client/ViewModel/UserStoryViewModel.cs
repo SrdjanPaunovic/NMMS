@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Common;
 using System.Windows.Media.Imaging;
 using ServiceContract;
 
@@ -19,19 +18,19 @@ namespace Client.ViewModel
     {
 
         private UserStory userStory;
-        public static IHiringContract proxy;
+        private static IHiringContract proxy;
 
-       
+
 
         public UserStoryViewModel(UserStory userStory)
         {
-            proxy = App.Proxy;
+            Proxy = App.Proxy;
 
             this.UserStory = userStory;
 
-            List<Common.Entities.Task> tasks = proxy.GetTasksFromUserStory(UserStory);
+            List<Common.Entities.Task> tasks = Proxy.GetTasksFromUserStory(UserStory);
             UserStory.Tasks = new ObservableCollection<Common.Entities.Task>(tasks);
-            UserStory.Project = proxy.GetProjectFromUserStory(UserStory);
+            UserStory.Project = Proxy.GetProjectFromUserStory(UserStory);
         }
 
         #region Commands
@@ -79,6 +78,19 @@ namespace Client.ViewModel
             get { return userStory; }
             set { userStory = value; }
         }
+
+        public static IHiringContract Proxy
+        {
+            get
+            {
+                return proxy;
+            }
+
+            set
+            {
+                proxy = value;
+            }
+        }
         #endregion Properties
 
         #region Methods
@@ -103,7 +115,7 @@ namespace Client.ViewModel
             bool success = false;
             if (UserStory.Id != 0)
             {
-                success = proxy.UpdateUserStory(UserStory);
+                success = Proxy.UpdateUserStory(UserStory);
             }
 
             if (success)

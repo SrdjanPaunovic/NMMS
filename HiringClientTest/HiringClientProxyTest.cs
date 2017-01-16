@@ -20,66 +20,66 @@ namespace HiringClientTest
 		{
             
             clientUnderTest = new HiringClientProxy();
-			clientUnderTest.factory = Substitute.For<IHiringContract>();
+			clientUnderTest.Factory = Substitute.For<IHiringContract>();
 
-			clientUnderTest.factory.LogIn("admin", "admin").Returns(true);
-			clientUnderTest.factory.LogIn("admin", "ad").Returns(false);
-            clientUnderTest.factory.LogIn("ex", "ex").Returns((x) => { throw new Exception(); });
-			clientUnderTest.factory.LogOut("admin").Returns(true);
-			clientUnderTest.factory.LogOut("pero").Returns(false);
-            clientUnderTest.factory.LogOut("ex").Returns(x => { throw new Exception(); });
-			clientUnderTest.factory.GetUser("pero").Returns(new User() { Name = "Pero" });
-            clientUnderTest.factory.GetUser("ex").Returns(x => { throw new Exception(); });
-			clientUnderTest.factory.AddUser(Arg.Is<User>(x=>x.Name=="Voja" && x.Surname=="Seselj")).Returns(true);
-            clientUnderTest.factory.AddUser(Arg.Is<User>(x => x.Name != "Voja" && x.Name != "ex")).Returns(false);
-			clientUnderTest.factory.AddUser(Arg.Is<User>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+			clientUnderTest.Factory.LogIn("admin", "admin").Returns(true);
+			clientUnderTest.Factory.LogIn("admin", "ad").Returns(false);
+            clientUnderTest.Factory.LogIn("ex", "ex").Returns((x) => { throw new Exception(); });
+			clientUnderTest.Factory.LogOut("admin").Returns(true);
+			clientUnderTest.Factory.LogOut("pero").Returns(false);
+            clientUnderTest.Factory.LogOut("ex").Returns(x => { throw new Exception(); });
+			clientUnderTest.Factory.GetUser("pero").Returns(new User() { Name = "Pero" });
+            clientUnderTest.Factory.GetUser("ex").Returns(x => { throw new Exception(); });
+			clientUnderTest.Factory.AddUser(Arg.Is<User>(x=>x.Name=="Voja" && x.Surname=="Seselj")).Returns(true);
+            clientUnderTest.Factory.AddUser(Arg.Is<User>(x => x.Name != "Voja" && x.Name != "ex")).Returns(false);
+			clientUnderTest.Factory.AddUser(Arg.Is<User>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
 
-            clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
-            clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name != "Mika" && x.Name!="ex")).Returns(false);
-            clientUnderTest.factory.UpdateUser(Arg.Is<User>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+            clientUnderTest.Factory.UpdateUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
+            clientUnderTest.Factory.UpdateUser(Arg.Is<User>(x => x.Name != "Mika" && x.Name!="ex")).Returns(false);
+            clientUnderTest.Factory.UpdateUser(Arg.Is<User>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
 
-            clientUnderTest.factory.When(x => x.UpdateUser(Arg.Is<User>(f => f.Name == "ex"))).Do(k => { throw new Exception(); });
+            clientUnderTest.Factory.When(x => x.UpdateUser(Arg.Is<User>(f => f.Name == "ex"))).Do(k => { throw new Exception(); });
 
-            clientUnderTest.factory.RemoveUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
-            clientUnderTest.factory.RemoveUser(Arg.Is<User>(x => x.Name != "Mika" && x.Name!="ex")).Returns(false);
-			clientUnderTest.factory.RemoveUser(Arg.Is<User>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+            clientUnderTest.Factory.RemoveUser(Arg.Is<User>(x => x.Name == "Mika")).Returns(true);
+            clientUnderTest.Factory.RemoveUser(Arg.Is<User>(x => x.Name != "Mika" && x.Name!="ex")).Returns(false);
+			clientUnderTest.Factory.RemoveUser(Arg.Is<User>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
 
-            clientUnderTest.factory.AddProject(Arg.Is<Project>(x=>x.Name=="GeRuDok")).Returns(true);
-            clientUnderTest.factory.AddProject(Arg.Is<Project>(x => x.Name != "GeRuDok"  && x.Name!="Excp")).Returns(false);
-			clientUnderTest.factory.AddProject(Arg.Is<Project>(p=>p.Name=="Excp")).Returns((x) => { throw new Exception(); });
+            clientUnderTest.Factory.AddProject(Arg.Is<Project>(x=>x.Name=="GeRuDok")).Returns(true);
+            clientUnderTest.Factory.AddProject(Arg.Is<Project>(x => x.Name != "GeRuDok"  && x.Name!="Excp")).Returns(false);
+			clientUnderTest.Factory.AddProject(Arg.Is<Project>(p=>p.Name=="Excp")).Returns((x) => { throw new Exception(); });
 
-            clientUnderTest.factory.UpdateProject(Arg.Is<Project>(x=>x.Name=="NMMS")).Returns(true);
-            clientUnderTest.factory.UpdateProject(Arg.Is<Project>(x => x.Name != "NMMS" && x.Name!="ex")).Returns(false);
-            clientUnderTest.factory.UpdateProject(Arg.Is<Project>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+            clientUnderTest.Factory.UpdateProject(Arg.Is<Project>(x=>x.Name=="NMMS")).Returns(true);
+            clientUnderTest.Factory.UpdateProject(Arg.Is<Project>(x => x.Name != "NMMS" && x.Name!="ex")).Returns(false);
+            clientUnderTest.Factory.UpdateProject(Arg.Is<Project>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
 
-            clientUnderTest.factory.GetAllUsers().Returns(new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } });
-            clientUnderTest.factory.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } });
+            clientUnderTest.Factory.GetAllUsers().Returns(new List<User>() { new User() { Name = "Voja" }, new User() { Name = "Slobo" } });
+            clientUnderTest.Factory.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "NMMS" }, new Project() { Name = "AGMS" } });
 
 
-            clientUnderTest.factory.GetTasksFromUserStory(Arg.Is<UserStory>(x => x.Name == "us1")).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } });
-			clientUnderTest.factory.GetTasksFromUserStory(Arg.Is<UserStory>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });           
-			clientUnderTest.factory.GetProjectFromUserStory(Arg.Is<UserStory>(x=>x.Name=="us")).Returns(new Project() { Name = "NMMS" });
+            clientUnderTest.Factory.GetTasksFromUserStory(Arg.Is<UserStory>(x => x.Name == "us1")).Returns(new List<Common.Entities.Task>() { new Common.Entities.Task() { Name = "taks1" }, new Common.Entities.Task() { Name = "taks2" } });
+			clientUnderTest.Factory.GetTasksFromUserStory(Arg.Is<UserStory>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });           
+			clientUnderTest.Factory.GetProjectFromUserStory(Arg.Is<UserStory>(x=>x.Name=="us")).Returns(new Project() { Name = "NMMS" });
            
-			clientUnderTest.factory.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" }, new Company() { Name = "dms" } });
-            clientUnderTest.factory.GetProjectFromUserStory(Arg.Is<UserStory>(x => x.Name == "ex")).Returns((x) => { throw new Exception(); });
-            clientUnderTest.factory.GetUserStoryFromProject(Arg.Is<Project>(x => x.Name == "NMMS")).Returns(new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2" } });
-            clientUnderTest.factory.GetUserStoryFromProject(Arg.Is<Project>(x => x.Name == "ex")).Returns(x=>{throw new Exception();});
-            clientUnderTest.factory.UpdateUserStory(Arg.Is<UserStory>(x=>x.Name=="us")).Returns(true);
-            clientUnderTest.factory.UpdateUserStory(Arg.Is<UserStory>(x => x.Name != "us" && x.Name!="ex")).Returns(false);
-			clientUnderTest.factory.UpdateUserStory(Arg.Is<UserStory>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
-			clientUnderTest.factory.AddProject(Arg.Is<Project>(p => p.Name == "Excp")).Returns((x) => { throw new Exception(); });
+			clientUnderTest.Factory.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" }, new Company() { Name = "dms" } });
+            clientUnderTest.Factory.GetProjectFromUserStory(Arg.Is<UserStory>(x => x.Name == "ex")).Returns((x) => { throw new Exception(); });
+            clientUnderTest.Factory.GetUserStoryFromProject(Arg.Is<Project>(x => x.Name == "NMMS")).Returns(new List<UserStory>() { new UserStory() { Name = "us1" }, new UserStory() { Name = "us2" } });
+            clientUnderTest.Factory.GetUserStoryFromProject(Arg.Is<Project>(x => x.Name == "ex")).Returns(x=>{throw new Exception();});
+            clientUnderTest.Factory.UpdateUserStory(Arg.Is<UserStory>(x=>x.Name=="us")).Returns(true);
+            clientUnderTest.Factory.UpdateUserStory(Arg.Is<UserStory>(x => x.Name != "us" && x.Name!="ex")).Returns(false);
+			clientUnderTest.Factory.UpdateUserStory(Arg.Is<UserStory>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+			clientUnderTest.Factory.AddProject(Arg.Is<Project>(p => p.Name == "Excp")).Returns((x) => { throw new Exception(); });
 
-			clientUnderTest.factory.AnswerToUserStory(Arg.Is<Company>(x => x.Name == "dms"),Arg.Is<Project>(y=>y.Name=="dms"),Arg.Is<UserStory>(z=>z.Name=="us")).Returns(true);
-			clientUnderTest.factory.AnswerToUserStory(Arg.Is<Company>(x => x.Name == "ex"), Arg.Is<Project>(y => y.Name == "ex"), Arg.Is<UserStory>(z => z.Name == "ex")).Returns(p => { throw new Exception(); });
-			clientUnderTest.factory.AnswerToUserStory(Arg.Is<Company>(x => x.Name != "dms" && x.Name!="ex"), Arg.Is<Project>(y => y.Name != "dms" && y.Name!="ex"), Arg.Is<UserStory>(z => z.Name != "us" && z.Name!="ex")).Returns(false);
+			clientUnderTest.Factory.AnswerToUserStory(Arg.Is<Company>(x => x.Name == "dms"),Arg.Is<Project>(y=>y.Name=="dms"),Arg.Is<UserStory>(z=>z.Name=="us")).Returns(true);
+			clientUnderTest.Factory.AnswerToUserStory(Arg.Is<Company>(x => x.Name == "ex"), Arg.Is<Project>(y => y.Name == "ex"), Arg.Is<UserStory>(z => z.Name == "ex")).Returns(p => { throw new Exception(); });
+			clientUnderTest.Factory.AnswerToUserStory(Arg.Is<Company>(x => x.Name != "dms" && x.Name!="ex"), Arg.Is<Project>(y => y.Name != "dms" && y.Name!="ex"), Arg.Is<UserStory>(z => z.Name != "us" && z.Name!="ex")).Returns(false);
 			
-			clientUnderTest.factory.SendProject(Arg.Is<Company>(x => x.Name == "dms"), Arg.Is<Project>(y => y.Name == "dms")).Returns(true);
-			clientUnderTest.factory.SendProject(Arg.Is<Company>(x => x.Name != "dms" && x.Name != "ex"), Arg.Is<Project>(y => y.Name != "dms" && y.Name != "ex")).Returns(false);
-			clientUnderTest.factory.SendProject(Arg.Is<Company>(x => x.Name == "ex"), Arg.Is<Project>(y => y.Name == "ex")).Returns(x => { throw new Exception(); });
+			clientUnderTest.Factory.SendProject(Arg.Is<Company>(x => x.Name == "dms"), Arg.Is<Project>(y => y.Name == "dms")).Returns(true);
+			clientUnderTest.Factory.SendProject(Arg.Is<Company>(x => x.Name != "dms" && x.Name != "ex"), Arg.Is<Project>(y => y.Name != "dms" && y.Name != "ex")).Returns(false);
+			clientUnderTest.Factory.SendProject(Arg.Is<Company>(x => x.Name == "ex"), Arg.Is<Project>(y => y.Name == "ex")).Returns(x => { throw new Exception(); });
 
-			clientUnderTest.factory.SendRequest(Arg.Is<Company>(x => x.Name == "dms")).Returns(true);
-			clientUnderTest.factory.SendRequest(Arg.Is<Company>(x => x.Name != "dms" && x.Name != "ex")).Returns(false);
-			clientUnderTest.factory.SendRequest(Arg.Is<Company>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
+			clientUnderTest.Factory.SendRequest(Arg.Is<Company>(x => x.Name == "dms")).Returns(true);
+			clientUnderTest.Factory.SendRequest(Arg.Is<Company>(x => x.Name != "dms" && x.Name != "ex")).Returns(false);
+			clientUnderTest.Factory.SendRequest(Arg.Is<Company>(x => x.Name == "ex")).Returns(x => { throw new Exception(); });
 
 		}
 

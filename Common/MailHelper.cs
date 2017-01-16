@@ -11,8 +11,6 @@ namespace Common
 {
 	public class MailHelper:IDisposable
 	{
-		private Thread check;
-		private Object locker;
 
 		Dictionary<User, bool> usersWorkingTimeCheck = new Dictionary<User, bool>();
 		Dictionary<User, bool> usersPasswordCheck = new Dictionary<User, bool>();

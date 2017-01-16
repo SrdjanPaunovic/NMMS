@@ -27,8 +27,8 @@ namespace HiringClientTest.ViewModelTest
         public void SetupTest()
         {
             profileDialogUnderTest = new ProfileDialogViewModel();
-            profileDialogUnderTest.proxy = Substitute.For<IHiringContract>();
-            profileDialogUnderTest.proxy.AddUser(new User()).ReturnsForAnyArgs(true);
+            profileDialogUnderTest.Proxy = Substitute.For<IHiringContract>();
+            profileDialogUnderTest.Proxy.AddUser(new User()).ReturnsForAnyArgs(true);
             App.Proxy = Substitute.For<IHiringContract>();
 
         }

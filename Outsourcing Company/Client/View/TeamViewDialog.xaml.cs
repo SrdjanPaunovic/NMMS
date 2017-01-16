@@ -16,25 +16,25 @@ using System.Windows.Shapes;
 
 namespace Client.View
 {
-	/// <summary>
-	/// Interaction logic for TeamViewDialog.xaml
-	/// </summary>
-	public partial class TeamViewDialog : Window
-	{
-		public TeamViewDialog(Team team=null)
-		{
+    /// <summary>
+    /// Interaction logic for TeamViewDialog.xaml
+    /// </summary>
+    public partial class TeamViewDialog : Window
+    {
+        public TeamViewDialog(Team team = null)
+        {
             DataContext = new TeamDialogViewModel(team);
-			InitializeComponent();
-		}
+            InitializeComponent();
+        }
 
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-			OcUser selectedDeveloper = (OcUser)developerChooser.SelectedItem;
-			if (selectedDeveloper != null)
-			{
-				((TeamDialogViewModel)DataContext).TeamDevelopers.Add(selectedDeveloper);
-				((TeamDialogViewModel)DataContext).Developers.Remove(selectedDeveloper);
-			}
-		}
-	}
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            OcUser selectedDeveloper = (OcUser)developerChooser.SelectedItem;
+            if (selectedDeveloper != null)
+            {
+                ((TeamDialogViewModel)DataContext).TeamDevelopers.Add(selectedDeveloper);
+                ((TeamDialogViewModel)DataContext).Developers.Remove(selectedDeveloper);
+            }
+        }
+    }
 }

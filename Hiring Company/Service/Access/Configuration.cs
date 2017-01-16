@@ -8,15 +8,15 @@ using Common;
 
 namespace Service.Access
 {
-	public class Configuration: DbMigrationsConfiguration<AccessDB>
-	{
-		public Configuration()
-		{
-			AutomaticMigrationsEnabled = true;
-			AutomaticMigrationDataLossAllowed = true;
-			ContextKey = "HiringDB";
-			LogHelper.GetLogger().Info("Configuration initialized");
+    public class Configuration : DbMigrationsConfiguration<AccessDB>
+    {
+        public Configuration()
+        {
+            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
+            ContextKey = "HiringDB";
+            LogHelper.GetLogger().Info("Configuration initialized");
 
-		}
-	}
+        }
+    }
 }

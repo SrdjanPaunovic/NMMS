@@ -23,16 +23,16 @@ namespace OutsourcingClientTest.ViewModelTest
         public void SetupTest()
         {
             clientViewModelUnderTest = new MainWindowViewModel("test");
-            clientViewModelUnderTest.proxy = Substitute.For<IOutsourcingContract>();
-            clientViewModelUnderTest.proxy.AddProject(Arg.Any<OcProject>()).Returns(true);
-            clientViewModelUnderTest.proxy.LogIn("a", "a").ReturnsForAnyArgs(true);
-            clientViewModelUnderTest.proxy.GetAllUsers().Returns(new List<OcUser>() { new OcUser() { Name = "seselj" } });
-            clientViewModelUnderTest.proxy.LogOut("a").ReturnsForAnyArgs(true);
-            clientViewModelUnderTest.proxy.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" } });
-            clientViewModelUnderTest.proxy.GetAllProjects().Returns(new List<OcProject>() { new OcProject() { Name = "adms" } });
+            clientViewModelUnderTest.Proxy = Substitute.For<IOutsourcingContract>();
+            clientViewModelUnderTest.Proxy.AddProject(Arg.Any<OcProject>()).Returns(true);
+            clientViewModelUnderTest.Proxy.LogIn("a", "a").ReturnsForAnyArgs(true);
+            clientViewModelUnderTest.Proxy.GetAllUsers().Returns(new List<OcUser>() { new OcUser() { Name = "seselj" } });
+            clientViewModelUnderTest.Proxy.LogOut("a").ReturnsForAnyArgs(true);
+            clientViewModelUnderTest.Proxy.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" } });
+            clientViewModelUnderTest.Proxy.GetAllProjects().Returns(new List<OcProject>() { new OcProject() { Name = "adms" } });
             clientViewModelUnderTest.LoggedUser = new OcUser() { Username = "slobo", Password = "slobo", Name = "Slobo", Surname = "Milosevic" };
-            clientViewModelUnderTest.proxy.AnswerToRequest(new Company()).ReturnsForAnyArgs(true);
-            clientViewModelUnderTest.proxy.GetProjectFromUserStory(new UserStory()).ReturnsForAnyArgs(new OcProject());
+            clientViewModelUnderTest.Proxy.AnswerToRequest(new Company()).ReturnsForAnyArgs(true);
+            clientViewModelUnderTest.Proxy.GetProjectFromUserStory(new UserStory()).ReturnsForAnyArgs(new OcProject());
             //App.proxy = Substitute.For<IOutsourcingContract>();
             App.LoggedUser = new OcUser() { Username = "slobo", Password = "slobo", Name = "Slobo", Surname = "Milosevic" };
             

@@ -15,11 +15,11 @@ namespace Client.ViewModel
     public class TeamDialogViewModel
     {
 
-        public IOutsourcingContract proxy;
+        private IOutsourcingContract proxy;
 
         public TeamDialogViewModel(Team t = null)
         {
-            proxy = App.Proxy;
+            Proxy = App.Proxy;
 
             if (team == null)
      
@@ -49,7 +49,7 @@ namespace Client.ViewModel
 
 
 
-            List<OcUser> users = proxy.GetAllUsersWithoutTeam();
+            List<OcUser> users = Proxy.GetAllUsersWithoutTeam();
             foreach (OcUser user in users)
             {
                 if (user.Role == Role.developer && user.Team == null)
@@ -187,11 +187,11 @@ namespace Client.ViewModel
 
             if (IsEditing)
             {
-                proxy.UpdateTeam(Team);
+                Proxy.UpdateTeam(Team);
             }
             else
             {
-                proxy.AddTeam(Team);
+                Proxy.AddTeam(Team);
             }
 
 
@@ -200,5 +200,18 @@ namespace Client.ViewModel
         #endregion
 
         public bool IsEditing { get; set; }
+
+        public IOutsourcingContract Proxy
+        {
+            get
+            {
+                return proxy;
+            }
+
+            set
+            {
+                proxy = value;
+            }
+        }
     }
 }

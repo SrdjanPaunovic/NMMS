@@ -22,15 +22,15 @@ namespace HiringClientTest.ViewModelTest
 		public void SetupTest()
 		{
 			clientViewModelUnderTest = new MainWindowViewModel("test");
-			clientViewModelUnderTest.proxy = Substitute.For<IHiringContract>();
-			clientViewModelUnderTest.proxy.AddProject(Arg.Any<Project>()).Returns(true);
-            clientViewModelUnderTest.proxy.LogIn("a", "a").ReturnsForAnyArgs(true);
-            clientViewModelUnderTest.proxy.GetAllUsers().Returns(new List<User>(){new User(){Name="seselj"}});
-            clientViewModelUnderTest.proxy.LogOut("a").ReturnsForAnyArgs(true);
-            clientViewModelUnderTest.proxy.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" } });
-            clientViewModelUnderTest.proxy.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "adms" } });
-            clientViewModelUnderTest.proxy.SendProject(new Company(),new Project()).ReturnsForAnyArgs(true);
-            clientViewModelUnderTest.proxy.SendRequest(new Company()).ReturnsForAnyArgs(true);
+			clientViewModelUnderTest.Proxy = Substitute.For<IHiringContract>();
+			clientViewModelUnderTest.Proxy.AddProject(Arg.Any<Project>()).Returns(true);
+            clientViewModelUnderTest.Proxy.LogIn("a", "a").ReturnsForAnyArgs(true);
+            clientViewModelUnderTest.Proxy.GetAllUsers().Returns(new List<User>(){new User(){Name="seselj"}});
+            clientViewModelUnderTest.Proxy.LogOut("a").ReturnsForAnyArgs(true);
+            clientViewModelUnderTest.Proxy.GetAllCompanies().Returns(new List<Company>() { new Company() { Name = "Nis" } });
+            clientViewModelUnderTest.Proxy.GetAllProjects().Returns(new List<Project>() { new Project() { Name = "adms" } });
+            clientViewModelUnderTest.Proxy.SendProject(new Company(),new Project()).ReturnsForAnyArgs(true);
+            clientViewModelUnderTest.Proxy.SendRequest(new Company()).ReturnsForAnyArgs(true);
         }   
 
 

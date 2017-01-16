@@ -17,36 +17,36 @@ using Common;
 
 namespace Client.View
 {
-	/// <summary>
-	/// Interaction logic for ProjectViewDialog.xaml
-	/// </summary>
-	public partial class ProjectViewDialog : Window
-	{
-		public ProjectViewDialog()
-		{
-			/*UserStory us = new UserStory();
-			us.Name = "Moje ime";
-			UserStory us1 = new UserStory();
-			us1.Name = "Moje ime1";
+    /// <summary>
+    /// Interaction logic for ProjectViewDialog.xaml
+    /// </summary>
+    public partial class ProjectViewDialog : Window
+    {
+        public ProjectViewDialog()
+        {
+            /*UserStory us = new UserStory();
+            us.Name = "Moje ime";
+            UserStory us1 = new UserStory();
+            us1.Name = "Moje ime1";
 
-			Project.UserStories.Add(us);
-			Project.UserStories.Add(us1);*/
+            Project.UserStories.Add(us);
+            Project.UserStories.Add(us1);
+            */
+            DataContext = new ProjectDialogViewModel();
+            InitializeComponent();
+            LogHelper.GetLogger().Info(" Project view dialog initialized.");
 
-			DataContext = new ProjectDialogViewModel();
-			InitializeComponent();
-			LogHelper.GetLogger().Info(" Project view dialog initialized.");
+        }
 
-		}
+        public ProjectViewDialog(OcProject project)
+        {
+            DataContext = new ProjectDialogViewModel(project);
+            InitializeComponent();
+            LogHelper.GetLogger().Info(" Project view dialog initialized.");
 
-		public ProjectViewDialog(OcProject project)
-		{
-			DataContext = new ProjectDialogViewModel(project);
-			InitializeComponent();
-			LogHelper.GetLogger().Info(" Project view dialog initialized.");
-
-		}
+        }
 
 
 
-	}
+    }
 }

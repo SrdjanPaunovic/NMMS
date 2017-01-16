@@ -29,9 +29,9 @@ namespace OutsourcingClientTest.ViewModelTest
         [OneTimeSetUp]
         public void SetupTest()
         {
-            ProjectDialogViewModel.proxy = Substitute.For<IOutsourcingContract>();
-            ProjectDialogViewModel.proxy.AddUser(new OcUser()).ReturnsForAnyArgs(true);
-            ProjectDialogViewModel.proxy.GetUserStoryFromProject(new OcProject()).ReturnsForAnyArgs(new List<UserStory>());
+            ProjectDialogViewModel.Proxy = Substitute.For<IOutsourcingContract>();
+            ProjectDialogViewModel.Proxy.AddUser(new OcUser()).ReturnsForAnyArgs(true);
+            ProjectDialogViewModel.Proxy.GetUserStoryFromProject(new OcProject()).ReturnsForAnyArgs(new List<UserStory>());
             App.Proxy = Substitute.For<IOutsourcingContract>();
             App.Proxy.UpdateProject(new OcProject()).ReturnsForAnyArgs(true);
             App.Proxy.AddProject(new OcProject()).ReturnsForAnyArgs(false);

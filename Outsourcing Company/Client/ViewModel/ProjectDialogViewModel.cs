@@ -17,7 +17,7 @@ namespace Client.ViewModel
 {
     public class ProjectDialogViewModel : INotifyPropertyChanged
     {
-        public static IOutsourcingContract proxy ;
+        private static IOutsourcingContract proxy;
 
         #region Fields
         //TODO: INTGR change classes
@@ -28,7 +28,7 @@ namespace Client.ViewModel
 
         public ProjectDialogViewModel()
         {
-            proxy = App.Proxy;
+            Proxy = App.Proxy;
             isEditing = false;
             Project = new OcProject()
             {
@@ -38,14 +38,14 @@ namespace Client.ViewModel
 
         public ProjectDialogViewModel(OcProject project)
         {
-            proxy = App.Proxy;
+            Proxy = App.Proxy;
             Project = project;
 
-            List<UserStory> userStories = proxy.GetUserStoryFromProject(project);
+            List<UserStory> userStories = Proxy.GetUserStoryFromProject(project);
 
             Project.UserStories = new ObservableCollection<UserStory>(userStories);
 
-            AllTeams = proxy.GetAllTeams();
+            AllTeams = Proxy.GetAllTeams();
             if (project.Team != null)
             {
                 Team team = AllTeams.FirstOrDefault(x => x.Id == project.Team.Id);
@@ -159,6 +159,19 @@ namespace Client.ViewModel
                 OnPropertyChanged("Project");
             }
         }
+
+        public static IOutsourcingContract Proxy
+        {
+            get
+            {
+                return proxy;
+            }
+
+            set
+            {
+                proxy = value;
+            }
+        }
         #endregion Properties
 
         #region Methods
@@ -180,11 +193,11 @@ namespace Client.ViewModel
             bool success = false;
             if (isEditing)
             {
-                success = proxy.UpdateProject(Project);
+                success = Proxy.UpdateProject(Project);
             }
             else
             {
-                success = proxy.AddProject(Project);
+                success = Proxy.AddProject(Project);
             }
             if (success)
             {
