@@ -16,21 +16,20 @@
 
     public class Program
     {
+        #region Fields
         private static string baseAddress;
-
         private static string companyName;
-
         private static DuplexChannelFactory<IHiring2OutSourceContract> factory;
-
         private static InstanceContext instanceContext = new InstanceContext(new OutSurce2HiringProxy());
-
         private static Company myOutSourceCompany;
         private static Thread checkProjectsThread;
         private static Thread checkTimeThread;
         private static Thread checkPasswordThread;
         private static IHiring2OutSourceContract proxy;
         private static ServiceHost host;
+        #endregion
 
+        #region Properties
         public static string BaseAddress
         {
             get
@@ -95,6 +94,7 @@
                 myOutSourceCompany = value;
             }
         }
+        #endregion
 
         private static void StartCheckingProjectsThread()
         {
@@ -168,6 +168,26 @@
             //t2.Name = "Network Viewer";
             //t2.TeamLead = user1;
             //OutsourcingCompanyDB.Instance.AddTeam(t2);
+
+            OcUser user = new OcUser("ceo", "123", Role.CEO);
+            user.Name = "Nemanja";
+            user.Surname = "Zerajic";
+            OutsourcingCompanyDB.Instance.AddUser(user);
+
+            OcUser user1 = new OcUser("po", "123", Role.PO);
+            user1.Name = "Milos";
+            user1.Surname = "Gagovic";
+            OutsourcingCompanyDB.Instance.AddUser(user1);
+
+            OcUser user2 = new OcUser("dev", "123", Role.developer);
+            user2.Name = "Marko";
+            user2.Surname = "Bogdanovic";
+            OutsourcingCompanyDB.Instance.AddUser(user2);
+
+            OcUser user3 = new OcUser("tl", "123", Role.TL);
+            user3.Name = "Srdjan";
+            user3.Surname = "Paunovic";
+            OutsourcingCompanyDB.Instance.AddUser(user3);
 
             OcUser h = new OcUser("teamlead", "teamlead", Role.TL);
             h.Name = "tl1";

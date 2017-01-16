@@ -28,7 +28,7 @@ namespace Client.ViewModel
 
         public ProjectDialogViewModel()
         {
-            Proxy = App.Proxy;
+            Proxy = ((App)App.Current).Proxy;
             isEditing = false;
             Project = new OcProject()
             {
@@ -38,7 +38,7 @@ namespace Client.ViewModel
 
         public ProjectDialogViewModel(OcProject project)
         {
-            Proxy = App.Proxy;
+            Proxy = ((App)App.Current).Proxy;
             Project = project;
 
             List<UserStory> userStories = Proxy.GetUserStoryFromProject(project);
@@ -121,12 +121,12 @@ namespace Client.ViewModel
         {
             get
             {
-                return App.LoggedUser;
+                return ((App)App.Current).LoggedUser;
             }
 
             set
             {
-                App.LoggedUser = value;
+                ((App)App.Current).LoggedUser = value;
                 OnPropertyChanged("LoggedUser");
 
             }

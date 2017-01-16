@@ -33,7 +33,7 @@ namespace Client.ViewModel
             path = path.Substring(0, path.LastIndexOf("NMMS")) + "NMMS/Common";
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
-            Proxy = App.Proxy;
+            Proxy = ((App)App.Current).Proxy;
 
         }
 
@@ -46,7 +46,7 @@ namespace Client.ViewModel
                     case Common.Entities.WindowState.LOGIN:
                         break;
                     case Common.Entities.WindowState.EMPLOYEES:
-                        ShowEmployeesCommand.Execute(null);
+                        //ShowEmployeesCommand.Execute(null);
                         break;
                     case Common.Entities.WindowState.COMPANIES:
                         DisplayCompaniesCommand.Execute(null);
@@ -320,8 +320,8 @@ namespace Client.ViewModel
 
             if (success)
             {
-                LoggedUsername = username;
-                CurrentState = Common.Entities.WindowState.PROJECTS;
+                LoggedUser = Proxy.GetUser(username);
+                CurrentState = Common.Entities.WindowState.COMPANIES;
             }
 
         }
@@ -387,11 +387,12 @@ namespace Client.ViewModel
         {
             LogHelper.GetLogger().Info("LogOut called.");
 
-            bool success = Proxy.LogOut(LoggedUsername);
+            bool success = Proxy.LogOut(LoggedUser.Username);
 
             if (success)
             {
-                LoggedUsername = "";
+                LoggedUser.Username = "";
+                LoggedUser = null;
                 CurrentState = Common.Entities.WindowState.LOGIN;
             }
             else

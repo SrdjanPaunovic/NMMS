@@ -24,7 +24,7 @@ namespace Client.ViewModel
 
         public UserStoryViewModel(UserStory userStory)
         {
-            Proxy = App.Proxy;
+            Proxy = ((App)App.Current).Proxy;
 
             this.UserStory = userStory;
 

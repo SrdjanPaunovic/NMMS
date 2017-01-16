@@ -31,7 +31,7 @@ namespace Client.ViewModel
 
         public ProjectDialogViewModel()
         {
-            Proxy = App.Proxy;
+            Proxy = ((App)App.Current).Proxy;
             isEditing = false;
             Project = new Project()
             {
@@ -123,6 +123,21 @@ namespace Client.ViewModel
             {
                 ((App)App.Current).LoggedUser = value;
                 OnPropertyChanged("LoggedUser");
+
+            }
+        }
+
+        public CompanyType CompanyType
+        {
+            get
+            {
+                return ((App)App.Current).CompanyType;
+            }
+
+            set
+            {
+                ((App)App.Current).CompanyType = value;
+                OnPropertyChanged("CompanyType");
 
             }
         }

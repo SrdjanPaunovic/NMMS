@@ -19,7 +19,7 @@ namespace Client
     {
         public readonly string HostAddress = "net.tcp://localhost:4000/IHiringContract";
         private CompanyType companyType = CompanyType.HIRING;
-        private static IHiringContract proxy;
+        private IHiringContract proxy;
         private User loggedUser;
 
 
@@ -29,10 +29,15 @@ namespace Client
             set { loggedUser = value; }
         }
 
-        public static IHiringContract Proxy
+        public IHiringContract Proxy
         {
             get
             {
+                if (proxy == null)
+                {
+                    proxy = new HiringClientProxy(new NetTcpBinding(), HostAddress);
+                }
+
                 return proxy;
             }
 

@@ -20,13 +20,25 @@ namespace Client
     {
         public readonly string HostAddress = "net.tcp://localhost:5000/IOutSourceContract";
 
-        private static OcUser loggedUser;
-        private static IOutsourcingContract proxy;
+        private OcUser loggedUser;
+        private IOutsourcingContract proxy;
 
-        public static IOutsourcingContract Proxy
+        public IOutsourcingContract Proxy
         {
-            get { return App.proxy; }
-            set { App.proxy = value; }
+            get
+            {
+                if (proxy == null)
+                {
+                    proxy = new OutSClientProxy(new NetTcpBinding(), HostAddress);
+                }
+
+                return proxy;
+            }
+
+            set
+            {
+                proxy = value;
+            }
         }
 
 
@@ -40,17 +52,10 @@ namespace Client
 
         }
 
-        public static OcUser LoggedUser
+        public OcUser LoggedUser
         {
-            get
-            {
-                return loggedUser;
-            }
-
-            set
-            {
-                loggedUser = value;
-            }
+            get { return loggedUser; }
+            set { loggedUser = value; }
         }
 
         public CompanyType CompanyType

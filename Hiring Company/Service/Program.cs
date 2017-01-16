@@ -30,6 +30,7 @@ namespace HiringCompanyService
         private static Thread checkTimeThread;
         private static Thread checkPasswordThread;
 
+        #region Properties
         public static string BaseAddress
         {
             get
@@ -94,6 +95,7 @@ namespace HiringCompanyService
                 checkPasswordThread = value;
             }
         }
+#endregion Properties
 
         public static void Main(string[] args)
         {
@@ -134,10 +136,20 @@ namespace HiringCompanyService
 
                 //  HirinigCompanyDB.Instance.AddCompany(company);
 */
-            //User user = new User("admin", "admin", Role.CEO);
-            //user.Name = "savo";
-            //user.Surname = "oroz";
-            //HiringCompanyDB.Instance.AddUser(user);
+            User user = new User("ceo", "123", Role.CEO);
+            user.Name = "Nemanja";
+            user.Surname = "Zerajic";
+            HiringCompanyDB.Instance.AddUser(user);
+
+            User user1 = new User("po", "123", Role.PO);
+            user1.Name = "Milos";
+            user1.Surname = "Gagovic";
+            HiringCompanyDB.Instance.AddUser(user1);
+
+            User user2 = new User("dev", "123", Role.developer);
+            user2.Name = "Marko";
+            user2.Surname = "Bogdanovic";
+            HiringCompanyDB.Instance.AddUser(user2);
 
             //Company c1 = new Company("C1");
             //Company c2 = new Company();
