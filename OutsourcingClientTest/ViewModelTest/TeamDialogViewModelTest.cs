@@ -24,14 +24,14 @@ namespace OutsourcingClientTest.ViewModelTest
         [OneTimeSetUp]
         public void SetupTest()
         {
-            App.proxy = Substitute.For<IOutsourcingContract>();
-            App.proxy.UpdateProject(new OcProject()).ReturnsForAnyArgs(true);
-            App.proxy.AddProject(new OcProject()).ReturnsForAnyArgs(false);
-            App.proxy.GetUserStoryFromProject(new OcProject()).ReturnsForAnyArgs(new List<UserStory>());
-            App.proxy.GetProjectFromUserStory(new UserStory()).ReturnsForAnyArgs(new OcProject());
-            App.proxy.AddUser(new OcUser()).ReturnsForAnyArgs(true);
-            App.proxy.AddTeam(new Team()).ReturnsForAnyArgs(true);
-            App.proxy.GetAllUsersWithoutTeam().Returns(new List<OcUser>() { new OcUser() { Role = Role.developer }, new OcUser() { Role = Role.TL } });
+            App.Proxy = Substitute.For<IOutsourcingContract>();
+            App.Proxy.UpdateProject(new OcProject()).ReturnsForAnyArgs(true);
+            App.Proxy.AddProject(new OcProject()).ReturnsForAnyArgs(false);
+            App.Proxy.GetUserStoryFromProject(new OcProject()).ReturnsForAnyArgs(new List<UserStory>());
+            App.Proxy.GetProjectFromUserStory(new UserStory()).ReturnsForAnyArgs(new OcProject());
+            App.Proxy.AddUser(new OcUser()).ReturnsForAnyArgs(true);
+            App.Proxy.AddTeam(new Team()).ReturnsForAnyArgs(true);
+            App.Proxy.GetAllUsersWithoutTeam().Returns(new List<OcUser>() { new OcUser() { Role = Role.developer }, new OcUser() { Role = Role.TL } });
             teamDialogUnderTest = new TeamDialogViewModel();
             teamDialogUnderTest.Team.Developers = new List<OcUser>() { new OcUser() { Role = Role.developer } };
             

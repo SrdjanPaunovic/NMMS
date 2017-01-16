@@ -19,7 +19,7 @@ namespace Client.ViewModel
 
         public TeamDialogViewModel(Team t = null)
         {
-            proxy = App.proxy;
+            proxy = App.Proxy;
 
             if (team == null)
      
@@ -53,7 +53,6 @@ namespace Client.ViewModel
             foreach (OcUser user in users)
             {
                 if (user.Role == Role.developer && user.Team == null)
-
                 {
                     Developers.Add(user);
                 }
@@ -62,7 +61,7 @@ namespace Client.ViewModel
                     TeamLeads.Add(user);
                 }
 
-
+            }
 
            }
 

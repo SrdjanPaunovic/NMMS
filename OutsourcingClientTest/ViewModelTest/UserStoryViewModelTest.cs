@@ -28,10 +28,10 @@ namespace OutsourcingClientTest.ViewModelTest
         [OneTimeSetUp]
         public void SetupTest()
         {
-            App.proxy = Substitute.For<IOutsourcingContract>();
-            App.proxy.GetTasksFromUserStory(new UserStory()).ReturnsForAnyArgs(new List<Common.Entities.Task>());
-            App.proxy.UpdateUserStory(new UserStory()).ReturnsForAnyArgs(true);
-            App.proxy.GetProjectFromUserStory(new UserStory()).ReturnsForAnyArgs(new OcProject());
+            App.Proxy = Substitute.For<IOutsourcingContract>();
+            App.Proxy.GetTasksFromUserStory(new UserStory()).ReturnsForAnyArgs(new List<Common.Entities.Task>());
+            App.Proxy.UpdateUserStory(new UserStory()).ReturnsForAnyArgs(true);
+            App.Proxy.GetProjectFromUserStory(new UserStory()).ReturnsForAnyArgs(new OcProject());
             UserStory userStory = new UserStory() { Name = "testUs" };
             taks = new Common.Entities.Task();
             userStory.Tasks.Add(taks);

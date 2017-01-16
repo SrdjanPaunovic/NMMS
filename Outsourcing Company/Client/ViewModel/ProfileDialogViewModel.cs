@@ -21,14 +21,14 @@ namespace Client.ViewModel
         {
 
             User = new OcUser();
-            proxy = App.proxy;
+            proxy = App.Proxy;
             LogHelper.GetLogger().Info("Profile Dialog initialized.");
         }
 
 		public ProfileDialogViewModel(OcUser user)
         {
 
-            proxy = App.proxy;
+            proxy = App.Proxy;
 
             User = user;
 

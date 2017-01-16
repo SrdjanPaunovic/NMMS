@@ -21,7 +21,13 @@ namespace Client
 		public readonly string HostAddress = "net.tcp://localhost:5000/IOutSourceContract";
 
 		private static OcUser loggedUser;
-    public static IOutsourcingContract proxy;
+        private static IOutsourcingContract proxy;
+
+        public static IOutsourcingContract Proxy
+        {
+            get { return App.proxy; }
+            set { App.proxy = value; }
+        }
 
 		
         public CompanyType CompanyType = CompanyType.OUTSOURCING;

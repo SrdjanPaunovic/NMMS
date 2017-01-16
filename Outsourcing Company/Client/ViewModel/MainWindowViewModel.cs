@@ -28,7 +28,7 @@ namespace Client.ViewModel
             TEAMS
         }
 
-        public IOutsourcingContract proxy = ((App)App.Current).Proxy;
+        public IOutsourcingContract proxy = App.Proxy;
 
         public MainWindowViewModel()
         {
@@ -38,7 +38,7 @@ namespace Client.ViewModel
             EditIcon = new BitmapImage(new Uri(path + "/Images/edit.png"));
             RemoveIcon = new BitmapImage(new Uri(path + "/Images/delete.png"));
 
-            proxy = App.proxy;
+            proxy = App.Proxy;
 
             ViewIcon = new BitmapImage(new Uri(path + "/Images/viewIcon.png"));
 
